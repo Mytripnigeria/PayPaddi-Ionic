@@ -1,0 +1,9 @@
+{
+	"appId": "app.payza.ng",
+	"appName": "PayPaddi",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"ios": {
+		"scheme": "PayPaddi"
+	}
+}
