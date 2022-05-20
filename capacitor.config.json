@@ -1,6 +1,7 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "basicTemplate",
+	"appId": "app.payza.ng",
+	"appName": "PayPaddi",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"ios": { "scheme": "PayPaddi" }
 }
