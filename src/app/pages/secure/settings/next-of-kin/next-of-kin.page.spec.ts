@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { BackupsPage } from './backups.page';
+import { NextOfKinPage } from './next-of-kin.page';
 
-describe('BackupsPage', () => {
-  let component: BackupsPage;
-  let fixture: ComponentFixture<BackupsPage>;
+describe('NextOfKinPage', () => {
+  let component: NextOfKinPage;
+  let fixture: ComponentFixture<NextOfKinPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BackupsPage ],
+      declarations: [ NextOfKinPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BackupsPage);
+    fixture = TestBed.createComponent(NextOfKinPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

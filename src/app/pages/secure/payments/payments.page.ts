@@ -1,3 +1,5 @@
+import { InsightsPage } from './../insights/insights.page';
+import { PaymentDetailPage } from './payment-detail/payment-detail.page';
 import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, ModalController } from '@ionic/angular';
 import { FilterPage } from './filter/filter.page';
@@ -8,16 +10,14 @@ import { FilterPage } from './filter/filter.page';
   styleUrls: ['./payments.page.scss'],
 })
 export class PaymentsPage implements OnInit {
-
   content_loaded: boolean = false;
 
   constructor(
     private routerOutlet: IonRouterOutlet,
-    private modalController: ModalController,
-  ) { }
+    private modalController: ModalController
+  ) {}
 
   ngOnInit() {
-
     // Fake timeout
     setTimeout(() => {
       this.content_loaded = true;
@@ -26,12 +26,11 @@ export class PaymentsPage implements OnInit {
 
   // Filter
   async filter() {
-
     // Open filter modal
     const modal = await this.modalController.create({
       component: FilterPage,
       swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl
+      presentingElement: this.routerOutlet.nativeEl,
     });
 
     await modal.present();
@@ -40,7 +39,6 @@ export class PaymentsPage implements OnInit {
     let { data } = await modal.onWillDismiss();
 
     if (data) {
-
       // Reload
       this.content_loaded = false;
 
@@ -51,4 +49,25 @@ export class PaymentsPage implements OnInit {
     }
   }
 
+  async viewDetail() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: PaymentDetailPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
+  async insight() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: InsightsPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
 }

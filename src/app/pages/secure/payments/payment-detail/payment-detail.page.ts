@@ -1,3 +1,4 @@
+import { ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./payment-detail.page.scss'],
 })
 export class PaymentDetailPage implements OnInit {
+  constructor(private modalCtrl: ModalController) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  back() {
+    this.modalCtrl.dismiss();
   }
-
 }

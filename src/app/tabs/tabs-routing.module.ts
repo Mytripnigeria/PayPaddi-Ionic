@@ -9,31 +9,43 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren: () => import('../pages/secure/home/home.module').then(m => m.HomePageModule)
+        loadChildren: () =>
+          import('../pages/secure/home/home.module').then(
+            (m) => m.HomePageModule
+          ),
       },
       {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'insights',
-        loadChildren: () => import('../pages/secure/insights/insights.module').then(m => m.InsightsPageModule)
+        loadChildren: () =>
+          import('../pages/secure/insights/insights.module').then(
+            (m) => m.InsightsPageModule
+          ),
       },
       {
-        path: 'payments',
-        loadChildren: () => import('../pages/secure/payments/payments.module').then(m => m.PaymentsPageModule)
+        path: 'settings',
+        loadChildren: () =>
+          import('../pages/secure/settings/settings.module').then(
+            (m) => m.SettingsPageModule
+          ),
       },
       {
         path: 'cards',
-        loadChildren: () => import('../pages/secure/cards/cards.module').then(m => m.CardsPageModule)
+        loadChildren: () =>
+          import('../pages/secure/cards/cards.module').then(
+            (m) => m.CardsPageModule
+          ),
       },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class TabsPageRoutingModule { }
+export class TabsPageRoutingModule {}

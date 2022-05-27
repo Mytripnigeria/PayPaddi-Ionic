@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="type == 'fund'" >
+      Fund card
+    </ion-title>
+    <ion-title *ngIf="type == 'withdraw'" >
+      Withdraw Fund
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-padding">
+
+    <form class="form-default" [formGroup]="add_card_form" (submit)="save()">
+
+      <ion-list class="item-card-list" lines="none">
+        
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Amount</ion-label>
+          <ion-input formControlName="amount" placeholder="Amount" type="text" ></ion-input>
+        </ion-item>
+        
+        <ul>
+          <li>Fee amount 617 at 617/$</li>
+          <li>Minimum amount $5</li>
+          <li>Maximum $5000</li>
+          <li>Card issuance fee - #200</li>
+        </ul>
+
+      </ion-list>
+
+    </form>
+
+  </div>
+
+</ion-content>
+
+<ion-footer class="modal-footer" collapse="fade">
+  <ion-toolbar>
+    <form class="form-default" [formGroup]="add_card_form" (submit)="save()">
+      <ion-button type="submit" expand="block" color="primary">
+         <span *ngIf="type == 'withdraw'" >Withdraw</span>
+         <span *ngIf="type == 'fund'" >Fund</span>
+      </ion-button>
+    </form>
+  </ion-toolbar>
+</ion-footer>

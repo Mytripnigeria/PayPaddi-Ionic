@@ -1,34 +1,46 @@
-<ion-header collapse="fade" [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Home
-    </ion-title>
-    <ion-buttons slot="primary">
-      <ion-button routerLink="/settings">
-        <ion-icon slot="icon-only" name="cog"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+<ion-header class="ion-padding ion-no-border">
+  <ion-toolbar mode="md">
+    <ion-item class="profile" lines="none">
+      <ion-avatar>
+        <img src="../../../../assets/icon/Image 3.png" />
+      </ion-avatar>
+      <ion-label>
+        <h4>Hi, Philip</h4>
+        <p>@nitrobemsin</p>
+      </ion-label>
+    
+    </ion-item>
+    
+    <div slot="end">
+      <img class="notifyicon"  src="../../../../assets/icon/Notification.png">
+    </div>
+   
+  
   </ion-toolbar>
+  <ion-item button detail="false" lines="none"  class="balance">
+    <ion-avatar slot="start" class="ion-avatar-default-icon">
+      <ion-icon name="wallet"></ion-icon>
+    </ion-avatar>
+    <ion-label>
+      <h3>$71,648.13</h3>
+      <p>Available Balance</p>
+    </ion-label>
+
+    <ion-button (click)="deposit()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Deposit </ion-button>
+  </ion-item>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Home</ion-title>
-    </ion-toolbar>
-    <ion-toolbar>
-      <ion-searchbar showCancelButton="focus" placeholder="Company, category, expense ..."></ion-searchbar>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+ 
 
-  <div class="ion-padding">
+ 
 
-    <ion-list-header>
+    <!-- <ion-list-header>
       <ion-label color="white">My accounts</ion-label>
-    </ion-list-header>
+    </ion-list-header> -->
 
     <!-- Skeletons -->
-    <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="!content_loaded">
+    <!-- <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="!content_loaded">
       <ion-item lines="none" *ngFor="let i of [].constructor(3);">
         <ion-avatar slot="start">
           <ion-skeleton-text animated></ion-skeleton-text>
@@ -38,9 +50,9 @@
           <p><ion-skeleton-text animated style="width: 30%"></ion-skeleton-text></p>
         </ion-label>
       </ion-item>
-    </ion-list>
+    </ion-list> -->
 
-    <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="content_loaded" lines="none">
+    <!-- <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="content_loaded" lines="none">
       <ion-item button detail>
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-icon name="wallet"></ion-icon>
@@ -68,9 +80,77 @@
           <p>PayPal</p>
         </ion-label>
       </ion-item>
-    </ion-list>
+    </ion-list> -->
 
-    <hr>
+    <ion-grid  class="menu">
+      <ion-row >
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
+          <h6>Transfer</h6>
+        </ion-col>
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Calling.png" alt="" srcset="">
+          <h6>Airtime</h6>
+        </ion-col>
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Discovery.png" alt="" srcset="">
+          <h6>Data</h6>
+        </ion-col>
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Video.png" alt="" srcset="">
+          <h6>Cable</h6>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
+          <h6>Electricity</h6>
+        </ion-col>
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
+          <h6>Betting</h6>
+        </ion-col>
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
+          <h6>Education</h6>
+        </ion-col>
+        <ion-col size="3">
+          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
+          <h6>Cards</h6>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <swiper class="swiper-cards" #swiper [config]="config" [pagination]="true">
+      <ng-template swiperSlide>
+        <ion-item button detail="false"  class="verificationBanner" lines="none">
+          <ion-avatar slot="start" class="ion-avatar-default-icon">
+            <ion-icon name="mail-unread"></ion-icon>
+          </ion-avatar>
+          <ion-label>
+            <h3>Verify email address</h3>
+            <p>Verify your email to access <br> some  features</p>
+          </ion-label>
+      
+          <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
+        </ion-item>
+        </ng-template>
+        <ng-template swiperSlide>
+          <ion-item button detail="false"  class="verificationBanner" lines="none">
+            <ion-avatar slot="start" class="ion-avatar-default-icon">
+              <ion-icon name="mail-unread"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h3>Verify email address</h3>
+              <p>Verify your email to access <br> some  features</p>
+            </ion-label>
+        
+            <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Deposit </ion-button>
+          </ion-item>
+          </ng-template>
+        </swiper>
+
+    <!-- <hr class="divider"> -->
 
     <ion-list-header>
       <ion-label color="white">Recent transactions</ion-label>
@@ -80,7 +160,7 @@
 
     <!-- Skeletons -->
     <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="!content_loaded">
-      <ion-item *ngFor="let i of [].constructor(3);">
+      <ion-item *ngFor="let i of [].constructor(10);">
         <ion-label>
           <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
           <p><ion-skeleton-text animated style="width: 70%"></ion-skeleton-text></p>
@@ -90,24 +170,103 @@
     </ion-list>
 
     <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="content_loaded">
-      <ion-item button detail="false">
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="school"></ion-icon>
+        </ion-avatar>
         <ion-label>
-          <h3>Coffee</h3>
-          <p>Starbucks &middot; 04.01.2022</p>
+          <h3>School</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
         </ion-label>
         <ion-badge color="danger" mode="ios" slot="end">- $8.60</ion-badge>        
       </ion-item>
-      <ion-item button detail="false">
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="business"></ion-icon>
+        </ion-avatar>
         <ion-label>
           <h3>Salary</h3>
-          <p>Apple Inc. &middot; 03.01.2022</p>
+          <p>04 Feb. 2022 - 12:30pm</p>
         </ion-label>
         <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>        
       </ion-item>
-      <ion-item button detail="false">
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="logo-amazon"></ion-icon>
+        </ion-avatar>
         <ion-label>
-          <h3>Rent</h3>
-          <p>Housing Inc. &middot; 01.01.2022</p>
+          <h3>Samsung TV</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
+        </ion-label>
+        <ion-badge color="danger" mode="ios" slot="end">- $1400.00</ion-badge>
+      </ion-item>
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="school"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>School</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
+        </ion-label>
+        <ion-badge color="danger" mode="ios" slot="end">- $8.60</ion-badge>        
+      </ion-item>
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="business"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>Salary</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
+        </ion-label>
+        <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>        
+      </ion-item>
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="logo-amazon"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>Samsung TV</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
+        </ion-label>
+        <ion-badge color="danger" mode="ios" slot="end">- $1400.00</ion-badge>
+      </ion-item>
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="logo-amazon"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>Samsung TV</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
+        </ion-label>
+        <ion-badge color="danger" mode="ios" slot="end">- $1400.00</ion-badge>
+      </ion-item>
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="school"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>School</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
+        </ion-label>
+        <ion-badge color="danger" mode="ios" slot="end">- $8.60</ion-badge>        
+      </ion-item>
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="business"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>Salary</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
+        </ion-label>
+        <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>        
+      </ion-item>
+      <ion-item button detail="false" (click)="viewTransaction()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="logo-amazon"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>Samsung TV</h3>
+          <p>04 Feb. 2022 - 12:30pm</p>
         </ion-label>
         <ion-badge color="danger" mode="ios" slot="end">- $1400.00</ion-badge>
       </ion-item>
@@ -147,6 +306,6 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea suscipit exercitationem deserunt tempora ratione, natus mollitia praesentium doloribus iure veritatis. Deserunt delectus impedit vitae suscipit illo laborum hic rerum recusandae.</p>
     </ion-text> -->
 
-  </div>
+  
 
 </ion-content>

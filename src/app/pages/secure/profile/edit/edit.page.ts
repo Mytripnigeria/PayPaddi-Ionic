@@ -10,7 +10,6 @@ import { ToastService } from 'src/app/services/toast/toast.service';
   styleUrls: ['./edit.page.scss'],
 })
 export class EditPage implements OnInit {
-
   edit_profile_form: FormGroup;
   submit_attempt: boolean = false;
 
@@ -19,14 +18,16 @@ export class EditPage implements OnInit {
     private toastService: ToastService,
     private navController: NavController,
     private actionSheetController: ActionSheetController
-  ) { }
+  ) {}
 
   ngOnInit() {
-
     // Setup form
     this.edit_profile_form = this.formBuilder.group({
       name_first: ['', Validators.required],
-      name_last: ['', Validators.required]
+      name_last: ['', Validators.required],
+      username: ['', Validators.required],
+      email: ['', Validators.required],
+      phone_number: ['', Validators.required],
     });
 
     // DEBUG: Prefill inputs
@@ -36,7 +37,6 @@ export class EditPage implements OnInit {
 
   // Update profile picture
   async updateProfilePicture() {
-
     const actionSheet = await this.actionSheetController.create({
       header: 'Choose existing picture or take new',
       cssClass: 'custom-action-sheet',
@@ -46,42 +46,51 @@ export class EditPage implements OnInit {
           icon: 'images',
           handler: () => {
             // Put in logic ...
-          }
+          },
         },
         {
           text: 'Take picture',
           icon: 'camera',
           handler: () => {
             // Put in logic ...
-          }
-        }, {
+          },
+        },
+        {
           text: 'Cancel',
           icon: 'close',
-          role: 'cancel'
-        }]
+          role: 'cancel',
+        },
+      ],
     });
     await actionSheet.present();
   }
 
   // Submit form
   submit() {
-
     this.submit_attempt = true;
 
     // If form valid
     if (this.edit_profile_form.valid) {
-
       // Save form ...
 
       // Display success message and go back
-      this.toastService.presentToast('Success', 'Profile saved', 'top', 'success', 2000);
+      this.toastService.presentToast(
+        'Success',
+        'Profile saved',
+        'top',
+        'success',
+        2000
+      );
       this.navController.back();
-
     } else {
-
       // Display error message
-      this.toastService.presentToast('Error', 'Please fill in all required fields', 'top', 'danger', 2000);
+      this.toastService.presentToast(
+        'Error',
+        'Please fill in all required fields',
+        'top',
+        'danger',
+        2000
+      );
     }
   }
-
 }

@@ -16,8 +16,14 @@ import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot({ mode: 'ios' }), ReactiveFormsModule, AppRoutingModule, NgChartsModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot({ mode: 'ios' }),
+    ReactiveFormsModule,
+    AppRoutingModule,
+    NgChartsModule,
+  ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

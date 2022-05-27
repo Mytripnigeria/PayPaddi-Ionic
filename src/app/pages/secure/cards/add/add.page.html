@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title>
-      Add card
+      Create new card
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,28 +19,26 @@
 
       <ion-list class="item-card-list" lines="none">
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Card number</ion-label>
-          <ion-input formControlName="card_number" placeholder="0000 0000 0000 0000" type="text" minlength="13" maxlength="22" inputmode="numeric" (ionChange)="formatCreditCardNumber($event)"></ion-input>
+          <ion-label color="tertiary" position="stacked">Card Type</ion-label>
+          <ion-select value="dollar" placeholder="Select Card Type" formControlName="card_type">
+            <ion-select-option value="dollar">Dollar Card</ion-select-option>
+            <ion-select-option value="naira">Naira Card</ion-select-option>
+          </ion-select>
         </ion-item>
-        <ion-text *ngIf="!add_card_form.controls.card_number.valid && submit_attempt" color="danger">
-          <small class="error-message-form">Credit card number not valid. Minimum digits is 9, maximum digits is 19.</small>
-        </ion-text>
 
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Expiry date</ion-label>
-          <ion-input formControlName="expiry_date" placeholder="MM/YY" type="text" minlength="5" maxlength="5" inputmode="numeric" length="5" (ionChange)="formatExpiryDate($event)"></ion-input>
+          <ion-label color="tertiary" position="stacked">Amount</ion-label>
+          <ion-input formControlName="amount" placeholder="Amount" type="text" ></ion-input>
         </ion-item>
         <ion-text *ngIf="!add_card_form.controls.expiry_date.valid && submit_attempt" color="danger">
-          <small class="error-message-form">Expiry date is required.</small>
+          <small class="error-message-form">Amount is required.</small>
         </ion-text>
-
-        <ion-item>
-          <ion-label color="tertiary" position="stacked">CVC/CVV</ion-label>
-          <ion-input formControlName="cvv" placeholder="123" type="tel" pattern="[0-9]*" maxlength="3" inputmode="numeric"></ion-input>
-        </ion-item>
-        <ion-text *ngIf="!add_card_form.controls.cvv.valid && submit_attempt" color="danger">
-          <small class="error-message-form">CVC/CVV number is required to have exactly 3 digits.</small>
-        </ion-text>
+        <ul>
+          <li>Fee amount 617 at 617/$</li>
+          <li>Minimum amount $5</li>
+          <li>Maximum $5000</li>
+          <li>Card issuance fee - #200</li>
+        </ul>
 
       </ion-list>
 
@@ -54,7 +52,7 @@
   <ion-toolbar>
     <form class="form-default" [formGroup]="add_card_form" (submit)="save()">
       <ion-button type="submit" expand="block" color="primary">
-        Save card
+        Create card
       </ion-button>
     </form>
   </ion-toolbar>

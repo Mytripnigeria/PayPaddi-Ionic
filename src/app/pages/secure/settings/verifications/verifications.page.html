@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()"> Back</ion-button>
+    </ion-buttons>
+    <ion-title>
+      Verifications
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div class="ion-padding">
+
+    <ion-list class="list-custom" lines="full">
+      <ion-item lines="full" button detail="false"  class="balance">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="mail"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>Email Verification</h3>
+          <p>Available Balance</p>
+        </ion-label>
+    
+        <ion-button (click)="verifyEmail()"  slot="end" class="verified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verified </ion-button>
+      </ion-item>
+      <ion-item lines="full" button detail="false"  class="balance">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="mail"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>BVN Verification</h3>
+          <p>Available Balance</p>
+        </ion-label>
+    
+        <ion-button (click)="verifyBVN()"  slot="end" class="unverified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
+      </ion-item>
+      <ion-item lines="full" button detail="false"  class="balance">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon name="mail"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>ID Verification</h3>
+          <p>Available Balance</p>
+        </ion-label>
+    
+        <ion-button (click)="verifyID()"  slot="end" class="unverified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  
+</ion-content>

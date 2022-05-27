@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()"> Back</ion-button>
+    </ion-buttons>
+    <ion-title>
+      Verification
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div class="ion-padding">
+
+    <form class="form-default" [formGroup]="verification_form" >
+
+      <ion-list class="item-card-list" lines="none">
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Verification Code</ion-label>
+          <ion-input formControlName="code" placeholder="0000" type="text" minlength="6" maxlength="6" inputmode="numeric" ></ion-input>
+        </ion-item>
+     
+
+       
+
+      </ion-list>
+
+    </form>
+
+  </div>
+
+  
+</ion-content>
+<ion-footer class="modal-footer" collapse="fade">
+  <ion-toolbar>
+    <form class="form-default" [formGroup]="verification_form" (submit)="activate()">
+      <ion-button type="submit" expand="block" color="primary">
+        Activate
+      </ion-button>
+    </form>
+  </ion-toolbar>
+</ion-footer>

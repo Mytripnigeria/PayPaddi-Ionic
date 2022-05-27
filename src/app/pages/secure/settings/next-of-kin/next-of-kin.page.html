@@ -1,0 +1,61 @@
+<ion-header collapse="fade" [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Settings" defaultHref="/settings">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Next of Kin
+    </ion-title>
+    <ion-buttons slot="end">
+      <form class="form-default" [formGroup]="edit_profile_form" (ngSubmit)="submit()">
+        <ion-button type="submit">
+          Done
+        </ion-button>
+      </form>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+ 
+
+  <div class="ion-padding">
+
+    <form class="form-default" [formGroup]="edit_profile_form" (submit)="submit()">
+
+      <ion-list class="item-card-list" lines="none">
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">First name</ion-label>
+          <ion-input formControlName="name_first" placeholder="First name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Last name</ion-label>
+          <ion-input formControlName="name_last" placeholder="Last name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Phone Number</ion-label>
+          <ion-input  formControlName="phone_number" placeholder="Phone Number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Home Address</ion-label>
+          <ion-input  formControlName="home_address" placeholder="Home Address"></ion-input>
+        </ion-item>
+       <ion-item>
+         <ion-label color="tertiary" position="stacked">Relationship Type</ion-label>
+         <ion-select  formControlName="relationship" value="brother"  placeholder="Select Relationship Type">
+           <ion-select-option value="brother">Brother</ion-select-option>
+           <ion-select-option value="sister">Sister</ion-select-option>
+           <ion-select-option value="father">Father</ion-select-option>
+           <ion-select-option value="mother">Mother</ion-select-option>
+           <ion-select-option value="other">Others</ion-select-option>
+         </ion-select>
+       </ion-item>
+      </ion-list>
+
+    </form>
+
+  </div>
+
+</ion-content>

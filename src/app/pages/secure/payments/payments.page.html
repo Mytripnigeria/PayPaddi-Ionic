@@ -1,9 +1,15 @@
 <ion-header collapse="fade" [translucent]="true">
   <ion-toolbar>
+   <ion-buttons slot="start">
+     <ion-back-button text="Back"></ion-back-button>
+   </ion-buttons>
     <ion-title>
       Payments
     </ion-title>
     <ion-buttons slot="primary">
+      <ion-button (click)="insight()">
+        <ion-icon slot="icon-only" name="pie-chart"></ion-icon>
+      </ion-button>
       <ion-button (click)="filter()">
         <ion-icon slot="icon-only" name="filter"></ion-icon>
       </ion-button>
@@ -54,7 +60,7 @@
         <ion-note color="tertiary" class="ion-note-small">$3,321</ion-note>
       </ion-list-header>
       <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="cafe"></ion-icon>
           </ion-avatar>
@@ -64,7 +70,7 @@
           </ion-label>
           <ion-badge color="danger" mode="ios" slot="end">- $8.60</ion-badge>
         </ion-item>
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="business"></ion-icon>
           </ion-avatar>
@@ -74,7 +80,7 @@
           </ion-label>
           <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>
         </ion-item>
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="home"></ion-icon>
           </ion-avatar>
@@ -93,7 +99,7 @@
         <ion-note color="tertiary" class="ion-note-small">- $105,91</ion-note>
       </ion-list-header>
       <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="school"></ion-icon>
           </ion-avatar>
@@ -103,7 +109,7 @@
           </ion-label>
           <ion-badge color="danger" mode="ios" slot="end">- $680.60</ion-badge>
         </ion-item>
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="car"></ion-icon>
           </ion-avatar>
@@ -113,7 +119,7 @@
           </ion-label>
           <ion-badge color="danger" mode="ios" slot="end">- $230.00</ion-badge>
         </ion-item>
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="business"></ion-icon>
           </ion-avatar>
@@ -123,7 +129,7 @@
           </ion-label>
           <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>
         </ion-item>
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="logo-amazon"></ion-icon>
           </ion-avatar>
@@ -142,7 +148,7 @@
         <ion-note color="tertiary" class="ion-note-small">$8412,48</ion-note>
       </ion-list-header>
       <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
-        <ion-item button detail="false" routerLink="detail">
+        <ion-item button detail="false" (click)="viewDetail()">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="business"></ion-icon>
           </ion-avatar>

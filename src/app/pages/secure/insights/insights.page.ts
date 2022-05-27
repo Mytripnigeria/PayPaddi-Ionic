@@ -1,3 +1,4 @@
+import { ModalController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
@@ -9,49 +10,48 @@ import { HelperService } from 'src/app/services/helper/helper.service';
   styleUrls: ['./insights.page.scss'],
 })
 export class InsightsPage implements OnInit {
-
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   public bar_chart_option: ChartConfiguration['options'] = {
     font: {
-      family: 'Inter'
+      family: 'Inter',
     },
     animation: {
       easing: 'easeInOutElastic',
-      delay: 25
+      delay: 25,
     },
     responsive: true,
     scales: {
       x: {
         grid: {
           borderColor: this.helperService.getColorVariable('medium'),
-          color: this.helperService.getColorVariable('medium')
+          color: this.helperService.getColorVariable('medium'),
         },
         ticks: {
           color: this.helperService.getColorVariable('tertiary'),
           font: {
             family: 'Inter',
-            weight: '500'
-          }
-        }
+            weight: '500',
+          },
+        },
       },
       y: {
         position: 'right',
         grid: {
           borderColor: this.helperService.getColorVariable('medium'),
-          color: this.helperService.getColorVariable('medium')
+          color: this.helperService.getColorVariable('medium'),
         },
         ticks: {
           color: this.helperService.getColorVariable('tertiary'),
           font: {
             family: 'Inter',
-            weight: '500'
+            weight: '500',
           },
           callback: function (value, index, ticks) {
             return '$' + value;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     plugins: {
       legend: {
@@ -63,11 +63,11 @@ export class InsightsPage implements OnInit {
         titleColor: this.helperService.getColorVariable('tertiary'),
         titleFont: {
           size: 14,
-          weight: 'normal'
+          weight: 'normal',
         },
         bodyFont: {
           size: 16,
-          weight: 'bold'
+          weight: 'bold',
         },
         padding: 12,
         boxWidth: 10,
@@ -83,18 +83,21 @@ export class InsightsPage implements OnInit {
               label += ': ';
             }
             if (context.parsed.y !== null) {
-              label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+              label += new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+              }).format(context.parsed.y);
             }
             return label;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   public bar_chart_data: ChartData<'bar'> = {
     labels: [],
-    datasets: []
+    datasets: [],
   };
 
   public bar_chart_type: ChartType = 'bar';
@@ -102,17 +105,16 @@ export class InsightsPage implements OnInit {
   content_loaded: boolean = false;
 
   constructor(
-    private helperService: HelperService
-  ) { }
+    private helperService: HelperService,
+    private modalCtrl: ModalController
+  ) {}
 
   ngOnInit() {
-
     // Create bar chart
     this.createBarChart();
   }
 
   ionViewDidEnter() {
-
     // Fake timeout
     setTimeout(() => {
       this.content_loaded = true;
@@ -121,21 +123,32 @@ export class InsightsPage implements OnInit {
 
   // Create bar chart
   createBarChart() {
-
     let helperService = this.helperService;
 
     // Random array of numbers
-    let rand_numbers = [...Array(12)].map(e => Math.random() * 100 | 0);
+    let rand_numbers = [...Array(12)].map((e) => (Math.random() * 100) | 0);
 
     // Set labels
-    this.bar_chart_data.labels = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    this.bar_chart_data.labels = [
+      '01',
+      '02',
+      '03',
+      '04',
+      '05',
+      '06',
+      '07',
+      '08',
+      '09',
+      '10',
+      '11',
+      '12',
+    ];
 
     // Set datasets
     this.bar_chart_data.datasets = [
       {
         data: rand_numbers,
         backgroundColor: function (context) {
-
           const chart = context.chart;
           const { ctx, chartArea } = chart;
 
@@ -152,8 +165,11 @@ export class InsightsPage implements OnInit {
         borderColor: helperService.getColorVariable('primary'),
         hoverBackgroundColor: helperService.getColorVariable('primary'),
         pointStyle: 'circle',
-      }
+      },
     ];
   }
 
+  back() {
+    this.modalCtrl.dismiss();
+  }
 }

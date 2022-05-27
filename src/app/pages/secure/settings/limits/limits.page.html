@@ -1,0 +1,82 @@
+<ion-header collapse="fade" [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Settings" defaultHref="/settings">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Account Limits
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="ion-padding">
+
+    <ion-list-header class="ion-list-header-small mb-20">
+      <ion-label>See how much volume you can send and receive on Paypaddi within a period of time based on your verification level. <span class="link" (click)="upgrade()">Upgrade</span></ion-label>
+
+    </ion-list-header>
+
+    <ion-list class="list-custom" lines="full">
+      <ion-item detail="false">
+        <ion-label>
+          <p>Monthly Free Transfer</p>
+          <h3 >Unlimited</h3>
+        </ion-label>
+        
+      </ion-item>
+      <ion-item detail="false">
+        <ion-label>
+          <p>Single Transfer (Paypaddi to Paypaddi)</p>
+          <h3 >#1,000,000.00</h3>
+        </ion-label>
+        
+      </ion-item>
+      <ion-item detail="false">
+        <ion-label>
+          <p>Single Receiving (Paypaddi)</p>
+          <h3 >Unlimited</h3>
+        </ion-label>
+       
+      </ion-item>
+      <ion-item detail="false">
+        <ion-label>
+          <p>Daily transfer limit (Paypaddi to Paypaddi)</p>
+          <h3 >#5,000,000.00</h3>
+        </ion-label>
+       
+      </ion-item>
+    </ion-list>
+  
+
+    <hr class="hr-medium">
+
+    <ion-list class="list-custom" lines="full">
+      <ion-item detail="false">
+        <ion-label>
+          <p>Single Transfer (Paypaddi to Other Banks)</p>
+          <h3 >#5000,000.00</h3>
+        </ion-label>
+        
+      </ion-item>
+      <ion-item detail="false">
+        <ion-label>
+          <p>Single Receiving (Other banks)</p>
+          <h3 >Unlimited</h3>
+        </ion-label>
+       
+      </ion-item>
+      <ion-item detail="false">
+        <ion-label>
+          <p>Daily transfer limit (Other Banks)</p>
+          <h3 >#5,000,000.00</h3>
+        </ion-label>
+       
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+</ion-content>

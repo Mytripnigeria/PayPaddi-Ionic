@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { BackupsPageRoutingModule } from './backups-routing.module';
+import { ReferralPageRoutingModule } from './referral-routing.module';
 
-import { BackupsPage } from './backups.page';
+import { ReferralPage } from './referral.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    BackupsPageRoutingModule
+    ReferralPageRoutingModule
   ],
-  declarations: [BackupsPage]
+  declarations: [ReferralPage]
 })
-export class BackupsPageModule {}
+export class ReferralPageModule {}

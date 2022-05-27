@@ -15,7 +15,7 @@
   <div class="ion-padding">
 
     <ion-list-header class="ion-list-header-small">
-      <ion-label>Privacy</ion-label>
+      <ion-label>Security / Privacy</ion-label>
     </ion-list-header>
 
     <ion-list class="list-custom" lines="full">
@@ -26,34 +26,20 @@
         </ion-label>
         <ion-toggle checked slot="end"></ion-toggle>
       </ion-item>
+
+      <ion-item detail="false">
+        <ion-icon slot="start" color="medium" name="keypad-outline"></ion-icon>
+        <ion-label>
+          <h3>Update PIN</h3>
+        </ion-label>
+        <ion-button (click)="updatePin()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Update </ion-button>
+      </ion-item>
     </ion-list>
     <p class="list-description">We never display sensible data in your notifications.</p>
 
     <hr class="hr-medium">
 
-    <ion-list-header class="ion-list-header-small">
-      <ion-label>Feedback & Reports</ion-label>
-    </ion-list-header>
 
-    <ion-list class="list-custom" lines="full">
-      <ion-item detail="false">
-        <ion-icon slot="start" color="medium" name="bug"></ion-icon>
-        <ion-label>
-          <h3>Share crash reports</h3>
-        </ion-label>
-        <ion-toggle slot="end"></ion-toggle>
-      </ion-item>
-      <ion-item detail="false">
-        <ion-icon slot="start" color="medium" name="document"></ion-icon>
-        <ion-label>
-          <h3>Protocols</h3>
-        </ion-label>
-        <ion-toggle slot="end"></ion-toggle>
-      </ion-item>
-    </ion-list>
-    <p class="list-description">Activate this function to auto share crash reports with us. Important: no personal or financial data is shared.</p>
-
-    <hr class="hr-medium">
 
     <ion-list class="list-custom" lines="full">
       <ion-item button detail=false>

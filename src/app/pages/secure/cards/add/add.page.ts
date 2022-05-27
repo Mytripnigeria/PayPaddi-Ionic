@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./add.page.scss'],
 })
 export class AddPage implements OnInit {
-
   add_card_form: FormGroup;
   submit_attempt: boolean = false;
 
@@ -16,21 +15,28 @@ export class AddPage implements OnInit {
     private modalController: ModalController,
     private loadingController: LoadingController,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit() {
-
     // Setup form
     this.add_card_form = this.formBuilder.group({
       card_number: ['', Validators.required],
       expiry_date: ['', Validators.required],
-      cvv: ['', Validators.compose([Validators.maxLength(3), Validators.minLength(3), Validators.required])]
+      amount: ['', Validators.required],
+      card_type: ['', Validators.required],
+      cvv: [
+        '',
+        Validators.compose([
+          Validators.maxLength(3),
+          Validators.minLength(3),
+          Validators.required,
+        ]),
+      ],
     });
   }
 
   // Format credit
   formatCreditCardNumber(event: any) {
-
     // Input val
     let value = event.detail.value;
 
@@ -53,13 +59,11 @@ export class AddPage implements OnInit {
 
   // Format expiry date
   formatExpiryDate(event: any) {
-
     // Input val
     let value = event.detail.value;
 
     // Format: 01/23
     if (value.length == 3) {
-
       if (!value.includes('/')) {
         const month = value.slice(0, 2);
         const year = value.slice(2, 4);
@@ -73,24 +77,21 @@ export class AddPage implements OnInit {
 
   // Cancel
   cancel() {
-
     // Dismiss modal
     this.modalController.dismiss();
   }
 
   // Save card
   async save() {
-
     this.submit_attempt = true;
 
     // If form valid
     if (this.add_card_form.valid) {
-
       // Loading overlay
       const loading = await this.loadingController.create({
         cssClass: 'default-loading',
         message: '<p>Saving card...</p><span>Please be patient.</span>',
-        spinner: 'crescent'
+        spinner: 'crescent',
       });
       await loading.present();
 
@@ -99,7 +100,6 @@ export class AddPage implements OnInit {
 
       // Fake timeout
       setTimeout(() => {
-
         // Dismiss modal
         this.modalController.dismiss();
 
@@ -107,5 +107,4 @@ export class AddPage implements OnInit {
       }, 2000);
     }
   }
-
 }

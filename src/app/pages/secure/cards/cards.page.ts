@@ -1,7 +1,22 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CardTransactionsPage } from './card-transactions/card-transactions.page';
+import { PaymentsPage } from './../payments/payments.page';
+import { FundCardPage } from './fund-card/fund-card.page';
+import { CardDetailsPage } from './card-details/card-details.page';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { SwiperOptions, Pagination } from 'swiper';
-import { AlertController, IonRouterOutlet, LoadingController, ModalController } from '@ionic/angular';
+import {
+  AlertController,
+  IonRouterOutlet,
+  LoadingController,
+  ModalController,
+} from '@ionic/angular';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { AddPage } from './add/add.page';
 SwiperCore.use([Pagination]);
@@ -12,7 +27,6 @@ SwiperCore.use([Pagination]);
   styleUrls: ['./cards.page.scss'],
 })
 export class CardsPage implements AfterContentChecked {
-
   @ViewChild('swiper') swiper: SwiperComponent;
 
   // Swiper config
@@ -20,8 +34,8 @@ export class CardsPage implements AfterContentChecked {
     slidesPerView: 1,
     spaceBetween: 50,
     pagination: { clickable: false },
-    allowTouchMove: true
-  }
+    allowTouchMove: true,
+  };
 
   card_details_visible: boolean = false;
 
@@ -31,14 +45,12 @@ export class CardsPage implements AfterContentChecked {
     private loadingController: LoadingController,
     private modalController: ModalController,
     private routerOutlet: IonRouterOutlet
-  ) { }
+  ) {}
 
   ngAfterContentChecked(): void {
-
     if (this.swiper) {
       this.swiper.updateSwiper({});
     }
-
   }
 
   // Sync
@@ -47,7 +59,7 @@ export class CardsPage implements AfterContentChecked {
     const loading = await this.loadingController.create({
       cssClass: 'default-loading',
       message: '<p>Syncing card...</p><span>Please be patient.</span>',
-      spinner: 'crescent'
+      spinner: 'crescent',
     });
     await loading.present();
 
@@ -59,12 +71,53 @@ export class CardsPage implements AfterContentChecked {
 
   // Add card
   async addCard() {
-
     // Open filter modal
     const modal = await this.modalController.create({
       component: AddPage,
       swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+    return await modal.present();
+  }
+
+  async cardDetail() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: CardDetailsPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+    return await modal.present();
+  }
+
+  async fundCard() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: FundCardPage,
+      componentProps: { type: 'fund' },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+    return await modal.present();
+  }
+
+  async viewTransactions() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: CardTransactionsPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+    return await modal.present();
+  }
+
+  async withdrawCard() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: FundCardPage,
+      componentProps: { type: 'withdraw' },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
     });
     return await modal.present();
   }
@@ -80,18 +133,23 @@ export class CardsPage implements AfterContentChecked {
           text: 'Delete card',
           cssClass: 'danger',
           handler: async () => {
-            this.toastService.presentToast('Success', 'Card successfully deleted', 'top', 'success', 2000);
-          }
+            this.toastService.presentToast(
+              'Success',
+              'Card successfully deleted',
+              'top',
+              'success',
+              2000
+            );
+          },
         },
         {
           text: 'Cancel',
           role: 'cancel',
-          cssClass: 'cancel'
-        }
-      ]
+          cssClass: 'cancel',
+        },
+      ],
     });
 
     await alert.present();
   }
-
 }

@@ -42,6 +42,18 @@
           <ion-label color="tertiary" position="stacked">Last name</ion-label>
           <ion-input formControlName="name_last" placeholder="Last name"></ion-input>
         </ion-item>
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Phone Number</ion-label>
+          <ion-input [readonly]="true" formControlName="phone_number" placeholder="Phone Number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Email Address</ion-label>
+          <ion-input [readonly]="true" formControlName="email" placeholder="Email Address"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Username</ion-label>
+          <ion-input  formControlName="username" placeholder="Username"></ion-input>
+        </ion-item>
       </ion-list>
 
     </form>

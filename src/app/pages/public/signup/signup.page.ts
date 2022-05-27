@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
-
   current_year: number = new Date().getFullYear();
 
   signup_form: FormGroup;
@@ -23,38 +22,66 @@ export class SignupPage implements OnInit {
     private formBuilder: FormBuilder,
     private toastService: ToastService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
-
     // Setup form
     this.signup_form = this.formBuilder.group({
+      firstName: ['', Validators.compose([Validators.required])],
+      lastName: ['', Validators.compose([Validators.required])],
+      userName: ['', Validators.compose([Validators.required])],
+      referralCode: [''],
+      phoneNumber: [
+        '',
+        Validators.compose([Validators.minLength(11), Validators.required]),
+      ],
       email: ['', Validators.compose([Validators.email, Validators.required])],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      password_repeat: ['', Validators.compose([Validators.minLength(6), Validators.required])]
+      password: [
+        '',
+        Validators.compose([Validators.minLength(6), Validators.required]),
+      ],
+      password_repeat: [
+        '',
+        Validators.compose([Validators.minLength(6), Validators.required]),
+      ],
     });
   }
 
   // Sign up
   async signUp() {
-
     this.submit_attempt = true;
 
     // If email or password empty
-    if (this.signup_form.value.email == '' || this.signup_form.value.password == '' || this.signup_form.value.password_repeat == '') {
-      this.toastService.presentToast('Error', 'Please fill in all fields', 'top', 'danger', 4000);
+    if (
+      this.signup_form.value.email == '' ||
+      this.signup_form.value.password == '' ||
+      this.signup_form.value.password_repeat == ''
+    ) {
+      this.toastService.presentToast(
+        'Error',
+        'Please fill in all fields',
+        'top',
+        'danger',
+        4000
+      );
 
       // If passwords do not match
-    } else if (this.signup_form.value.password != this.signup_form.value.password_repeat) {
-      this.toastService.presentToast('Error', 'Passwords must match', 'top', 'danger', 4000);
-
+    } else if (
+      this.signup_form.value.password != this.signup_form.value.password_repeat
+    ) {
+      this.toastService.presentToast(
+        'Error',
+        'Passwords must match',
+        'top',
+        'danger',
+        4000
+      );
     } else {
-
       // Proceed with loading overlay
       const loading = await this.loadingController.create({
         cssClass: 'default-loading',
         message: '<p>Signing up...</p><span>Please be patient.</span>',
-        spinner: 'crescent'
+        spinner: 'crescent',
       });
       await loading.present();
 
@@ -62,11 +89,15 @@ export class SignupPage implements OnInit {
       // ...
 
       // Success messages + routing
-      this.toastService.presentToast('Welcome!', 'Lorem ipsum', 'top', 'success', 2000);
+      this.toastService.presentToast(
+        'Welcome!',
+        'Lorem ipsum',
+        'top',
+        'success',
+        4000
+      );
       await this.router.navigate(['/home']);
       loading.dismiss();
     }
-
   }
-
 }

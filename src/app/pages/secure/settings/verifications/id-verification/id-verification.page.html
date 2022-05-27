@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()"> Back</ion-button>
+    </ion-buttons>
+    <ion-title>
+      Verification
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div class="ion-padding">
+
+    <form class="form-default" [formGroup]="verification_form" >
+
+      <ion-list class="item-card-list" lines="none">
+        
+         <ion-item>
+          <ion-label color="tertiary" position="stacked">ID Type</ion-label>
+           <ion-select formControlName="id_type" value="nin"  placeholder="Select ID Type">
+             <ion-select-option value="nin">National Identity Number</ion-select-option>
+             <ion-select-option value="passport">International Passport</ion-select-option>
+             <ion-select-option value="driving_license">Driving License</ion-select-option>
+             <ion-select-option value="voters_card">Voters Card</ion-select-option>
+           </ion-select>
+         </ion-item>
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">ID Number</ion-label>
+          <ion-input formControlName="id_number" placeholder="ID Number" type="text"  ></ion-input>
+        </ion-item>
+        <ion-item (click)="uploadFrontPicture()">
+          <ion-label color="tertiary" position="stacked">ID Front Picture</ion-label>
+          <ion-input formControlName="front_picture" placeholder="ID Front Picture"  [readonly]="true" ></ion-input>
+        </ion-item>
+     
+        <ion-item (click)="uploadBackPicture()">
+          <ion-label color="tertiary" position="stacked">ID Back Picture</ion-label>
+          <ion-input [readonly]="true" formControlName="back_picture" placeholder="ID Back Picture"></ion-input>
+        </ion-item>
+     
+
+       
+
+      </ion-list>
+
+    </form>
+
+  </div>
+
+  
+</ion-content>
+<ion-footer class="modal-footer" collapse="fade">
+  <ion-toolbar>
+    <form class="form-default" [formGroup]="verification_form" (submit)="activate()">
+      <ion-button type="submit" expand="block" color="primary">
+        Send
+      </ion-button>
+    </form>
+  </ion-toolbar>
+</ion-footer>

@@ -16,12 +16,52 @@
     <form class="form-default" [formGroup]="signup_form" (submit)="signUp()">
       <ion-list class="item-card-list" lines="none">
         <ion-item>
+          <ion-label color="tertiary" position="stacked">First Name</ion-label>
+          <ion-input
+            formControlName="firstName"
+            type="text"
+            autocomplete="off"
+            placeholder="Your first name"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Last Name</ion-label>
+          <ion-input
+            formControlName="lastName"
+            type="text"
+            autocomplete="off"
+            placeholder="Your last name"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
           <ion-label color="tertiary" position="stacked">Email</ion-label>
           <ion-input
             formControlName="email"
             type="email"
             autocomplete="off"
             placeholder="Your email address"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Username</ion-label>
+          <ion-input
+            formControlName="userName"
+            type="text"
+            autocomplete="off"
+            placeholder="Your username"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Phone number</ion-label>
+          <ion-input
+            formControlName="phoneNumber"
+            type="tel"
+            autocomplete="off"
+            placeholder="Your phone number"
           ></ion-input>
         </ion-item>
 
@@ -42,6 +82,16 @@
             formControlName="password_repeat"
             type="password"
             placeholder="Password repeat"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Referral code</ion-label>
+          <ion-input
+            formControlName="referralCode"
+            type="text"
+            autocomplete="off"
+            placeholder="Your referral code (Optional)"
           ></ion-input>
         </ion-item>
       </ion-list>

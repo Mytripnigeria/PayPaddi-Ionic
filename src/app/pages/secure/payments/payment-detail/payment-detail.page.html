@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="Payments" defaultHref="/payments"></ion-back-button>
+      <ion-button (click)="back()"> Back</ion-button>
     </ion-buttons>
     <ion-title>
       Details
@@ -62,11 +62,11 @@
           <ion-icon color="primary" name="receipt"></ion-icon>
         </ion-avatar>
         <ion-label>
-          <h3>Receipt</h3>
-          <p class="font-size-smallest">View digital invoice</p>
+          <h3>Download Receipt</h3>
+          <p class="font-size-smallest">Download digital invoice</p>
         </ion-label>
         <ion-button slot="end">
-          View
+          Download
         </ion-button>
       </ion-item>
       <ion-item button>
@@ -74,8 +74,8 @@
           <ion-icon color="primary" name="chatbox"></ion-icon>
         </ion-avatar>
         <ion-label>
-          <h3>Contact merchant</h3>
-          <p class="font-size-smallest">Get in touch with merchant</p>
+          <h3>Report Transaction</h3>
+          <p class="font-size-smallest">Report an issue with this payment</p>
         </ion-label>
       </ion-item>
     </ion-list>
