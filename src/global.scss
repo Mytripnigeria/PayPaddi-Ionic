@@ -104,6 +104,27 @@ ion-card-title {
   font-family: "Inter" !important;
 }
 
+
+.transfer-modal > app-pin-verify{
+  position: fixed;
+  height: 95vh;
+  top: 5vh;
+  background: var(--ion-color-secondary);
+  border-radius: 16px 16px 0 0;
+
+}
+.transfer-modal > app-bank-list{
+  position: fixed;
+  height: 95vh;
+  top: 5vh;
+  background: var(--ion-color-secondary);
+  border-radius: 16px 16px 0 0;
+
+}
+.transfer-modal::part(content){
+  background: #14131340;
+}
+
 small {
   font-size: 11px;
 }

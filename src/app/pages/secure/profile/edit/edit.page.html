@@ -7,9 +7,9 @@
     <ion-title>
       Profile
     </ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="userData" >
       <form class="form-default" [formGroup]="edit_profile_form" (ngSubmit)="submit()">
-        <ion-button type="submit">
+        <ion-button type="submit" [disabled]="edit_profile_form.invalid">
           Done
         </ion-button>
       </form>
@@ -19,10 +19,12 @@
 
 <ion-content [fullscreen]="true">
 
-  <div class="hero hero-light-gradient">
+  <div class="hero hero-light-gradient" *ngIf="userData">
     <ion-avatar>
-      <ion-icon class="avatar-icon-placeholder" name="person-circle" color="tertiary">
+      <ion-icon *ngIf="!userData.picture || userData.picture === ''"  class="avatar-icon-placeholder" name="person-circle" color="tertiary">
+        
       </ion-icon>
+      <img *ngIf="userData.picture"  [src]="userData.picture" alt="">
     </ion-avatar>
     <ion-button class="ion-button-small" color="primary" fill="clear" (click)="updateProfilePicture()">
       Update profile picture
@@ -31,29 +33,40 @@
 
   <div class="ion-padding">
 
-    <form class="form-default" [formGroup]="edit_profile_form" (submit)="submit()">
+    <form class="form-default" [formGroup]="edit_profile_form" (submit)="submit()" *ngIf="userData" >
 
       <ion-list class="item-card-list" lines="none">
         <ion-item>
           <ion-label color="tertiary" position="stacked">First name</ion-label>
-          <ion-input formControlName="name_first" placeholder="First name"></ion-input>
+          <ion-input formControlName="firstname" placeholder="First name"></ion-input>
         </ion-item>
+        <ion-text *ngIf="edit_profile_form.controls['firstname']['errors'] && edit_profile_form.controls['firstname']['errors']['required'] && edit_profile_form.controls['firstname']['touched']" color="danger">
+          <small class="error-message-form">Firstname is required.</small>
+        </ion-text>
         <ion-item>
           <ion-label color="tertiary" position="stacked">Last name</ion-label>
-          <ion-input formControlName="name_last" placeholder="Last name"></ion-input>
+          <ion-input formControlName="lastname" placeholder="Last name"></ion-input>
         </ion-item>
+        <ion-text *ngIf="edit_profile_form.controls['lastname']['errors'] && edit_profile_form.controls['lastname']['errors']['required'] && edit_profile_form.controls['lastname']['touched']" color="danger">
+          <small class="error-message-form">Lastname is required.</small>
+        </ion-text>
         <ion-item>
           <ion-label color="tertiary" position="stacked">Phone Number</ion-label>
-          <ion-input [readonly]="true" formControlName="phone_number" placeholder="Phone Number"></ion-input>
+          <ion-input [readonly]="true" formControlName="phone" placeholder="Phone Number"></ion-input>
         </ion-item>
+       
         <ion-item>
           <ion-label color="tertiary" position="stacked">Email Address</ion-label>
           <ion-input [readonly]="true" formControlName="email" placeholder="Email Address"></ion-input>
         </ion-item>
+      
         <ion-item>
           <ion-label color="tertiary" position="stacked">Username</ion-label>
           <ion-input  formControlName="username" placeholder="Username"></ion-input>
         </ion-item>
+        <ion-text *ngIf="edit_profile_form.controls['username']['errors'] && edit_profile_form.controls['username']['errors']['required'] && edit_profile_form.controls['username']['touched']" color="danger">
+          <small class="error-message-form">Username is required.</small>
+        </ion-text>
       </ion-list>
 
     </form>

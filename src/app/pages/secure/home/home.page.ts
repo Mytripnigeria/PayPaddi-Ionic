@@ -1,3 +1,7 @@
+import { TabsPage } from './../../../tabs/tabs.page';
+import { UserService } from './../../../services/user/user.service';
+import { IUser } from './../../../models/user';
+import { DataService } from './../../../services/data/data.service';
 import { VerificationsPage } from './../settings/verifications/verifications.page';
 import { VerificationPage } from './verification/verification.page';
 import { DepositPage } from './deposit/deposit.page';
@@ -13,6 +17,8 @@ import { SwiperOptions } from 'swiper';
 })
 export class HomePage implements OnInit {
   content_loaded: boolean = false;
+  userData: IUser;
+  userBalance: null;
   config: SwiperOptions = {
     slidesPerView: 1,
     spaceBetween: 50,
@@ -21,7 +27,10 @@ export class HomePage implements OnInit {
   };
   constructor(
     private routerOutlet: IonRouterOutlet,
-    private modalController: ModalController
+    private tabs: TabsPage,
+    private modalController: ModalController,
+    private dataService: DataService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -29,6 +38,21 @@ export class HomePage implements OnInit {
     setTimeout(() => {
       this.content_loaded = true;
     }, 2000);
+  }
+
+  ionViewWillEnter() {
+    console.log('came here oo');
+    this.getUserWallet();
+    this.userData = this.dataService.getUserProfile();
+    console.log(this.userData);
+  }
+
+  async getUserWallet() {
+    const response = await this.userService.getUserWallet();
+    console.log('wallet==>', response);
+    if (response.result) {
+      this.userBalance = response.result.data.current_balance;
+    }
   }
 
   async viewTransaction() {
@@ -101,5 +125,9 @@ export class HomePage implements OnInit {
         this.content_loaded = true;
       }, 2000);
     }
+  }
+
+  async send() {
+    await this.tabs.selectAction();
   }
 }

@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-title >
+      Verify Transaction PIN
+    </ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-padding">
+
+    <!-- <form class="form-default"  [formGroup]="verify_pin_form" (submit)="verify()">
+
+      <ion-list class="item-card-list" lines="none">
+        
+        <ion-item>
+          <ion-label color="tertiary" position="stacked" >PIN</ion-label>
+          <ion-input formControlName="pin" maxlength="4" minlength="4" placeholder="0000" type="tel" ></ion-input>
+        </ion-item>
+        
+       
+
+      </ion-list>
+
+    </form> -->
+    <ion-grid fixed class="pin">
+      <ion-row>
+        <ion-col size="3" *ngFor="let item of [1,2,3,4]" >
+          <div [style.background]="input.length >= item ? 'var(--ion-color-primary)':''"></div>
+        </ion-col>
+       
+      </ion-row>
+    </ion-grid>
+
+
+
+  </div>
+
+</ion-content>
+
+<ion-footer  >
+  <ion-toolbar color="secondary">
+   <ion-grid fixed class="keyboard">
+     <ion-row>
+       <ion-col size="4"><ion-button (click)="appendValue('1')"> 1 </ion-button></ion-col>
+       <ion-col size="4"><ion-button (click)="appendValue('2')">2</ion-button></ion-col>
+       <ion-col size="4"><ion-button (click)="appendValue('3')">3</ion-button></ion-col>
+     </ion-row>
+     <ion-row>
+      <ion-col size="4"><ion-button (click)="appendValue('4')">4</ion-button></ion-col>
+      <ion-col size="4"><ion-button (click)="appendValue('5')">5</ion-button></ion-col>
+      <ion-col size="4"><ion-button (click)="appendValue('6')">6</ion-button></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4"><ion-button (click)="appendValue('7')">7</ion-button></ion-col>
+      <ion-col size="4"><ion-button (click)="appendValue('8')">8</ion-button></ion-col>
+      <ion-col size="4"><ion-button (click)="appendValue('9')">9</ion-button></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4"></ion-col>
+      <ion-col size="4"><ion-button (click)="appendValue('0')">0</ion-button></ion-col>
+      <ion-col size="4"><ion-button class="cancel" (click)="appendValue('minus')"><ion-icon name="arrow-back-outline"></ion-icon></ion-button></ion-col>
+    </ion-row>
+   </ion-grid>
+  </ion-toolbar>
+</ion-footer>

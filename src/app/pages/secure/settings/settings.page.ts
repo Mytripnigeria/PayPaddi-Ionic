@@ -1,23 +1,40 @@
+import { IUser } from './../../../models/user';
+import { DataService } from './../../../services/data/data.service';
+import { UtilityService } from './../../../services/utility/utility.service';
+import { UserService } from './../../../services/user/user.service';
 import { VerificationsPage } from './verifications/verifications.page';
 import { Platform, IonRouterOutlet, ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UpdatePinPage } from './update-pin/update-pin.page';
 import { Browser } from '@capacitor/browser';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
 })
-export class SettingsPage implements OnInit {
+export class SettingsPage {
+  userData: IUser;
   constructor(
     private routerOutlet: IonRouterOutlet,
     private modalController: ModalController,
     private authService: AuthService,
-    public platform: Platform
-  ) {}
+    public platform: Platform,
+    private util: UtilityService,
+    private dataService: DataService,
+    private actRoute: ActivatedRoute
+  ) {
+    console.log('setting view enter');
+  }
 
-  ngOnInit() {}
+  ionViewWillEnter() {
+    this.actRoute.queryParams.subscribe((val) => {
+      console.log('setting view enter');
+      this.userData = this.dataService.getUserProfile();
+      console.log(this.userData);
+    });
+  }
 
   // Sign out
   signOut() {

@@ -36,19 +36,54 @@ ion-header > ion-item.balance{
 .menu {
     padding: 0;
     margin-bottom: 20px;
-    &> ion-row > ion-col{
-    
+    & > ion-row > ion-col > div{
+        position: relative;
     text-align: center;
+    background: #202934;
+    border-radius: 8px;
+    padding: 5px;
+    min-height: 80px;
 
     & > h6{
-        margin-top:5px;
-        font-size: 14px;
+        // margin-top:5px;
+        font-size: 12px;
+        width: 90%;
+        text-align: left;
+        position: absolute;
+        bottom: 10px;
+        margin: 0;
+        word-spacing: 9999999px;
+        font-weight: 600;
     }
+    }
+    & > ion-row > ion-col > div > span{
+        padding: 5px;
+        background: var(--ion-color-secondary-tint);
+        border-radius: 50%;
+        display: flex;
+        width: -moz-fit-content;
+        width: fit-content;
+        position: absolute;
+        right: 10px;
+    
     }
 }
 
 .divider{
 margin: 10px 0 !important;
+}
+
+.m-10{
+    margin: 0 10px;
+}
+.pd-10{
+    padding: 0 10px;
+}
+.pt-10{
+    padding-top: 0 10px;
+}
+.pd-13{
+    padding: 0 13px;
 }
 
 .verificationBanner{

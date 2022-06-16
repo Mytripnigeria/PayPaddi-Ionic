@@ -9,14 +9,14 @@
 
 <ion-content >
 
-  <div class="hero hero-light-gradient">
+  <div class="hero hero-light-gradient" *ngIf="userData" >
     <ion-avatar>
       <ion-icon class="avatar-icon-placeholder" name="person-circle" color="tertiary">
       </ion-icon>
     </ion-avatar>
-    <p class="font-weight-500">John Doe</p>
+    <p class="font-weight-500">{{userData.firstname}} {{userData.lastname}}</p>
     <ion-text color="medium">
-      <small>john.doe@mail.com</small>
+      <small>{{userData.email}}</small>
     </ion-text>
   </div>
 

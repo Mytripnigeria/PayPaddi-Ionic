@@ -16,13 +16,13 @@
 
   <div class="ion-padding">
 
-    <form class="form-default" [formGroup]="add_card_form" (submit)="save()">
+    <form class="form-default"  [formGroup]="update_pin_form" (submit)="save()">
 
       <ion-list class="item-card-list" lines="none">
         
         <ion-item>
-          <ion-label color="tertiary" position="stacked">PIN</ion-label>
-          <ion-input formControlName="pin" placeholder="0000" type="pin" ></ion-input>
+          <ion-label color="tertiary" position="stacked" >PIN</ion-label>
+          <ion-input formControlName="pin" maxlength="4" minlength="4" placeholder="0000" type="tel" ></ion-input>
         </ion-item>
         
        
@@ -37,8 +37,8 @@
 
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
-    <form class="form-default" [formGroup]="add_card_form" (submit)="save()">
-      <ion-button type="submit" expand="block" color="primary">
+    <form class="form-default" [formGroup]="update_pin_form" (submit)="save()">
+      <ion-button type="submit" [disabled]="update_pin_form.invalid" expand="block" color="primary">
          <span >Update</span>
          
       </ion-button>

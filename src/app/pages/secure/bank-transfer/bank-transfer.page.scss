@@ -1,0 +1,13 @@
+ion-footer{
+    background: rgb(20, 26, 31);
+}
+
+ion-label.beneficiary{
+    margin: 0 !important;
+}
+ion-button.verify{
+    position: absolute;
+    right: 0;
+    height: 100%;
+    z-index: 999;
+}

@@ -4,9 +4,9 @@
       <ion-avatar>
         <img src="../../../../assets/icon/Image 3.png" />
       </ion-avatar>
-      <ion-label>
-        <h4>Hi, Philip</h4>
-        <p>@nitrobemsin</p>
+      <ion-label *ngIf="userData" >
+        <h4>Hi, {{userData.firstname}}</h4>
+        <p>{{userData.username}}</p>
       </ion-label>
     
     </ion-item>
@@ -22,7 +22,8 @@
       <ion-icon name="wallet"></ion-icon>
     </ion-avatar>
     <ion-label>
-      <h3>$71,648.13</h3>
+      <h3 *ngIf="userBalance" >₦{{userBalance | currency}}</h3>
+      <h3 *ngIf="!userBalance"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
       <p>Available Balance</p>
     </ion-label>
 
@@ -30,7 +31,7 @@
   </ion-item>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content >
  
 
  
@@ -82,46 +83,70 @@
       </ion-item>
     </ion-list> -->
 
-    <ion-grid  class="menu">
+    <ion-grid  class="menu pd-10 pt-10">
       <ion-row >
-        <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
-          <h6>Transfer</h6>
+        <ion-col size="3" (click)="send()">
+          <div>
+            <span><img width="15px" src="../../../../assets/icon/Send.png" alt="" srcset=""></span>
+          <h6>Send Money</h6>
+          </div>
+          
         </ion-col>
         <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Calling.png" alt="" srcset="">
-          <h6>Airtime</h6>
+          <div>
+            <span><img width="15px" src="../../../../assets/icon/Calling.png" alt="" srcset=""></span>
+            <h6>Buy Airtime</h6>
+          </div>
+         
         </ion-col>
         <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Discovery.png" alt="" srcset="">
-          <h6>Data</h6>
+          <div>
+            <span><img width="15px" src="../../../../assets/icon/Discovery.png" alt="" srcset=""></span>
+          <h6>Buy Data</h6>
+          </div>
+          
         </ion-col>
         <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Video.png" alt="" srcset="">
-          <h6>Cable</h6>
+          <div>
+            <span><img width="15px" src="../../../../assets/icon/Video.png" alt="" srcset=""></span>
+            <h6>Buy CableTv</h6>
+          </div>
+          
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
-          <h6>Electricity</h6>
+          <div>
+             <span><img width="15px" src="../../../../assets/icon/Send.png" alt="" srcset=""></span>
+          <h6>Buy Power</h6>
+          </div>
+         
         </ion-col>
         <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
-          <h6>Betting</h6>
+          <div>
+             <span><img width="15px" src="../../../../assets/icon/Send.png" alt="" srcset=""></span>
+          <h6>TopUp Betting</h6>
+          </div>
+         
         </ion-col>
         <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
-          <h6>Education</h6>
+          <div>
+             <span><img width="15px" src="../../../../assets/icon/Send.png" alt="" srcset=""></span>
+          <h6>Buy Education</h6>
+          </div>
+         
         </ion-col>
         <ion-col size="3">
-          <img width="40px" src="../../../../assets/icon/Send.png" alt="" srcset="">
-          <h6>Cards</h6>
+          <div>
+             <span><img width="15px" src="../../../../assets/icon/Send.png" alt="" srcset=""></span>
+          <h6>Virtual Cards</h6>
+          </div>
+         
         </ion-col>
       </ion-row>
     </ion-grid>
 
-    <swiper class="swiper-cards" #swiper [config]="config" [pagination]="true">
+    <swiper class="swiper-cards pd-13" #swiper [config]="config" [pagination]="true">
       <ng-template swiperSlide>
         <ion-item button detail="false"  class="verificationBanner" lines="none">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
@@ -152,14 +177,14 @@
 
     <!-- <hr class="divider"> -->
 
-    <ion-list-header>
+    <ion-list-header class="pd-10">
       <ion-label color="white">Recent transactions</ion-label>
       <ion-button *ngIf="content_loaded" routerLink="/payments">See All <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>
     </ion-list-header>
 
     <!-- Skeletons -->
-    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="!content_loaded">
+    <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="!content_loaded">
       <ion-item *ngFor="let i of [].constructor(10);">
         <ion-label>
           <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
@@ -169,7 +194,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="content_loaded">
+    <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="content_loaded">
       <ion-item button detail="false" (click)="viewTransaction()">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-icon name="school"></ion-icon>

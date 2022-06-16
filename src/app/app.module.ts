@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 // NgCharts
 import { NgChartsModule } from 'ng2-charts';
+import { CurrencyPipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +24,11 @@ import { NgChartsModule } from 'ng2-charts';
     AppRoutingModule,
     NgChartsModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    CurrencyPipe,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: '' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

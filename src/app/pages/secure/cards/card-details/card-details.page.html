@@ -22,25 +22,25 @@
         <ion-label>
           <p>Billing Address</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="32, fremore street"></ion-input>
+        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="card.address_1"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>
           <p>City/region</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="San francesco"></ion-input>
+        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="card.city"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>
           <p>Zip code</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="94105"></ion-input>
+        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="card.zip_code"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>
           <p>Card type</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="Dollar virtual card"></ion-input>
+        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="card.card_type"></ion-input>
       </ion-item>
      
     </ion-list>

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-title >Select {{type}}</ion-title>
+    <!-- <ion-title> *ngIf="type == 'beneficiary'"Select Beneficiary</ion-title> -->
+  </ion-toolbar>
+  <ion-searchbar *ngIf="type == 'Bank'" placeholder="Bank name"  (ionChange)="onSearchBank($event)"  showCancelButton="never"></ion-searchbar>
+  <ion-searchbar *ngIf="type == 'Beneficiary'" placeholder="Beneficiary name"  (ionChange)="onSearchBeneficiary($event)"  showCancelButton="never"></ion-searchbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type=='Bank'" >
+    <ion-item button detail="false" (click)="selectBank(bank.cbn_code,bank.bank_name)" *ngFor="let bank of banks" >
+  
+      <ion-label>
+       {{bank.bank_name}}
+      </ion-label>      
+    </ion-item>
+    </ion-list>
+
+    <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type!=='Bank' && beneficiaries && beneficiaries.length > 0" >
+      <ng-container *ngFor="let beneficiary of beneficiaries" >
+      <ion-item button detail="false" (click)="selectBeneficiary(beneficiary)" *ngIf="beneficiary.type=='bank'"  >
+    
+        <ion-label>
+          <h3>{{beneficiary.name}}</h3>
+          <p>{{beneficiary.service_name}}</p>
+         
+        </ion-label>      
+      </ion-item>
+    </ng-container>
+      </ion-list>
+      <p *ngIf="beneficiaries && beneficiaries.length< 1" >You have not added any beneficiary</p>
+</ion-content>

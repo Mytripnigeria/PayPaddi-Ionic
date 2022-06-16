@@ -20,24 +20,29 @@
       <ion-list class="item-card-list" lines="none">
         <ion-item>
           <ion-label color="tertiary" position="stacked">Card Type</ion-label>
-          <ion-select value="dollar" placeholder="Select Card Type" formControlName="card_type">
+          <ion-select value="dollar" placeholder="Select Card Type" formControlName="card_type" (ionChange)="changeCard($event)">
             <ion-select-option value="dollar">Dollar Card</ion-select-option>
             <ion-select-option value="naira">Naira Card</ion-select-option>
           </ion-select>
         </ion-item>
 
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Amount</ion-label>
-          <ion-input formControlName="amount" placeholder="Amount" type="text" ></ion-input>
+          <ion-label color="tertiary" position="stacked">Amount ({{cardType}})</ion-label>
+          <ion-input formControlName="amount" [min]="cardType=='dollar'?5:100" [max]="cardType=='dollar'?2000:1500000" (ngModelChange)="amountChange()" placeholder="Amount" type="number" ></ion-input>
         </ion-item>
         <ion-text *ngIf="!add_card_form.controls.expiry_date.valid && submit_attempt" color="danger">
           <small class="error-message-form">Amount is required.</small>
         </ion-text>
-        <ul>
-          <li>Fee amount 617 at 617/$</li>
-          <li>Minimum amount $5</li>
-          <li>Maximum $5000</li>
-          <li>Card issuance fee - #200</li>
+        <ul *ngIf="fees" class="animate__animated animate__fadeIn">
+          <li *ngIf="cardType=='dollar'" >Amount is ₦{{currentAmount || 0 | currency}} at {{currentRate}}/$</li>
+          <li *ngIf="cardType=='naira'">Amount is ₦{{currentAmount || 0 | currency}} </li>
+          <!-- <li>Fee amount ${{getAmount(fees.dollar_rate_charge) || 0}} at {{fees.dollar_rate_charge}}/₦</li> -->
+          <li *ngIf="cardType=='naira'" >Minimum amount ₦100</li>
+          <li *ngIf="cardType=='dollar'">Minimum amount $5</li>
+          <li *ngIf="cardType=='naira'">Maximum ₦1,500,000</li>
+          <li *ngIf="cardType=='dollar'">Maximum $2,000</li>
+          <li *ngIf="cardType=='naira'">Card issuance fee - ₦{{fees.card_create_naira}}</li>
+          <li *ngIf="cardType=='dollar'">Card issuance fee - ${{fees.card_create_dollar}}</li>
         </ul>
 
       </ion-list>

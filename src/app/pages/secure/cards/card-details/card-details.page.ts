@@ -1,5 +1,6 @@
+import { ICard } from './../../../../models/cards';
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-card-details',
@@ -7,9 +8,15 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./card-details.page.scss'],
 })
 export class CardDetailsPage implements OnInit {
-  constructor(private modalCtrl: ModalController) {}
+  card: ICard;
+  constructor(
+    private modalCtrl: ModalController,
+    private navParam: NavParams
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.card = this.navParam.data.payload;
+  }
 
   back() {
     this.modalCtrl.dismiss();

@@ -2,18 +2,20 @@ import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToastService {
+  constructor(public toastController: ToastController) {}
 
-  constructor(
-    public toastController: ToastController
-  ) { }
-
-  async presentToast(header: string, message: string, position: any, color: string, duration: number, icon?: string) {
-
+  async presentToast(
+    header: string,
+    position: any,
+    color: string,
+    message?: string,
+    duration?: number,
+    icon?: string
+  ) {
     if (!icon) {
-
       switch (color) {
         case 'success':
           icon = 'checkmark-outline';
@@ -33,7 +35,7 @@ export class ToastService {
       duration: duration,
       position: position,
       color: color,
-      icon: icon
+      icon: icon,
     });
     await toast.present();
   }

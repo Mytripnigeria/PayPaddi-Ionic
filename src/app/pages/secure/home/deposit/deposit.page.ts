@@ -1,3 +1,4 @@
+import { DataService } from './../../../../services/data/data.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
@@ -7,9 +8,15 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./deposit.page.scss'],
 })
 export class DepositPage implements OnInit {
-  constructor(private modalCtrl: ModalController) {}
+  accounts;
+  constructor(
+    private modalCtrl: ModalController,
+    private dataService: DataService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.accounts = this.dataService.getBankAccount();
+  }
 
   back() {
     this.modalCtrl.dismiss();

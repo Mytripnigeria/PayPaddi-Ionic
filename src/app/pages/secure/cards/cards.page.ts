@@ -1,3 +1,6 @@
+import { DataService } from './../../../services/data/data.service';
+import { UtilityService } from './../../../services/utility/utility.service';
+import { ICard } from './../../../models/cards';
 import { CardTransactionsPage } from './card-transactions/card-transactions.page';
 import { PaymentsPage } from './../payments/payments.page';
 import { FundCardPage } from './fund-card/fund-card.page';
@@ -6,6 +9,7 @@ import {
   AfterContentChecked,
   ChangeDetectorRef,
   Component,
+  NgZone,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -19,6 +23,7 @@ import {
 } from '@ionic/angular';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { AddPage } from './add/add.page';
+import { CardsService } from 'src/app/services/cards/cards.service';
 SwiperCore.use([Pagination]);
 
 @Component({
@@ -36,16 +41,23 @@ export class CardsPage implements AfterContentChecked {
     pagination: { clickable: false },
     allowTouchMove: true,
   };
-
+  cardsCopy: ICard[];
+  cards: ICard[];
   card_details_visible: boolean = false;
-
+  card_active: boolean = false;
   constructor(
+    private util: UtilityService,
     private alertController: AlertController,
     private toastService: ToastService,
     private loadingController: LoadingController,
     private modalController: ModalController,
-    private routerOutlet: IonRouterOutlet
-  ) {}
+    private cardsService: CardsService,
+    private routerOutlet: IonRouterOutlet,
+    private ngZone: NgZone,
+    private dataService: DataService
+  ) {
+    this.getAllCards();
+  }
 
   ngAfterContentChecked(): void {
     if (this.swiper) {
@@ -53,58 +65,154 @@ export class CardsPage implements AfterContentChecked {
     }
   }
 
-  // Sync
-  async sync() {
-    // Loading overlay
-    const loading = await this.loadingController.create({
-      cssClass: 'default-loading',
-      message: '<p>Syncing card...</p><span>Please be patient.</span>',
-      spinner: 'crescent',
-    });
-    await loading.present();
+  refreshCards() {}
 
-    // Fake timeout
-    setTimeout(() => {
-      loading.dismiss();
-    }, 2000);
+  async getAllCards() {
+    this.cards = this.dataService.getCardsData();
+    this.cards.forEach((element, index) => {
+      this.cards[index].syncing = false;
+    });
+
+    this.card_active = this.cards[0].is_active;
+  }
+
+  slideChanged() {
+    const index = this.swiper.swiperRef.activeIndex;
+    this.ngZone.run(() => {
+      this.card_active = this.cards[index].is_active;
+    });
+
+    console.log(this.card_active);
+  }
+
+  getStatus() {
+    return this.card_active;
+  }
+
+  // Sync
+  async sync(load?) {
+    this.cardsCopy = this.cards;
+    this.cards = null;
+    const loader = await this.util.loader('syncing');
+    if (load) loader.present();
+
+    const response = await this.cardsService.getCards();
+    console.log(response);
+    if (load) loader.dismiss();
+
+    if (response.result && !response.result.data.error) {
+      this.cards = response.result.data.data;
+      this.toastService.presentToast(
+        'Success',
+        'top',
+        'success',
+        'Cards updated',
+        2000
+      );
+    } else {
+      this.cards = this.cardsCopy;
+      this.toastService.presentToast(
+        'Error',
+        'top',
+        'danger',
+        'Syncing failed',
+        2000
+      );
+    }
   }
 
   // Add card
   async addCard() {
     // Open filter modal
+
     const modal = await this.modalController.create({
       component: AddPage,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
-    return await modal.present();
+    await modal.present();
+    const data = await modal.onDidDismiss();
+    if (data.data) {
+      if (data.data.reload) {
+        this.sync(true);
+      }
+    }
   }
 
   async cardDetail() {
     // Open filter modal
+    const index = this.swiper.swiperRef.activeIndex;
+    const currentCard: ICard = this.cards[index];
     const modal = await this.modalController.create({
       component: CardDetailsPage,
+      componentProps: { payload: currentCard },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
     return await modal.present();
+  }
+
+  refereshCard() {
+    const index = this.swiper.swiperRef.activeIndex;
+    this.cards[index].syncing = true;
+    this.getSingleCard(this.cards[index].id);
+  }
+
+  async getSingleCard(id) {
+    // const loader = await this.util.loader('syncing');
+    // loader.present();
+    const index = this.swiper.swiperRef.activeIndex;
+    this.cards[index].syncing = true;
+    const response = await this.cardsService.getSingleCard(id);
+    console.log(response);
+    // loader.dismiss();
+    if (response.result && !response.result.data.error) {
+      this.cards[index] = response.result.data.data;
+      this.cards[index].syncing = false;
+    } else {
+    }
   }
 
   async fundCard() {
     // Open filter modal
+    const index = this.swiper.swiperRef.activeIndex;
+    const currentCard: ICard = this.cards[index];
     const modal = await this.modalController.create({
       component: FundCardPage,
-      componentProps: { type: 'fund' },
+      componentProps: {
+        payload: {
+          type: 'fund',
+          amount: currentCard.amount,
+          currency: currentCard.currency,
+          virtual_card_id: currentCard.id,
+        },
+      },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
-    return await modal.present();
+    await modal.present();
+    const data = await modal.onDidDismiss();
+    if (data.data) {
+      if (data.data.reload) {
+        this.getSingleCard(data.data.card_id);
+      }
+    }
   }
 
   async viewTransactions() {
     // Open filter modal
+    const index = this.swiper.swiperRef.activeIndex;
+    const currentCard: ICard = this.cards[index];
     const modal = await this.modalController.create({
       component: CardTransactionsPage,
+      componentProps: {
+        payload: {
+          type: 'fund',
+          amount: currentCard.amount,
+          currency: currentCard.currency,
+          virtual_card_id: currentCard.id,
+        },
+      },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
@@ -113,17 +221,53 @@ export class CardsPage implements AfterContentChecked {
 
   async withdrawCard() {
     // Open filter modal
+    const index = this.swiper.swiperRef.activeIndex;
+    const currentCard: ICard = this.cards[index];
     const modal = await this.modalController.create({
       component: FundCardPage,
-      componentProps: { type: 'withdraw' },
+      componentProps: {
+        payload: {
+          type: 'withdraw',
+          amount: currentCard.amount,
+          currency: currentCard.currency,
+          virtual_card_id: currentCard.id,
+        },
+      },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
     return await modal.present();
   }
 
+  async freezeCard(ev) {
+    const index = this.swiper.swiperRef.activeIndex;
+    const currentCard: ICard = this.cards[index];
+    const action = currentCard.is_active == false ? 'unblock' : 'block';
+    const data = {
+      status_action: action,
+      virtual_card_id: currentCard.id,
+    };
+    const loader = await this.util.loader('Working...');
+    loader.present();
+
+    const response = await this.cardsService.freezeCard(data);
+    loader.dismiss();
+    if (response.result) {
+      if (!response.result.data.error) {
+        // this.card_freeze = !this.card_freeze;
+        this.toastService.presentToast(
+          'Success',
+          'top',
+          'success',
+          response.result.data.message,
+          2000
+        );
+      }
+    }
+  }
+
   // Delete card
-  async deleteCard() {
+  async confirmDeleteCard() {
     const alert = await this.alertController.create({
       cssClass: 'custom-alert',
       header: 'Delete this card permanently?',
@@ -133,13 +277,7 @@ export class CardsPage implements AfterContentChecked {
           text: 'Delete card',
           cssClass: 'danger',
           handler: async () => {
-            this.toastService.presentToast(
-              'Success',
-              'Card successfully deleted',
-              'top',
-              'success',
-              2000
-            );
+            this.deleteCard();
           },
         },
         {
@@ -151,5 +289,41 @@ export class CardsPage implements AfterContentChecked {
     });
 
     await alert.present();
+  }
+
+  async deleteCard() {
+    const index = this.swiper.swiperRef.activeIndex;
+    const currentCard: ICard = this.cards[index];
+    const response = await this.cardsService.deleteCard({
+      virtual_card_id: currentCard.id,
+    });
+    if (response.result) {
+      if (!response.result.data.error) {
+        this.toastService.presentToast(
+          'Success',
+          'top',
+          'success',
+          'Card has been deleted',
+          2000
+        );
+        this.sync(true);
+      } else {
+        this.toastService.presentToast(
+          'Error',
+          'top',
+          'danger',
+          response.result.data.message,
+          2000
+        );
+      }
+    } else {
+      this.toastService.presentToast(
+        'Error',
+        'top',
+        'danger',
+        'Unable to delete card',
+        2000
+      );
+    }
   }
 }

@@ -1,5 +1,11 @@
+import { BankTransferPage } from './../pages/secure/bank-transfer/bank-transfer.page';
 import { Component } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import {
+  ActionSheetController,
+  ModalController,
+  IonRouterOutlet,
+} from '@ionic/angular';
+import { WalletTransferPage } from '../pages/secure/wallet-transfer/wallet-transfer.page';
 
 @Component({
   selector: 'app-tabs',
@@ -7,7 +13,11 @@ import { ActionSheetController } from '@ionic/angular';
   styleUrls: ['tabs.page.scss'],
 })
 export class TabsPage {
-  constructor(private actionSheetController: ActionSheetController) {}
+  constructor(
+    private actionSheetController: ActionSheetController,
+    private modalController: ModalController,
+    private routerOutlet: IonRouterOutlet
+  ) {}
 
   // Select action
   async selectAction() {
@@ -19,7 +29,7 @@ export class TabsPage {
           text: 'Send to wallet',
           icon: 'wallet',
           handler: () => {
-            // Put in logic ...
+            this.sendToWallet();
           },
         },
         {
@@ -27,6 +37,7 @@ export class TabsPage {
           icon: 'storefront',
           handler: () => {
             // Put in logic ...
+            this.sendToBank();
           },
         },
         {
@@ -44,5 +55,38 @@ export class TabsPage {
       ],
     });
     await actionSheet.present();
+  }
+
+  async sendToWallet() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: WalletTransferPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+
+    // Apply filter from modal
+    let { data } = await modal.onWillDismiss();
+    if (data && data.reload) {
+      // await this.home.getUserWallet();
+    }
+  }
+
+  async sendToBank() {
+    const modal = await this.modalController.create({
+      component: BankTransferPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+
+    // Apply filter from modal
+    let { data } = await modal.onWillDismiss();
+    if (data && data.reload) {
+      // await this.home.getUserWallet();
+    }
   }
 }

@@ -1,7 +1,13 @@
+import { UtilityService } from './../../../services/utility/utility.service';
 import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
 
@@ -12,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class SignupPage implements OnInit {
   current_year: number = new Date().getFullYear();
-
+  error = false;
   signup_form: FormGroup;
   submit_attempt: boolean = false;
 
@@ -21,30 +27,86 @@ export class SignupPage implements OnInit {
     private loadingController: LoadingController,
     private formBuilder: FormBuilder,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private util: UtilityService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
+    console.log(this.containsSpecialChars('tolulope'));
+    console.log(this.containsSpecialChars('tolu@lope'));
+    console.log(this.containsSpecialChars('tolu)lope'));
+
     // Setup form
     this.signup_form = this.formBuilder.group({
-      firstName: ['', Validators.compose([Validators.required])],
-      lastName: ['', Validators.compose([Validators.required])],
-      userName: ['', Validators.compose([Validators.required])],
-      referralCode: [''],
-      phoneNumber: [
+      firstname: ['', Validators.compose([Validators.required])],
+      lastname: ['', Validators.compose([Validators.required])],
+      username: [
         '',
-        Validators.compose([Validators.minLength(11), Validators.required]),
+        Validators.compose([Validators.required, Validators.minLength(4)]),
+      ],
+      referral_code: [''],
+      phone: [
+        '',
+        Validators.compose([
+          Validators.minLength(11),
+          Validators.maxLength(11),
+          Validators.required,
+        ]),
       ],
       email: ['', Validators.compose([Validators.email, Validators.required])],
       password: [
         '',
         Validators.compose([Validators.minLength(6), Validators.required]),
       ],
-      password_repeat: [
+      password_confirmation: [
         '',
         Validators.compose([Validators.minLength(6), Validators.required]),
       ],
     });
+  }
+
+  containsSpecialChars(str) {
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const result = specialChars.test(str);
+    if (result) {
+      this.error = true;
+    } else {
+      this.error = false;
+    }
+    return result;
+  }
+
+  passwordStrength(str) {
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const result = specialChars.test(str);
+    if (result) {
+      this.error = false;
+    } else {
+      this.error = true;
+    }
+    return result;
+  }
+
+  passwordMatch(confirm) {
+    if (this.signup_form.value.password === confirm) {
+      this.error = false;
+      return true;
+    } else {
+      this.error = true;
+      return false;
+    }
+  }
+
+  hasWhiteSpace(str) {
+    var inValid = /\s/;
+    const result = inValid.test(str);
+    if (result) {
+      this.error = true;
+    } else {
+      this.error = false;
+    }
+    return result;
   }
 
   // Sign up
@@ -55,7 +117,7 @@ export class SignupPage implements OnInit {
     if (
       this.signup_form.value.email == '' ||
       this.signup_form.value.password == '' ||
-      this.signup_form.value.password_repeat == ''
+      this.signup_form.value.password_confirmation == ''
     ) {
       this.toastService.presentToast(
         'Error',
@@ -67,7 +129,8 @@ export class SignupPage implements OnInit {
 
       // If passwords do not match
     } else if (
-      this.signup_form.value.password != this.signup_form.value.password_repeat
+      this.signup_form.value.password !=
+      this.signup_form.value.password_confirmation
     ) {
       this.toastService.presentToast(
         'Error',
@@ -77,27 +140,32 @@ export class SignupPage implements OnInit {
         4000
       );
     } else {
-      // Proceed with loading overlay
-      const loading = await this.loadingController.create({
-        cssClass: 'default-loading',
-        message: '<p>Signing up...</p><span>Please be patient.</span>',
-        spinner: 'crescent',
-      });
-      await loading.present();
+      this.signup_form.value.gender = 'male';
 
-      // TODO: Add your sign up logic
-      // ...
+      const loader = await this.util.loader('Signing up');
+      loader.present();
+      const response = await this.auth.signUp(this.signup_form.value);
+      console.log(response);
+      if (response.result.status == 200 && !response.result.data.error) {
+        this.toastService.presentToast('Welcome!', 'top', 'success', '', 4000);
+        await this.router.navigate(['/home']);
+      } else {
+        this.toastService.presentToast(
+          JSON.parse(response.result.data.message).email,
+          'top',
+          'danger',
+          '',
+          4000
+        );
+      }
+
+      loader.dismiss();
 
       // Success messages + routing
-      this.toastService.presentToast(
-        'Welcome!',
-        'Lorem ipsum',
-        'top',
-        'success',
-        4000
-      );
-      await this.router.navigate(['/home']);
-      loading.dismiss();
+
+      // setTimeout(() => {
+      //   loader.dismiss();
+      // }, 2000);
     }
   }
 }

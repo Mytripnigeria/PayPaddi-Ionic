@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-title >
+      Bank Transfer
+    </ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-padding">
+
+    <form class="form-default" [formGroup]="transfer_card_form" (submit)="confirmTransaction()">
+
+      <ion-list class="item-card-list" lines="none">
+        
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Amount</ion-label>
+          <ion-input formControlName="amount"  placeholder="Amount" type="number" ></ion-input>
+        </ion-item>
+        <ion-item  *ngIf="transfer_card_form.value.amount > 10"   class="animate__animated animate__fadeIn ">
+          <ion-label color="tertiary" position="stacked">select bank</ion-label>
+          <ion-input (click)="chooseBank()" formControlName="bank_code" type="text" [readonly]="true" [value]="bankName"></ion-input>
+          <ion-button (click)="selectBeneficiary()" [disabled]="verifying"  slot="end" class="verify ios button button-small button-solid ion-activatable ion-focusable hydrated"> Select beneficiary </ion-button>
+        </ion-item>
+        <!-- <ion-item *ngIf="transfer_card_form.value.amount > 10"   class="animate__animated animate__fadeIn ">
+          <ion-label color="tertiary" position="stacked">Select Bank</ion-label>
+            <ion-select formControlName="bank_code"  interface="action-sheet" (ionChange)="bankChange($event)">
+              <ion-select-option [value]="bank.cbn_code" *ngFor="let bank of banks" >{{bank.bank_name}}</ion-select-option>
+            </ion-select>
+         
+        </ion-item> -->
+        <ion-item *ngIf="bankCode !== ''"  >
+          <ion-label color="tertiary" position="stacked">Account number</ion-label>
+          <ion-input [readonly]="beneficiary" formControlName="account_number" (ngModelChange)="acctNumChange($event)"  maxlength="10"  placeholder="Account number" type="tel" ></ion-input>
+        </ion-item>
+      
+        <ion-item *ngIf="!verified && verifying" class="animate__animated animate__fadeIn "  >
+          <ion-label>
+            <p> <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text> </p>
+            <h2 style=" padding-bottom: 20px;"><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></h2>
+            </ion-label>
+         
+        </ion-item>
+        <ion-item *ngIf="verified && numberIsComplete" class="animate__animated animate__fadeIn " >
+          <ion-label color="tertiary" position="stacked">Account Name</ion-label>
+          <ion-input readonly="true"  [ngModel]="accountName" [ngModelOptions]="{standalone: true}"  type="text" ></ion-input>
+        </ion-item>
+        <ion-item *ngIf="verified && numberIsComplete" class="animate__animated animate__fadeIn " >
+          <ion-label color="tertiary" position="stacked">Narration</ion-label>
+          <ion-input  formControlName="narration"  type="text" ></ion-input>
+        </ion-item>
+        
+        <ion-item class="animate__animated animate__fadeIn" *ngIf="verified && numberIsComplete && !beneficiary">
+          
+          <ion-label class="beneficiary">
+           Add to beneficiaries
+          </ion-label>
+          <ion-toggle (ionChange)="switchBeneficiary($event)" [ngModel]="addBeneficiary" [ngModelOptions]="{standalone: true}"  slot="end"></ion-toggle>
+        </ion-item>
+
+      </ion-list>
+
+    </form>
+
+  </div>
+
+</ion-content>
+
+<ion-footer class="modal-footer" collapse="fade" >
+  <ion-toolbar color="secondary">
+    <form class="form-default" [formGroup]="transfer_card_form" (submit)="confirmTransaction()">
+      <ion-button type="submit" expand="block" color="primary" [disabled]="!accountName">
+         <span >Transfer</span>
+      </ion-button>
+    </form>
+  </ion-toolbar>
+</ion-footer>

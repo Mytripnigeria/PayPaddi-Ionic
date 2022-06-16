@@ -1,58 +1,52 @@
+import { ILogin } from './../../models/login';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { IRegister } from 'src/app/models/register';
+import { RequestService } from '../request/request.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  constructor(
-    private router: Router
-  ) { }
+  constructor(private router: Router, private req: RequestService) {}
 
   // Get user session
   async getSession() {
-
     // ...
     // put auth session here
     // ...
 
     // Sample only - remove this after real authentication / session
     let session = {
-      email: 'john.doe@mail.com'
-    }
+      email: 'john.doe@mail.com',
+    };
 
     return false;
     // return session;
   }
 
   // Sign in
-  async signIn(email: string, password: string) {
-
-    // Sample only - remove this after real authentication / session
-    let sample_user = {
-      email: email,
-      password: password
-    }
-
-    return sample_user;
+  async signIn(data: ILogin) {
+    return await this.req.axiosPost('login', data);
   }
 
   // Sign up
-  async signUp(email: string, password: string) {
+  async signUp(data: IRegister) {
+    return await this.req.axiosPost('register', data);
 
-    // Sample only - remove this after real authentication / session
-    let sample_user = {
-      email: email,
-      password: password
-    }
+    // return sample_user;
+  }
 
-    return sample_user;
+  async updatePin(pin) {
+    return await this.req.axiosPost('update/pin', pin);
+  }
+
+  async changePassword(data: ILogin) {
+    return await this.req.axiosPost('login', data);
   }
 
   // Sign out
   async signOut() {
-
     // ...
     // clean subscriptions / local storage etc. here
     // ...

@@ -5,10 +5,10 @@
         Cancel
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="type == 'fund'" >
+    <ion-title *ngIf="payload.type == 'fund'" >
       Fund card
     </ion-title>
-    <ion-title *ngIf="type == 'withdraw'" >
+    <ion-title *ngIf="payload.type == 'withdraw'" >
       Withdraw Fund
     </ion-title>
   </ion-toolbar>
@@ -18,21 +18,27 @@
 
   <div class="ion-padding">
 
-    <form class="form-default" [formGroup]="add_card_form" (submit)="save()">
+    <form class="form-default" [formGroup]="fund_card_form" (submit)="payload.type=='fund'?fundCard():withdraw()">
 
       <ion-list class="item-card-list" lines="none">
         
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Amount</ion-label>
-          <ion-input formControlName="amount" placeholder="Amount" type="text" ></ion-input>
+          <ion-label color="tertiary" position="stacked">Amount ({{payload.currency=='USD'?'dollar':'naira'}})</ion-label>
+          <ion-input formControlName="amount" [min]="payload.currency=='USD'?5:100" [max]="payload.currency=='USD'?2000:1500000" (ngModelChange)="amountChange()" placeholder="Amount" type="number" ></ion-input>
         </ion-item>
         
-        <ul>
-          <li>Fee amount 617 at 617/$</li>
-          <li>Minimum amount $5</li>
-          <li>Maximum $5000</li>
-          <li>Card issuance fee - #200</li>
+        <ul *ngIf="fees" class="animate__animated animate__fadeIn">
+          <li *ngIf="payload.currency=='USD'" >Amount is ₦{{currentAmount || 0 | currency}} at {{currentRate}}/$</li>
+          <li *ngIf="payload.currency=='NGN'">Amount is ₦{{currentAmount || 0 | currency}} </li>
+          <!-- <li>Fee amount ${{getAmount(fees.USD_rate_charge) || 0}} at {{fees.USD_rate_charge}}/₦</li> -->
+          <li *ngIf="payload.currency=='NGN'" >Minimum amount ₦100</li>
+          <li *ngIf="payload.currency=='USD' && payload.type=='fund'">Minimum amount $5</li>
+          <li *ngIf="payload.currency=='NGN'">Maximum ₦1,500,000</li>
+          <li *ngIf="payload.currency=='USD'">Maximum $2,000</li>
+          <li *ngIf="payload.currency=='NGN'">Card issuance fee - ₦{{fees.card_create_naira}}</li>
+          <li *ngIf="payload.currency=='USD'">Card issuance fee - ${{fees.card_create_dollar}}</li>
         </ul>
+
 
       </ion-list>
 
@@ -44,10 +50,10 @@
 
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
-    <form class="form-default" [formGroup]="add_card_form" (submit)="save()">
-      <ion-button type="submit" expand="block" color="primary">
-         <span *ngIf="type == 'withdraw'" >Withdraw</span>
-         <span *ngIf="type == 'fund'" >Fund</span>
+    <form class="form-default" [formGroup]="fund_card_form" (submit)="payload.type=='fund'?fundCard():withdraw()">
+      <ion-button type="submit" expand="block" color="primary" [disabled]="fund_card_form.invalid">
+         <span *ngIf="payload.type == 'withdraw'" >Withdraw</span>
+         <span *ngIf="payload.type == 'fund'" >Fund</span>
       </ion-button>
     </form>
   </ion-toolbar>
