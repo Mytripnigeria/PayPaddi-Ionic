@@ -57,6 +57,10 @@ const routes: Routes = [
     path: 'bank-list',
     loadChildren: () => import('./bank-list/bank-list.module').then( m => m.BankListPageModule)
   },
+  {
+    path: 'buy-airtime',
+    loadChildren: () => import('./buy-airtime/buy-airtime.module').then( m => m.BuyAirtimePageModule)
+  },
 ];
 
 @NgModule({

@@ -1,3 +1,4 @@
+import { BuyAirtimePage } from './../buy-airtime/buy-airtime.page';
 import { TabsPage } from './../../../tabs/tabs.page';
 import { UserService } from './../../../services/user/user.service';
 import { IUser } from './../../../models/user';
@@ -53,6 +54,16 @@ export class HomePage implements OnInit {
     if (response.result) {
       this.userBalance = response.result.data.current_balance;
     }
+  }
+
+  async buyAirtime() {
+    const modal = await this.modalController.create({
+      component: BuyAirtimePage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
   }
 
   async viewTransaction() {
