@@ -10,9 +10,32 @@
   </ion-toolbar>
   <ion-searchbar *ngIf="type == 'Bank'" placeholder="Bank name"  (ionChange)="onSearchBank($event)"  showCancelButton="never"></ion-searchbar>
   <ion-searchbar *ngIf="type == 'Beneficiary'" placeholder="Beneficiary name"  (ionChange)="onSearchBeneficiary($event)"  showCancelButton="never"></ion-searchbar>
+  <ion-searchbar *ngIf="type == 'variations'" placeholder="Service variation"  (ionChange)="onSearchVariations($event)"  showCancelButton="never"></ion-searchbar>
+  <ion-searchbar *ngIf="type == 'services'" placeholder="Services"  (ionChange)="onSearchServices($event)"  showCancelButton="never"></ion-searchbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type=='services'" >
+    <ion-item button detail="false" (click)="selectService(service)" *ngFor="let service of services" >
+  <ion-avatar>
+    <img [src]="service.image" />
+  </ion-avatar>
+      <ion-label>
+       {{service.name}}
+      </ion-label>      
+    </ion-item>
+    </ion-list>
+
+  <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type=='variations'" >
+    <ion-item button detail="false" (click)="selectVariation(variation)" *ngFor="let variation of variations" >
+  
+      <ion-label>
+       {{variation.name}}
+      </ion-label>      
+    </ion-item>
+    </ion-list>
+  
   <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type=='Bank'" >
     <ion-item button detail="false" (click)="selectBank(bank.cbn_code,bank.bank_name)" *ngFor="let bank of banks" >
   
@@ -22,7 +45,7 @@
     </ion-item>
     </ion-list>
 
-    <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type!=='Bank' && beneficiaries && beneficiaries.length > 0" >
+    <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type=='Beneficiary' && beneficiaries && beneficiaries.length > 0" >
       <ng-container *ngFor="let beneficiary of beneficiaries" >
       <ion-item button detail="false" (click)="selectBeneficiary(beneficiary)" *ngIf="beneficiary.type=='bank'"  >
     

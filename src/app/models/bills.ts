@@ -1,8 +1,9 @@
 export interface IVerifyElectricity {
-  Customer_Name: string;
-  Meter_Number: string;
-  Customer_District: string;
-  Address: string;
+  billers_code: string;
+  service_id: string;
+  type: string;
+  amount: string;
+  phone: string;
 }
 
 export interface IBuyElectricity {

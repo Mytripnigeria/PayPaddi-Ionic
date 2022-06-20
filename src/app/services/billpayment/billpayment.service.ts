@@ -24,7 +24,7 @@ export class BillpaymentService {
   }
 
   async getServicesByServiceID(serviceId) {
-    return await this.req.axiosGet(`services/variations/${serviceId}`);
+    return await this.req.axiosGet(`service/variations/${serviceId}`);
   }
 
   async verifyElectricity(payload: IVerifyElectricity) {
@@ -43,7 +43,7 @@ export class BillpaymentService {
   }
 
   async verifyEducation(payload: IVerifyEducation) {
-    return await this.req.axiosPost(`education/verificcation`, payload);
+    return await this.req.axiosPost(`education/verification`, payload);
   }
 
   async buyEducation(payload: IBuyEducation) {
@@ -51,7 +51,7 @@ export class BillpaymentService {
   }
 
   async verifyTV(payload: IVerifyTV) {
-    return await this.req.axiosPost(`tv/verificcation`, payload);
+    return await this.req.axiosPost(`tv/verification`, payload);
   }
 
   async buyTV(payload: IBuyTV) {
@@ -62,7 +62,7 @@ export class BillpaymentService {
   }
 
   async verifyBetting(payload: IVerifyBetting) {
-    return await this.req.axiosPost(`betting/verificcation`, payload);
+    return await this.req.axiosPost(`betting/verification`, payload);
   }
 
   async buyBetting(payload: IBuyBetting) {

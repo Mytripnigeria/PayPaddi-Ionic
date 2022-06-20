@@ -1,9 +1,74 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Buy Airtime</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">
+        Cancel
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Buy {{type}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <div class="form-default" >
 
+    <ion-list class="item-card-list" lines="none">
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="service" >
+        <ion-label color="tertiary" position="stacked">select Service</ion-label>
+        <ion-input (click)="chooseService()"  type="text" [readonly]="true" [value]="service.name"></ion-input>
+       
+      </ion-item>
+
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="variation " >
+        <ion-label color="tertiary" position="stacked">select Variation</ion-label>
+        <ion-input (click)="chooseVariation()"  type="text" [readonly]="true" [value]="variation.name"></ion-input>
+       
+      </ion-item>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="services " >
+        <ion-label color="tertiary" position="stacked">Amount(#)</ion-label>
+        <ion-input [(ngModel)]="amount"  type="tel" ></ion-input>
+       
+      </ion-item>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="amount && amount > 0 " >
+        <ion-label color="tertiary" position="stacked">Receiver Number</ion-label>
+        <ion-input [(ngModel)]="phoneNumber" (ngModelChange)="phoneNumChange($event)"  type="tel" ></ion-input>
+       
+      </ion-item>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
+        <ion-label color="tertiary" position="stacked">Meter Number</ion-label>
+        <ion-input [value]="verificationData.Meter_Number"  type="text" ></ion-input>
+       
+      </ion-item>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
+        <ion-label color="tertiary" position="stacked">Customer Name</ion-label>
+        <ion-input [value]="verificationData.Customer_Name"  type="text" ></ion-input>
+       
+      </ion-item>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
+        <ion-label color="tertiary" position="stacked">Customer Address</ion-label>
+        <ion-input [value]="verificationData.Address"  type="text" ></ion-input>
+       
+      </ion-item>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && (type=='cable' || type=='education')" >
+        <ion-label color="tertiary" position="stacked">Customer Name</ion-label>
+        <ion-input [value]="verificationData.Customer_Name"  type="text" ></ion-input>
+       
+      </ion-item>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='cable'" >
+        <ion-label color="tertiary" position="stacked">Decoder Number</ion-label>
+        <ion-input [value]="verificationData.Customer_Number"  type="text" ></ion-input>
+       
+      </ion-item>
+      </ion-list>
+      </div>
 </ion-content>
+
+
+<ion-footer class="modal-footer" collapse="fade">
+  <ion-toolbar color="secondary">
+    <form class="form-default">
+      <ion-button type="submit" expand="block" color="primary" (click)="confirmTransfer()" [disabled]="!amount || amount < 1">
+         <span >Buy</span>
+      </ion-button>
+    </form>
+  </ion-toolbar>

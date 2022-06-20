@@ -59,6 +59,80 @@ export class HomePage implements OnInit {
   async buyAirtime() {
     const modal = await this.modalController.create({
       component: BuyAirtimePage,
+      componentProps: {
+        type: 'airtime',
+        identifier: 'airtime',
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
+  async buyData() {
+    const modal = await this.modalController.create({
+      component: BuyAirtimePage,
+      componentProps: {
+        type: 'data',
+        identifier: 'data',
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
+  async buyElectricity() {
+    const modal = await this.modalController.create({
+      component: BuyAirtimePage,
+      componentProps: {
+        type: 'power',
+        identifier: 'electricity-bill',
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
+  async buyBetting() {
+    const modal = await this.modalController.create({
+      component: BuyAirtimePage,
+      componentProps: {
+        type: 'betting',
+        identifier: 'betting',
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
+  async buyEducation() {
+    const modal = await this.modalController.create({
+      component: BuyAirtimePage,
+      componentProps: {
+        type: 'education',
+        identifier: 'education',
+      },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
+  async buyCable() {
+    const modal = await this.modalController.create({
+      component: BuyAirtimePage,
+      componentProps: {
+        type: 'cable',
+        identifier: 'tv-subscription',
+      },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
