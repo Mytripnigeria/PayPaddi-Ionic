@@ -11,7 +11,7 @@
 
 <ion-content >
   <div class="ion-padding">
-
+    <p>Enter the verification code sent to your email address</p>
     <form class="form-default" [formGroup]="verification_form" >
 
       <ion-list class="item-card-list" lines="none">
@@ -34,7 +34,7 @@
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
     <form class="form-default" [formGroup]="verification_form" (submit)="activate()">
-      <ion-button type="submit" expand="block" color="primary">
+      <ion-button type="submit" [disabled]="verification_form.invalid" expand="block" color="primary">
         Activate
       </ion-button>
     </form>

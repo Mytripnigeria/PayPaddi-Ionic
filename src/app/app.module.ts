@@ -6,7 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 // ReactiveForms
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -26,6 +26,7 @@ import { CurrencyPipe } from '@angular/common';
   ],
   providers: [
     CurrencyPipe,
+    FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: DEFAULT_CURRENCY_CODE, useValue: '' },
   ],

@@ -107,13 +107,30 @@ ion-card-title {
 
 .transfer-modal > app-pin-verify{
   position: fixed;
+  height: 73vh;
+  top: 27vh;
+  background: var(--ion-color-secondary);
+  border-radius: 16px 16px 0 0;
+
+}
+.transfer-modal > app-verification-notice{
+  position: fixed;
+  height: 50vh;
+  top: 50vh;
+  background: var(--ion-color-secondary);
+  border-radius: 16px 16px 0 0;
+
+}
+.transfer-modal > app-bank-list{
+  position: fixed;
   height: 95vh;
   top: 5vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
 
 }
-.transfer-modal > app-bank-list{
+
+.transfer-modal > app-verifications{
   position: fixed;
   height: 95vh;
   top: 5vh;

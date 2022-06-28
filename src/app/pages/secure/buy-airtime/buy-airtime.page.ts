@@ -1,3 +1,4 @@
+import { DataService } from './../../../services/data/data.service';
 import {
   IBuyData,
   IBuyAirtime,
@@ -7,6 +8,8 @@ import {
   IVerifyElectricity,
   IVerifyTV,
   IBuyTV,
+  IVerifyBetting,
+  IBuyBetting,
 } from './../../../models/bills';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -23,11 +26,12 @@ import { PinVerifyPage } from '../pin-verify/pin-verify.page';
 })
 export class BuyAirtimePage implements OnInit {
   type = null;
+  verifying = false;
   variation = null;
   identifier = null;
   service = null;
   amount = null;
-  phoneNumber = null;
+  billersCode = null;
   verificationData = null;
   variations = [];
   services = [];
@@ -36,7 +40,8 @@ export class BuyAirtimePage implements OnInit {
     private bill: BillpaymentService,
     private modalController: ModalController,
     private toastService: ToastService,
-    private util: UtilityService
+    private util: UtilityService,
+    private dataService: DataService
   ) {}
 
   ngOnInit() {
@@ -46,18 +51,24 @@ export class BuyAirtimePage implements OnInit {
   }
 
   async getServices() {
-    const loader = await this.util.loader('getting services');
+    const loader = await this.util.loader('Getting Services');
     loader.present();
-    const response = await this.bill.getServicesByIdentifier(this.identifier);
+    let response = null;
+    if (this.type !== 'betting') {
+      response = await this.bill.getServicesByIdentifier(this.identifier);
+    } else {
+      response = await this.bill.getBetting();
+      console.log(response);
+    }
 
     if (response.result) {
       if (!response.result.data.error) {
         console.log(response);
         this.services = response.result.data.data;
         if (this.services && !response.result.data.data.errors) {
-          this.service = this.services[0];
-          if (this.type !== 'airtime')
-            await this.getVariations(this.services[0].serviceID, false);
+          // this.service = this.services[0];
+          //   if (this.type !== 'airtime')
+          //     await this.getVariations(this.services[0].serviceID, false);
         }
 
         loader.dismiss();
@@ -84,7 +95,7 @@ export class BuyAirtimePage implements OnInit {
   }
 
   async getVariations(serviceID, loading = true) {
-    const loader = await this.util.loader('getting variations');
+    const loader = await this.util.loader('Getting Packages');
     if (loading) loader.present();
 
     const response = await this.bill.getServicesByServiceID(serviceID);
@@ -132,6 +143,7 @@ export class BuyAirtimePage implements OnInit {
       componentProps: {
         services: this.services,
         type: 'services',
+        exception: this.type == 'betting' ? 'betting' : null,
       },
       cssClass: 'transfer-modal',
     });
@@ -141,9 +153,10 @@ export class BuyAirtimePage implements OnInit {
     console.log(data);
     if (data && data.service) {
       this.verificationData = null;
-      this.phoneNumber = null;
+      this.billersCode = null;
       this.service = data.service;
-      this.getVariations(data.service.serviceID);
+      if (this.type !== 'airtime' && this.type !== 'betting')
+        this.getVariations(data.service.serviceID);
     }
   }
 
@@ -194,7 +207,7 @@ export class BuyAirtimePage implements OnInit {
     console.log(this.variation);
     const payload: IBuyAirtime = {
       amount: this.amount,
-      phone: this.phoneNumber,
+      phone: this.billersCode,
       service_id: this.service.serviceID,
     };
     const response = await this.bill.buyAirtime(payload);
@@ -229,14 +242,14 @@ export class BuyAirtimePage implements OnInit {
     }
   }
   async buyData() {
-    const loader = await this.util.loader('purchasing');
+    const loader = await this.util.loader('Purchasing');
     loader.present();
     console.log(this.service);
     console.log(this.variation);
     const payload: IBuyData = {
-      amount: '100',
-      billers_code: '08102950347',
-      phone: `0${this.phoneNumber}`,
+      amount: this.amount,
+      billers_code: this.billersCode,
+      phone: this.dataService.userProfile.phone,
       service_id: this.service.serviceID,
       variation_code: this.variation.variation_code,
     };
@@ -272,11 +285,11 @@ export class BuyAirtimePage implements OnInit {
     }
   }
   async verifyEducation() {
-    const loader = await this.util.loader('verifying');
+    const loader = await this.util.loader('Verifying');
     loader.present();
     // if (this.service.serviceID == 'jamb') {
     const payload: IVerifyEducation = {
-      billers_code: '0123456789',
+      billers_code: this.billersCode,
       service_id: this.service.serviceID,
     };
 
@@ -311,15 +324,15 @@ export class BuyAirtimePage implements OnInit {
   }
 
   async verifyElectricity() {
-    const loader = await this.util.loader('verifying');
+    const loader = await this.util.loader('Verifying');
     loader.present();
 
     const payload: IVerifyElectricity = {
-      billers_code: '1111111111111',
+      billers_code: this.billersCode,
       service_id: this.service.serviceID,
       type: this.variation.variation_code,
       amount: this.amount,
-      phone: this.phoneNumber,
+      phone: this.dataService.userProfile.phone,
     };
 
     const response = await this.bill.verifyElectricity(payload);
@@ -352,11 +365,11 @@ export class BuyAirtimePage implements OnInit {
   }
 
   async verifyCable() {
-    const loader = await this.util.loader('verifying');
+    const loader = await this.util.loader('Verifying');
     loader.present();
 
     const payload: IVerifyTV = {
-      billers_code: 1212121212,
+      billers_code: this.billersCode,
       service_id: this.service.serviceID,
     };
 
@@ -388,15 +401,52 @@ export class BuyAirtimePage implements OnInit {
     }
   }
 
+  async verifyBetting() {
+    const loader = await this.util.loader('Verifying');
+    loader.present();
+
+    const payload: IVerifyBetting = {
+      biller: this.service,
+      better_id: this.billersCode,
+    };
+
+    const response = await this.bill.verifyBetting(payload);
+    if (response.result) {
+      loader.dismiss();
+      if (!response.result.data.error) {
+        // this.buyCable(loader);
+        this.verificationData = response.result.data.data;
+      } else {
+        loader.dismiss();
+        this.toastService.presentToast(
+          'Error',
+          'top',
+          'danger',
+          'Unable to complete transaction',
+          4000
+        );
+      }
+    } else {
+      loader.dismiss();
+      this.toastService.presentToast(
+        'Error',
+        'top',
+        'danger',
+        'Unable to complete transaction',
+        4000
+      );
+    }
+  }
+
   async buyEducation() {
-    const loader = await this.util.loader('purchasing');
+    const loader = await this.util.loader('Purchasing');
     loader.present();
     const payload: IBuyEducation = {
       service_id: this.service.serviceID,
       variation_code: this.variation.variation_code,
       amount: this.amount,
-      phone: this.phoneNumber,
-      billers_code: '1111111111111',
+      phone: this.dataService.userProfile.phone,
+      billers_code: this.billersCode,
     };
     const response = await this.bill.buyEducation(payload);
     if (response.result) {
@@ -432,14 +482,14 @@ export class BuyAirtimePage implements OnInit {
     }
   }
   async buyElectricity() {
-    const loader = await this.util.loader('purchasing');
+    const loader = await this.util.loader('Purchasing');
     loader.present();
     const payload: IBuyElectricity = {
-      billers_code: '1111111111111',
+      billers_code: this.billersCode,
       service_id: this.service.serviceID,
       type: this.variation.variation_code,
       amount: `${this.amount}`,
-      phone: this.phoneNumber,
+      phone: this.dataService.userProfile.phone,
     };
     const response = await this.bill.buyElectricity(payload);
     if (response.result) {
@@ -476,14 +526,14 @@ export class BuyAirtimePage implements OnInit {
   }
 
   async buyCable() {
-    const loader = await this.util.loader('purchasing');
+    const loader = await this.util.loader('Purchasing');
     loader.present();
     const payload: IBuyTV = {
-      billers_code: 1212121212,
+      billers_code: this.billersCode,
       service_id: this.service.serviceID,
       variation_code: this.variation.variation_code,
       amount: this.amount,
-      phone: this.phoneNumber,
+      phone: this.dataService.userProfile.phone,
     };
 
     const response = await this.bill.buyTV(payload);
@@ -519,8 +569,47 @@ export class BuyAirtimePage implements OnInit {
       );
     }
   }
-  buyBetting() {
-    console.log('buyBetting');
+  async buyBetting() {
+    const loader = await this.util.loader('Purchasing');
+    loader.present();
+    const payload: IBuyBetting = {
+      biller: this.service,
+      better_id: this.billersCode,
+      amount: this.amount,
+    };
+
+    const response = await this.bill.buyBetting(payload);
+    if (response.result) {
+      loader.dismiss();
+      if (!response.result.data.error) {
+        this.toastService.presentToast(
+          'Success',
+          'top',
+          'success',
+          response.result.data.message,
+          2000
+        );
+        this.modalController.dismiss({ reload: true });
+      } else {
+        loader.dismiss();
+        this.toastService.presentToast(
+          'Error',
+          'top',
+          'danger',
+          'Unable to complete transaction',
+          4000
+        );
+      }
+    } else {
+      loader.dismiss();
+      this.toastService.presentToast(
+        'Error',
+        'top',
+        'danger',
+        'Unable to complete transaction',
+        4000
+      );
+    }
   }
 
   buyBill() {
@@ -533,18 +622,31 @@ export class BuyAirtimePage implements OnInit {
     if (this.type == 'betting') this.buyBetting();
   }
 
-  phoneNumChange(ev) {
-    console.log(ev);
+  veriyBill() {
+    if (this.type == 'power') this.verifyElectricity();
+    if (this.type == 'education') this.verifyEducation();
+    if (this.type == 'cable') this.verifyCable();
+    if (this.type == 'betting') this.verifyBetting();
+  }
 
-    if (ev.length > 10) {
-      if (this.type == 'power') this.verifyElectricity();
-      if (this.type == 'cable') this.verifyCable();
-      if (this.type == 'education' && this.service.serviceID == 'jamb')
-        this.verifyEducation();
+  verifiable() {
+    if (
+      this.type == 'cable' ||
+      this.type == 'power' ||
+      this.type == 'betting' ||
+      (this.type == 'education' && this.service.serviceID == 'jamb')
+    ) {
+      if (!this.verificationData) {
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      // this.error();
-      this.verificationData = null;
-      console.log('less');
+      return true;
     }
+  }
+
+  phoneNumChange(ev) {
+    this.verificationData = null;
   }
 }

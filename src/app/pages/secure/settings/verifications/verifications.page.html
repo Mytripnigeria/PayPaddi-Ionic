@@ -22,7 +22,8 @@
           <p>Available Balance</p>
         </ion-label>
     
-        <ion-button (click)="verifyEmail()"  slot="end" class="verified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verified </ion-button>
+        <ion-button slot="end" *ngIf="userData?.is_email_verify"  class="verified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verified </ion-button>
+        <ion-button  *ngIf="!userData?.is_email_verify" (click)="verifyEmail()"  slot="end" class="unverified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
       </ion-item>
       <ion-item lines="full" button detail="false"  class="balance">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
@@ -33,7 +34,8 @@
           <p>Available Balance</p>
         </ion-label>
     
-        <ion-button (click)="verifyBVN()"  slot="end" class="unverified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
+        <ion-button *ngIf="userData?.is_kyc1_verify"  slot="end" class="verified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verified </ion-button>
+        <ion-button *ngIf="!userData?.is_kyc1_verify" (click)="verifyBVN()"  slot="end" class="unverified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
       </ion-item>
       <ion-item lines="full" button detail="false"  class="balance">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
@@ -44,7 +46,8 @@
           <p>Available Balance</p>
         </ion-label>
     
-        <ion-button (click)="verifyID()"  slot="end" class="unverified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
+        <ion-button *ngIf="userData?.is_kyc2_verify"   slot="end" class="verified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verified </ion-button>
+        <ion-button *ngIf="!userData?.is_kyc2_verify" (click)="verifyID()"  slot="end" class="unverified ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
       </ion-item>
     </ion-list>
   </div>

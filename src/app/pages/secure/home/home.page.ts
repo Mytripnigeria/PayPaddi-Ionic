@@ -1,3 +1,7 @@
+import { INOK } from './../../../models/nextOfKin';
+import { Router } from '@angular/router';
+import { ToastService } from './../../../services/toast/toast.service';
+import { TransactionsService } from './../../../services/transactions/transactions.service';
 import { BuyAirtimePage } from './../buy-airtime/buy-airtime.page';
 import { TabsPage } from './../../../tabs/tabs.page';
 import { UserService } from './../../../services/user/user.service';
@@ -10,6 +14,9 @@ import { PaymentDetailPage } from './../payments/payment-detail/payment-detail.p
 import { IonRouterOutlet, ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { SwiperOptions } from 'swiper';
+import * as moment from 'moment';
+import { VerificationNoticePage } from '../verification-notice/verification-notice.page';
+import { UpdatePinPage } from '../settings/update-pin/update-pin.page';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +26,9 @@ import { SwiperOptions } from 'swiper';
 export class HomePage implements OnInit {
   content_loaded: boolean = false;
   userData: IUser;
+  nextOfKin: INOK = null;
   userBalance: null;
+  transactions = [];
   config: SwiperOptions = {
     slidesPerView: 1,
     spaceBetween: 50,
@@ -29,26 +38,81 @@ export class HomePage implements OnInit {
   constructor(
     private routerOutlet: IonRouterOutlet,
     private tabs: TabsPage,
+    private router: Router,
     private modalController: ModalController,
     private dataService: DataService,
-    private userService: UserService
+    private userService: UserService,
+    private transactionService: TransactionsService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
     // Fake timeout
-    setTimeout(() => {
-      this.content_loaded = true;
-    }, 2000);
   }
 
   ionViewWillEnter() {
     console.log('came here oo');
     this.getUserWallet();
+    this.getAllTransactions();
     this.userData = this.dataService.getUserProfile();
+    this.nextOfKin = this.dataService.getUserNextofKin();
     console.log(this.userData);
   }
 
+  formatTime(date) {
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+  }
+
+  async updatePin() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: UpdatePinPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
+  goToCards() {
+    this.router.navigate(['/cards']);
+  }
+
+  async getAllTransactions() {
+    this.content_loaded = false;
+    const response = await this.transactionService.getAllTransactions();
+
+    if (response.result) {
+      if (!response.result.data.error) {
+        const transactionHolder: [] = response.result.data.data;
+        this.dataService.setTransactions(transactionHolder);
+        this.transactions = transactionHolder.reverse().slice(0, 20);
+        console.log(this.transactions);
+      } else {
+        this.toastService.presentToast(
+          'Error',
+          'top',
+          'danger',
+          'Couln not retrieve transactions',
+          2000
+        );
+      }
+    } else {
+      this.toastService.presentToast(
+        'Error',
+        'top',
+        'danger',
+        'Couln not retrieve transactions',
+        2000
+      );
+    }
+
+    this.content_loaded = true;
+    console.log('transactions===>', response);
+  }
+
   async getUserWallet() {
+    this.userBalance = null;
     const response = await this.userService.getUserWallet();
     console.log('wallet==>', response);
     if (response.result) {
@@ -57,93 +121,160 @@ export class HomePage implements OnInit {
   }
 
   async buyAirtime() {
-    const modal = await this.modalController.create({
-      component: BuyAirtimePage,
-      componentProps: {
-        type: 'airtime',
-        identifier: 'airtime',
-      },
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-    });
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: BuyAirtimePage,
+        componentProps: {
+          type: 'airtime',
+          identifier: 'airtime',
+        },
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
 
-    await modal.present();
+      await modal.present();
+      const { data } = await modal.onDidDismiss();
+      if (data && data.reload) {
+        this.getAllTransactions();
+        this.getUserWallet();
+      } else {
+        //nothing
+      }
+    } else {
+      this.verifyNotice('email');
+    }
   }
 
   async buyData() {
-    const modal = await this.modalController.create({
-      component: BuyAirtimePage,
-      componentProps: {
-        type: 'data',
-        identifier: 'data',
-      },
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-    });
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: BuyAirtimePage,
+        componentProps: {
+          type: 'data',
+          identifier: 'data',
+        },
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
 
-    await modal.present();
+      await modal.present();
+      const { data } = await modal.onDidDismiss();
+      if (data && data.reload) {
+        this.getAllTransactions();
+        this.getUserWallet();
+      } else {
+        //nothing
+      }
+    } else {
+      this.verifyNotice('email');
+    }
   }
 
   async buyElectricity() {
-    const modal = await this.modalController.create({
-      component: BuyAirtimePage,
-      componentProps: {
-        type: 'power',
-        identifier: 'electricity-bill',
-      },
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-    });
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: BuyAirtimePage,
+        componentProps: {
+          type: 'power',
+          identifier: 'electricity-bill',
+        },
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
 
-    await modal.present();
+      await modal.present();
+      const { data } = await modal.onDidDismiss();
+      if (data && data.reload) {
+        this.getAllTransactions();
+        this.getUserWallet();
+      } else {
+        //nothing
+      }
+    } else {
+      this.verifyNotice('email');
+    }
   }
 
   async buyBetting() {
-    const modal = await this.modalController.create({
-      component: BuyAirtimePage,
-      componentProps: {
-        type: 'betting',
-        identifier: 'betting',
-      },
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-    });
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: BuyAirtimePage,
+        componentProps: {
+          type: 'betting',
+          identifier: 'betting',
+        },
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
 
-    await modal.present();
+      await modal.present();
+      const { data } = await modal.onDidDismiss();
+      if (data && data.reload) {
+        this.getAllTransactions();
+        this.getUserWallet();
+      } else {
+        //nothing
+      }
+    } else {
+      this.verifyNotice('email');
+    }
   }
 
   async buyEducation() {
-    const modal = await this.modalController.create({
-      component: BuyAirtimePage,
-      componentProps: {
-        type: 'education',
-        identifier: 'education',
-      },
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-    });
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: BuyAirtimePage,
+        componentProps: {
+          type: 'education',
+          identifier: 'education',
+        },
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
 
-    await modal.present();
+      await modal.present();
+      const { data } = await modal.onDidDismiss();
+      if (data && data.reload) {
+        this.getAllTransactions();
+        this.getUserWallet();
+      } else {
+        //nothing
+      }
+    } else {
+      this.verifyNotice('email');
+    }
   }
 
   async buyCable() {
-    const modal = await this.modalController.create({
-      component: BuyAirtimePage,
-      componentProps: {
-        type: 'cable',
-        identifier: 'tv-subscription',
-      },
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-    });
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: BuyAirtimePage,
+        componentProps: {
+          type: 'cable',
+          identifier: 'tv-subscription',
+        },
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
 
-    await modal.present();
+      await modal.present();
+      const { data } = await modal.onDidDismiss();
+      if (data && data.reload) {
+        this.getAllTransactions();
+        this.getUserWallet();
+      } else {
+        //nothing
+      }
+    } else {
+      this.verifyNotice('email');
+    }
   }
 
-  async viewTransaction() {
+  async viewTransaction(transaction) {
     // Open filter modal
     const modal = await this.modalController.create({
       component: PaymentDetailPage,
+      componentProps: { transaction },
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
@@ -166,25 +297,31 @@ export class HomePage implements OnInit {
 
   async deposit() {
     // Open filter modal
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: DepositPage,
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
+
+      await modal.present();
+    } else {
+      this.verifyNotice('email');
+    }
+  }
+
+  async verifyNotice(type) {
+    // Open filter modal
     const modal = await this.modalController.create({
-      component: DepositPage,
+      component: VerificationNoticePage,
       swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
+      componentProps: { type },
+      cssClass: 'transfer-modal',
     });
-
     await modal.present();
-
-    // Apply filter from modal
-    let { data } = await modal.onWillDismiss();
-
-    if (data) {
-      // Reload
-      this.content_loaded = false;
-
-      // Fake timeout
-      setTimeout(() => {
-        this.content_loaded = true;
-      }, 2000);
+    const { data } = await modal.onWillDismiss();
+    if (data && data.verify) {
+      this.verify();
     }
   }
 

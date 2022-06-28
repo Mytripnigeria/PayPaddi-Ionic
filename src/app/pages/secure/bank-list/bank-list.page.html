@@ -18,12 +18,19 @@
 
   <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="type=='services'" >
     <ion-item button detail="false" (click)="selectService(service)" *ngFor="let service of services" >
-  <ion-avatar>
+  <ion-avatar *ngIf="!exception">
     <img [src]="service.image" />
+    <ion-icon *ngIf="exception" name="football-outline"></ion-icon>
   </ion-avatar>
-      <ion-label>
+  <ion-avatar class="noLogo" *ngIf="exception">
+    <ion-icon *ngIf="exception" name="football-outline"></ion-icon>
+  </ion-avatar>
+      <ion-label *ngIf="!exception" >
        {{service.name}}
-      </ion-label>      
+      </ion-label> 
+      <ion-label *ngIf="exception" >
+        {{service}}
+       </ion-label>      
     </ion-item>
     </ion-list>
 

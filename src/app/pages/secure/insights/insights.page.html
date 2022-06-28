@@ -66,7 +66,7 @@
     </ion-list-header>
 
     <!-- Skeletons -->
-    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="!content_loaded">
+    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="!categories">
       <ion-item button detail="false" *ngFor="let i of [].constructor(4);">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-skeleton-text animated></ion-skeleton-text>
@@ -83,47 +83,18 @@
       </ion-item>
     </ion-list>
 
-    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="content_loaded">
-      <ion-item button detail="false">
+    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="categories">
+      <ion-item button detail="false" *ngFor="let transaction of categories" >
         <ion-avatar slot="start" class="ion-avatar-default-icon">
-          <ion-icon color="primary" name="home"></ion-icon>
+          <ion-icon color="primary" name="layers-outline"></ion-icon>
         </ion-avatar>
         <ion-label>
-          <h3>Home & living</h3>
-          <p class="font-size-smallest">1 transaction</p>
+          <h3>{{transaction.category}}</h3>
+          <p class="font-size-smallest">{{transaction.transactions.length}} transaction</p>
         </ion-label>
-        <ion-note color="primary" class="ion-note-small font-weight-500 ion-padding-end-small">$1,021</ion-note>
+        <ion-note color="primary" class="ion-note-small font-weight-500 ion-padding-end-small">₦{{sumTransaction(transaction.transactions) | currency}}</ion-note>
       </ion-item>
-      <ion-item button detail="false">
-        <ion-avatar slot="start" class="ion-avatar-default-icon">
-          <ion-icon color="primary" name="wallet"></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          <h3>Loans</h3>
-          <p class="font-size-smallest">2 transactions</p>
-        </ion-label>
-        <ion-note color="primary" class="ion-note-small font-weight-500 ion-padding-end-small">$407.21</ion-note>
-      </ion-item>
-      <ion-item button detail="false">
-        <ion-avatar slot="start" class="ion-avatar-default-icon">
-          <ion-icon color="primary" name="barbell"></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          <h3>Sports</h3>
-          <p class="font-size-smallest">1 transaction</p>
-        </ion-label>
-        <ion-note color="primary" class="ion-note-small font-weight-500 ion-padding-end-small">$17.99</ion-note>
-      </ion-item>
-      <ion-item button detail="false">
-        <ion-avatar slot="start" class="ion-avatar-default-icon">
-          <ion-icon color="primary" name="medkit"></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          <h3>Insurance</h3>
-          <p class="font-size-smallest">3 transactions</p>
-        </ion-label>
-        <ion-note color="primary" class="ion-note-small font-weight-500 ion-padding-end-small">$140.15</ion-note>
-      </ion-item>
+     
     </ion-list>
 
   </div>

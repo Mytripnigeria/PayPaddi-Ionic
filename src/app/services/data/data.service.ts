@@ -15,6 +15,7 @@ export class DataService {
   accounts: [];
   beneficiaries: [];
   cards: ICard[];
+  transactions = [];
   banks: [];
   constructor(
     private userService: UserService,
@@ -63,6 +64,13 @@ export class DataService {
   }
   getUserNextofKin() {
     return this.nextOfKin;
+  }
+  async setTransactions(data) {
+    this.transactions = data;
+  }
+
+  getTransactions() {
+    return this.transactions.reverse();
   }
 
   async commitUser() {

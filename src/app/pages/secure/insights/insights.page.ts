@@ -1,3 +1,4 @@
+import { DataService } from './../../../services/data/data.service';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
@@ -103,15 +104,64 @@ export class InsightsPage implements OnInit {
   public bar_chart_type: ChartType = 'bar';
 
   content_loaded: boolean = false;
-
+  transactions;
+  categories;
   constructor(
     private helperService: HelperService,
+    private dataService: DataService,
     private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
     // Create bar chart
     this.createBarChart();
+    this.categories = this.getCategories();
+    console.log(this.categories);
+  }
+
+  getCategories() {
+    //     VIRTUAL_CARD
+    // FUND_VIRTUAL_CARD
+    // WITHDRAW_VIRTUAL_CARD
+    // LOCAL_BANK_TRANSFER
+    // LOCAL_FUND_TRANSFER
+    // BETTING
+    // ELECTRICITY
+    // CABLE
+    // EDUCATION
+    // DATA
+    // AIRTIME
+    const transactionsHolder = this.dataService.getTransactions();
+    this.transactions = transactionsHolder.reduce((groups, transaction) => {
+      const segment = transaction.action;
+      if (!groups[segment]) {
+        groups[segment] = [];
+      }
+
+      //form sub group array
+      groups[segment].push(transaction);
+      return groups;
+    }, {});
+    const groupArrays = Object.keys(this.transactions).map((segment) => {
+      return {
+        category: segment,
+        transactions: this.transactions[segment],
+      };
+    });
+    console.log(this.transactions);
+    console.log(groupArrays);
+    return groupArrays;
+  }
+
+  sumTransaction(transactions) {
+    console.log;
+    var sum = 0;
+
+    // Calculation the sum using forEach
+    transactions.forEach((x) => {
+      sum += parseFloat(x.amount);
+    });
+    return sum;
   }
 
   ionViewDidEnter() {

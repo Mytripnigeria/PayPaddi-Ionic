@@ -53,115 +53,55 @@
 
     </ng-container>
 
-    <ng-container *ngIf="content_loaded">
+    <ng-container *ngIf="content_loaded" >
 
-      <ion-list-header class="ion-list-header-small">
-        <ion-label>June, 2022</ion-label>
-        <ion-note color="tertiary" class="ion-note-small">$3,321</ion-note>
-      </ion-list-header>
-      <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="cafe"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Coffee</h3>
-            <p>Starbucks</p>
-          </ion-label>
-          <ion-badge color="danger" mode="ios" slot="end">- $8.60</ion-badge>
-        </ion-item>
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="business"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Salary</h3>
-            <p>Apple Inc.</p>
-          </ion-label>
-          <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>
-        </ion-item>
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="home"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Rent</h3>
-            <p>Housing Inc.</p>
-          </ion-label>
-          <ion-badge color="danger" mode="ios" slot="end">- $1400.00</ion-badge>
-        </ion-item>
-      </ion-list>
-  
-      <hr class="hr-medium">
-  
-      <ion-list-header class="ion-list-header-small">
-        <ion-label>May, 2022</ion-label>
-        <ion-note color="tertiary" class="ion-note-small">- $105,91</ion-note>
-      </ion-list-header>
-      <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="school"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Student loan</h3>
-            <p>Student Loans Company</p>
-          </ion-label>
-          <ion-badge color="danger" mode="ios" slot="end">- $680.60</ion-badge>
-        </ion-item>
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="car"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Car loan</h3>
-            <p>Car Company Inc.</p>
-          </ion-label>
-          <ion-badge color="danger" mode="ios" slot="end">- $230.00</ion-badge>
-        </ion-item>
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="business"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Salary</h3>
-            <p>Apple Inc.</p>
-          </ion-label>
-          <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>
-        </ion-item>
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="logo-amazon"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Samsung TV</h3>
-            <p>Amazon</p>
-          </ion-label>
-          <ion-badge color="danger" mode="ios" slot="end">- $1230.00</ion-badge>
-        </ion-item>
-      </ion-list>
-  
-      <hr class="hr-medium">
-  
-      <ion-list-header class="ion-list-header-small">
-        <ion-label>April, 2022</ion-label>
-        <ion-note color="tertiary" class="ion-note-small">$8412,48</ion-note>
-      </ion-list-header>
-      <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
-        <ion-item button detail="false" (click)="viewDetail()">
-          <ion-avatar slot="start" class="ion-avatar-default-icon">
-            <ion-icon name="business"></ion-icon>
-          </ion-avatar>
-          <ion-label>
-            <h3>Salary</h3>
-            <p>Apple Inc.</p>
-          </ion-label>
-          <ion-badge color="medium" mode="ios" slot="end">$8412.48</ion-badge>
-        </ion-item>
-      </ion-list>
-
+      <ng-container *ngFor="let transaction of transactions" >
+        <ion-list-header class="ion-list-header-small"  >
+          <ion-label>{{transaction.segment}}</ion-label>
+          <!-- <ion-note color="tertiary" class="ion-note-small">$8412,48</ion-note> -->
+        </ion-list-header>
+        <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
+          <ion-item button detail="false" (click)="viewDetail(item)" *ngFor="let item of transaction.transactions"  >
+            <ion-avatar *ngIf="item.extra && (item.extra.logo || item.extra.logo !=='')"  slot="start" class="ion-avatar-default-icon">
+              <img [src]="item.extra.logo" alt="">
+            </ion-avatar>
+            <ion-avatar *ngIf="item.extra && (!item.extra.logo || item.extra.logo == '')" slot="start" class="ion-avatar-default-icon">
+              <ion-icon *ngIf="item.action=='BETTING'" name="football-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='EDUCATION'"  name="school-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='ELECTRICITY'" name="bulb"></ion-icon>
+              <ion-icon *ngIf="item.action=='AIRTIME'" name="phone-portrait-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='DATA'" name="phone-portrait-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='CABLE'" name="tv-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='LOCAL_FUND_TRANSFER'" name="wallet-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='LOCAL_BANK_TRANSFER'" name="swap-horizontal-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='WITHDRAW_VIRTUAL_CARD'" name="card-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='FUND_VIRTUAL_CARD'" name="card-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='VIRTUAL_CARD'" name="card-outline"></ion-icon>
+            </ion-avatar>
+            <ion-avatar *ngIf="!item.extra" slot="start" class="ion-avatar-default-icon">
+              <ion-icon *ngIf="item.action=='LOCAL_FUND_TRANSFER'" name="wallet-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='LOCAL_BANK_TRANSFER'" name="swap-horizontal-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='WITHDRAW_VIRTUAL_CARD'" name="card-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='FUND_VIRTUAL_CARD'" name="card-outline"></ion-icon>
+              <ion-icon *ngIf="item.action=='VIRTUAL_CARD'" name="card-outline"></ion-icon>
+              </ion-avatar>
+            <ion-label>
+              <h3 *ngIf="item.extra" >{{item.extra.name || item.extra.account_name}}</h3>
+              <h3 *ngIf="!item.extra" >{{item.action}}</h3>
+          <p>{{formatTime(item.created_at)}}</p>
+            </ion-label>
+           
+            <ion-badge *ngIf="item.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{item.amount}}</ion-badge>
+            <ion-badge *ngIf="item.type=='CREDIT'"  color="success" mode="ios" slot="end"> ₦{{item.amount}}</ion-badge>
+          </ion-item>
+          </ion-list>
+      </ng-container>
+     
+       
     </ng-container>
 
   </div>
 
 </ion-content>
+
+

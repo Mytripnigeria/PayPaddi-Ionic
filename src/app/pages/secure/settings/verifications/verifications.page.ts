@@ -1,3 +1,5 @@
+import { IUser } from './../../../../models/user';
+import { DataService } from './../../../../services/data/data.service';
 import { IdVerificationPage } from './id-verification/id-verification.page';
 import { BvnVerificationPage } from './bvn-verification/bvn-verification.page';
 import { VerificationPage } from './../../home/verification/verification.page';
@@ -10,9 +12,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./verifications.page.scss'],
 })
 export class VerificationsPage implements OnInit {
-  constructor(private modalController: ModalController) {}
+  userData: IUser;
+  constructor(
+    private modalController: ModalController,
+    private dataService: DataService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userData = this.dataService.getUserProfile();
+    console.log(this.userData);
+  }
 
   back() {
     this.modalController.dismiss();
@@ -25,6 +34,11 @@ export class VerificationsPage implements OnInit {
     });
 
     await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data && data.email) {
+      this.userData.is_email_verify = 1;
+      this.dataService.commitUser();
+    }
   }
   async verifyBVN() {
     const modal = await this.modalController.create({

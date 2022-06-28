@@ -12,44 +12,466 @@
 <ion-content>
 
   <div class="ion-padding">
-
+    
     <ion-list-header class="ion-list-header-small">
       <ion-label>Information</ion-label>
     </ion-list-header>
 
-    <ion-list class="list-custom" lines="full">
-      <ion-item>
-        <ion-label>
-          <p>Amount</p>
-        </ion-label>
-        <ion-badge color="danger" mode="ios" slot="end">- $8.60</ion-badge>
-      </ion-item>
+    <ion-list class="list-custom" lines="full" *ngIf="transaction.action=='AIRTIME' || transaction.action=='DATA'"   id="capture">
       <ion-item>
         <ion-label>
           <p>Status</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="Completed"></ion-input>
+        <p class="detail">{{transaction.status}}</p>
       </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Service</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Phone Number</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.biller_code}}</p>
+      </ion-item>
+
       <ion-item>
         <ion-label>
           <p>Date</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="01 June, 2022 / 09:21"></ion-input>
+        <p class="detail">{{formatTime(transaction.created_at)}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Amount</p>
+        </ion-label>
+        <ion-badge *ngIf="transaction.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{transaction.extra.amount}}</ion-badge>
+        <ion-badge *ngIf="transaction.type=='CREDIT'" color="success" mode="ios" slot="end"> ₦{{transaction.extra.amount}}</ion-badge>
+      </ion-item>
+     
+      <ion-item>
+        <ion-label>
+          <p>Fee</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.fee}}</p>
       </ion-item>
       <ion-item>
         <ion-label>
-          <p>Merchant</p>
+          <p>Total Amount</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="Starbucks New York"></ion-input>
+        <p class="detail">{{transaction.extra.total_amount}}</p>
       </ion-item>
       <ion-item>
         <ion-label>
-          <p>Transaction-ID</p>
+          <p>Transaction ID</p>
         </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" value="848-14E-11V"></ion-input>
+        <p class="detail">{{transaction.extra.transaction_id}}</p>
       </ion-item>
+
     </ion-list>
 
+
+    <ion-list class="list-custom" lines="full" *ngIf="transaction.action=='ELECTRICITY'"   id="capture">
+      <ion-item>
+        <ion-label>
+          <p>Status</p>
+        </ion-label>
+        <p class="detail">{{transaction.status}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Service</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Meter Number</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.biller_code}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Token</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.token}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Unit</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.unit}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Date</p>
+        </ion-label>
+        <p class="detail">{{formatTime(transaction.created_at)}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Amount</p>
+        </ion-label>
+        <ion-badge *ngIf="transaction.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{transaction.extra.amount}}</ion-badge>
+        <ion-badge *ngIf="transaction.type=='CREDIT'" color="success" mode="ios" slot="end"> ₦{{transaction.extra.amount}}</ion-badge>
+      </ion-item>
+     
+      <ion-item>
+        <ion-label>
+          <p>Fee</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.fee}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Total Amount</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.total_amount}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Transaction ID</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.transaction_id}}</p>
+      </ion-item>
+
+    </ion-list>
+
+  
+
+    <ion-list class="list-custom" lines="full" *ngIf="transaction.action=='CABLE'"   id="capture">
+      <ion-item>
+        <ion-label>
+          <p>Status</p>
+        </ion-label>
+        <p class="detail">{{transaction.status}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Service</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Decoder Number</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.biller_code}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>
+          <p>Date</p>
+        </ion-label>
+        <p class="detail">{{formatTime(transaction.created_at)}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Amount</p>
+        </ion-label>
+        <ion-badge *ngIf="transaction.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{transaction.extra.amount}}</ion-badge>
+        <ion-badge *ngIf="transaction.type=='CREDIT'" color="success" mode="ios" slot="end"> ₦{{transaction.extra.amount}}</ion-badge>
+      </ion-item>
+     
+      <ion-item>
+        <ion-label>
+          <p>Fee</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.fee}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Total Amount</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.total_amount}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Transaction ID</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.transaction_id}}</p>
+      </ion-item>
+
+    </ion-list>
+
+
+    <ion-list class="list-custom" lines="full" *ngIf="transaction.action=='EDUCATION'"   id="capture">
+      <ion-item>
+        <ion-label>
+          <p>Status</p>
+        </ion-label>
+        <p class="detail">{{transaction.status}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Service</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>REG Number</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.biller_code}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>REG Number</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.token}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>
+          <p>Date</p>
+        </ion-label>
+        <p class="detail">{{formatTime(transaction.created_at)}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Amount</p>
+        </ion-label>
+        <ion-badge *ngIf="transaction.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{transaction.extra.amount}}</ion-badge>
+        <ion-badge *ngIf="transaction.type=='CREDIT'" color="success" mode="ios" slot="end"> ₦{{transaction.extra.amount}}</ion-badge>
+      </ion-item>
+     
+      <ion-item>
+        <ion-label>
+          <p>Fee</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.fee}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Total Amount</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.total_amount}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Transaction ID</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.transaction_id}}</p>
+      </ion-item>
+
+    </ion-list>
+
+
+
+    <ion-list class="list-custom" lines="full" *ngIf="transaction.action=='EDUCATION'"   id="capture">
+      <ion-item>
+        <ion-label>
+          <p>Status</p>
+        </ion-label>
+        <p class="detail">{{transaction.status}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Service</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Bettor Number</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.biller_code}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Bettor Name</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.biller_name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>REG Number</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.token}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>
+          <p>Date</p>
+        </ion-label>
+        <p class="detail">{{formatTime(transaction.created_at)}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Amount</p>
+        </ion-label>
+        <ion-badge *ngIf="transaction.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{transaction.extra.amount}}</ion-badge>
+        <ion-badge *ngIf="transaction.type=='CREDIT'" color="success" mode="ios" slot="end"> ₦{{transaction.extra.amount}}</ion-badge>
+      </ion-item>
+     
+      <ion-item>
+        <ion-label>
+          <p>Fee</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.fee}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Total Amount</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.total_amount}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Transaction ID</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.transaction_id}}</p>
+      </ion-item>
+
+    </ion-list>
+
+
+
+
+    <ion-list class="list-custom" lines="full" *ngIf="transaction.action=='LOCAL_BANK_TRANSFER' || transaction.action =='LOCAL_FUND_TRANSFER'"   id="capture">
+      <ion-item>
+        <ion-label>
+          <p>Status</p>
+        </ion-label>
+        <p class="detail">{{transaction.status}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Receiver Bank</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.bank_name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Receiver ID</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.account_number}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Receiver Name</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.account_name}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Narration</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.narration}}</p>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>
+          <p>Date</p>
+        </ion-label>
+        <p class="detail">{{formatTime(transaction.created_at)}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Amount</p>
+        </ion-label>
+        <ion-badge *ngIf="transaction.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{transaction.extra.amount}}</ion-badge>
+        <ion-badge *ngIf="transaction.type=='CREDIT'" color="success" mode="ios" slot="end"> ₦{{transaction.extra.amount}}</ion-badge>
+      </ion-item>
+     
+      <ion-item>
+        <ion-label>
+          <p>Fee</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.fee}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Total Amount</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.total_amount}}</p>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Transaction ID</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.transaction_id}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Session ID</p>
+        </ion-label>
+        <p class="detail">{{transaction.extra.session_id}}</p>
+      </ion-item>
+
+    </ion-list>
+
+
+<ion-list class="list-custom" lines="full" *ngIf="transaction.action=='VIRTUAL_CARD' || transaction.action =='FUND_VIRTUAL_CARD' || transaction.action =='WITHDRAW_VIRTUAL_CARD'"   id="capture">
+
+<ion-item>
+  <ion-label>
+    <p>Status</p>
+  </ion-label>
+  <p class="detail">{{transaction.status}}</p>
+</ion-item>
+
+<ion-item>
+  <ion-label>
+    <p>Description</p>
+  </ion-label>
+  <p class="detail">{{transaction.description}}</p>
+</ion-item>
+
+
+  <ion-item>
+    <ion-label>
+      <p>Date</p>
+    </ion-label>
+    <p class="detail">{{formatTime(transaction.created_at)}}</p>
+  </ion-item>
+  <ion-item>
+  <ion-label>
+    <p>Total Amount</p>
+  </ion-label>
+  <p class="detail">{{transaction.amount}}</p>
+</ion-item>
+<ion-item>
+  <ion-label>
+    <p>Transaction ID</p>
+  </ion-label>
+  <p class="detail">{{transaction.reference}}</p>
+</ion-item>
+
+</ion-list>
     <hr class="hr-medium">
 
     <ion-list-header class="ion-list-header-small">
@@ -65,7 +487,7 @@
           <h3>Download Receipt</h3>
           <p class="font-size-smallest">Download digital invoice</p>
         </ion-label>
-        <ion-button slot="end">
+        <ion-button slot="end" (click)="capture()">
           Download
         </ion-button>
       </ion-item>

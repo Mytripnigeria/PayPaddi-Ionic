@@ -98,6 +98,16 @@ margin: 10px 0 !important;
             color: #cfcbcb;
         }
     }
+
+   & >  ion-avatar{
+        margin: 0 10px 0 0;
+    }
+
+  
+}
+
+.verificationBanner::part(native){
+    padding: 0 5px;
 }
 
 .swiper-cards{

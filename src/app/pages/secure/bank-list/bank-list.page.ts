@@ -15,6 +15,7 @@ export class BankListPage implements OnInit {
   beneficiariesCopy = [];
   services = null;
   servicesCopy = [];
+  exception = null;
   variationsCopy = [];
   type = null;
   constructor(
@@ -30,6 +31,7 @@ export class BankListPage implements OnInit {
 
   ngOnInit() {
     this.type = this.navParam.data.type;
+    this.exception = this.navParam.data.exception;
     console.log('the type', this.type);
 
     if (this.type == 'Bank') {

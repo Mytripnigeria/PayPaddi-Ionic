@@ -24,6 +24,9 @@ import {
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { AddPage } from './add/add.page';
 import { CardsService } from 'src/app/services/cards/cards.service';
+import { VerificationsPage } from '../settings/verifications/verifications.page';
+import { VerificationNoticePage } from '../verification-notice/verification-notice.page';
+import { IUser } from 'src/app/models/user';
 SwiperCore.use([Pagination]);
 
 @Component({
@@ -33,7 +36,7 @@ SwiperCore.use([Pagination]);
 })
 export class CardsPage implements AfterContentChecked {
   @ViewChild('swiper') swiper: SwiperComponent;
-
+  userData: IUser;
   // Swiper config
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -63,6 +66,10 @@ export class CardsPage implements AfterContentChecked {
     if (this.swiper) {
       this.swiper.updateSwiper({});
     }
+  }
+
+  ngOnInit() {
+    this.userData = this.dataService.getUserProfile();
   }
 
   refreshCards() {}
@@ -124,19 +131,48 @@ export class CardsPage implements AfterContentChecked {
   // Add card
   async addCard() {
     // Open filter modal
+    if (this.userData.is_email_verify) {
+      const modal = await this.modalController.create({
+        component: AddPage,
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
+      await modal.present();
+      const data = await modal.onDidDismiss();
+      if (data.data) {
+        if (data.data.reload) {
+          this.sync(true);
+        }
+      }
+    } else {
+      this.verifyNotice('email');
+    }
+  }
 
+  async verifyNotice(type) {
+    // Open filter modal
     const modal = await this.modalController.create({
-      component: AddPage,
+      component: VerificationNoticePage,
+      swipeToClose: true,
+      componentProps: { type },
+      cssClass: 'transfer-modal',
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data && data.verify) {
+      this.verify();
+    }
+  }
+
+  async verify() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: VerificationsPage,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
+
     await modal.present();
-    const data = await modal.onDidDismiss();
-    if (data.data) {
-      if (data.data.reload) {
-        this.sync(true);
-      }
-    }
   }
 
   async cardDetail() {

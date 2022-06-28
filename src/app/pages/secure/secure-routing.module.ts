@@ -65,6 +65,10 @@ const routes: Routes = [
         (m) => m.BuyAirtimePageModule
       ),
   },
+  {
+    path: 'verification-notice',
+    loadChildren: () => import('./verification-notice/verification-notice.module').then( m => m.VerificationNoticePageModule)
+  },
 ];
 
 @NgModule({

@@ -1,3 +1,4 @@
+import { DataService } from './../services/data/data.service';
 import { BankTransferPage } from './../pages/secure/bank-transfer/bank-transfer.page';
 import { Component } from '@angular/core';
 import {
@@ -6,6 +7,8 @@ import {
   IonRouterOutlet,
 } from '@ionic/angular';
 import { WalletTransferPage } from '../pages/secure/wallet-transfer/wallet-transfer.page';
+import { VerificationsPage } from '../pages/secure/settings/verifications/verifications.page';
+import { VerificationNoticePage } from '../pages/secure/verification-notice/verification-notice.page';
 
 @Component({
   selector: 'app-tabs',
@@ -16,7 +19,8 @@ export class TabsPage {
   constructor(
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private dataService: DataService
   ) {}
 
   // Select action
@@ -58,35 +62,71 @@ export class TabsPage {
   }
 
   async sendToWallet() {
+    const userData = this.dataService.getUserProfile();
+    if (userData.is_email_verify && userData.is_kyc1_verify) {
+      // Open filter modal
+      const modal = await this.modalController.create({
+        component: WalletTransferPage,
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
+
+      await modal.present();
+
+      // Apply filter from modal
+      let { data } = await modal.onWillDismiss();
+      if (data && data.reload) {
+        // await this.home.getUserWallet();
+      }
+    } else {
+      this.verifyNotice('kyc');
+    }
+  }
+
+  async verify() {
     // Open filter modal
     const modal = await this.modalController.create({
-      component: WalletTransferPage,
+      component: VerificationsPage,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
     });
 
     await modal.present();
+  }
 
-    // Apply filter from modal
-    let { data } = await modal.onWillDismiss();
-    if (data && data.reload) {
-      // await this.home.getUserWallet();
+  async verifyNotice(type) {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: VerificationNoticePage,
+      componentProps: { type },
+      swipeToClose: true,
+      cssClass: 'transfer-modal',
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data && data.verify) {
+      this.verify();
     }
   }
 
   async sendToBank() {
-    const modal = await this.modalController.create({
-      component: BankTransferPage,
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-    });
+    const userData = this.dataService.getUserProfile();
+    if (userData.is_email_verify && userData.is_kyc1_verify) {
+      const modal = await this.modalController.create({
+        component: BankTransferPage,
+        swipeToClose: true,
+        presentingElement: this.routerOutlet.nativeEl,
+      });
 
-    await modal.present();
+      await modal.present();
 
-    // Apply filter from modal
-    let { data } = await modal.onWillDismiss();
-    if (data && data.reload) {
-      // await this.home.getUserWallet();
+      // Apply filter from modal
+      let { data } = await modal.onWillDismiss();
+      if (data && data.reload) {
+        // await this.home.getUserWallet();
+      }
+    } else {
+      this.verifyNotice('kyc');
     }
   }
 }

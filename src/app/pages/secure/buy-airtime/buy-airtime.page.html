@@ -13,52 +13,59 @@
   <div class="form-default" >
 
     <ion-list class="item-card-list" lines="none">
-      <ion-item class="animate__animated animate__fadeIn " *ngIf="service" >
-        <ion-label color="tertiary" position="stacked">select Service</ion-label>
-        <ion-input (click)="chooseService()"  type="text" [readonly]="true" [value]="service.name"></ion-input>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="services"  >
+        <ion-avatar slot="start" *ngIf="service" style="margin-top:20px">
+          <img [src]="service?.image" />
+        </ion-avatar>
+        <ion-label color="tertiary" position="stacked">Select Service</ion-label>
+        <ion-input (click)="chooseService()"  type="text" [readonly]="true" [value]="type !== 'betting'?service?.name:service"></ion-input>
        
       </ion-item>
 
-      <ion-item class="animate__animated animate__fadeIn " *ngIf="variation " >
-        <ion-label color="tertiary" position="stacked">select Variation</ion-label>
-        <ion-input (click)="chooseVariation()"  type="text" [readonly]="true" [value]="variation.name"></ion-input>
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="service && variations.length > 0" >
+        <ion-label color="tertiary" position="stacked">Select Package</ion-label>
+        <ion-input (click)="chooseVariation()"  type="text" [readonly]="true" [value]="variation?.name"></ion-input>
        
       </ion-item>
       <ion-item class="animate__animated animate__fadeIn " *ngIf="services " >
-        <ion-label color="tertiary" position="stacked">Amount(#)</ion-label>
+        <ion-label color="tertiary" position="stacked">Amount(₦)</ion-label>
         <ion-input [(ngModel)]="amount"  type="tel" ></ion-input>
        
       </ion-item>
       <ion-item class="animate__animated animate__fadeIn " *ngIf="amount && amount > 0 " >
-        <ion-label color="tertiary" position="stacked">Receiver Number</ion-label>
-        <ion-input [(ngModel)]="phoneNumber" (ngModelChange)="phoneNumChange($event)"  type="tel" ></ion-input>
-       
+        <ion-label color="tertiary" position="stacked">Number</ion-label>
+        <ion-input [(ngModel)]="billersCode"  type="tel" (ngModelChange)="phoneNumChange($event)"></ion-input>
+        <ion-button  *ngIf="type=='cable' || type=='power' || type == 'betting' || (type=='education' && service.serviceID == 'jamb')"  (click)="veriyBill()" [disabled]="verifying"  slot="end" class="verify ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
       </ion-item>
-      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
+      <!-- <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
         <ion-label color="tertiary" position="stacked">Meter Number</ion-label>
         <ion-input [value]="verificationData.Meter_Number"  type="text" ></ion-input>
-       
-      </ion-item>
-      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
+      </ion-item> -->
+
+      <!-- <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
         <ion-label color="tertiary" position="stacked">Customer Name</ion-label>
-        <ion-input [value]="verificationData.Customer_Name"  type="text" ></ion-input>
+        <ion-input [readonly]="true" [value]="verificationData.Customer_Name"  type="text" ></ion-input>
        
-      </ion-item>
+      </ion-item> -->
       <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='power'" >
         <ion-label color="tertiary" position="stacked">Customer Address</ion-label>
-        <ion-input [value]="verificationData.Address"  type="text" ></ion-input>
+        <ion-input [readonly]="true" [value]="verificationData.Address"  type="text" ></ion-input>
        
       </ion-item>
-      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && (type=='cable' || type=='education')" >
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='betting'" >
         <ion-label color="tertiary" position="stacked">Customer Name</ion-label>
-        <ion-input [value]="verificationData.Customer_Name"  type="text" ></ion-input>
+        <ion-input [readonly]="true" [value]="verificationData.name"  type="text" ></ion-input>
        
       </ion-item>
-      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='cable'" >
+      <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && (type=='cable' || type=='power' || type=='education')" >
+        <ion-label color="tertiary" position="stacked">Customer Name</ion-label>
+        <ion-input [readonly]="true" [value]="verificationData.Customer_Name"  type="text" ></ion-input>
+       
+      </ion-item>
+      <!-- <ion-item class="animate__animated animate__fadeIn " *ngIf="verificationData && type=='cable'" >
         <ion-label color="tertiary" position="stacked">Decoder Number</ion-label>
         <ion-input [value]="verificationData.Customer_Number"  type="text" ></ion-input>
-       
-      </ion-item>
+      </ion-item> -->
       </ion-list>
       </div>
 </ion-content>
@@ -67,8 +74,11 @@
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar color="secondary">
     <form class="form-default">
-      <ion-button type="submit" expand="block" color="primary" (click)="confirmTransfer()" [disabled]="!amount || amount < 1">
-         <span >Buy</span>
+      <ion-button type="submit" *ngIf="type!=='airtime' && type !== 'data'" expand="block" color="primary" (click)="confirmTransfer()" [disabled]="!amount || amount < 1 || !billersCode || billersCode < 4 || !verifiable()">
+        <span >Purchase</span>
+      </ion-button>
+        <ion-button type="submit" *ngIf="type=='airtime' || type == 'data'"  expand="block" color="primary" (click)="confirmTransfer()" [disabled]="!amount || amount < 1 || !billersCode || billersCode.length < 11 ">
+          <span >Purchase</span>
       </ion-button>
     </form>
   </ion-toolbar>

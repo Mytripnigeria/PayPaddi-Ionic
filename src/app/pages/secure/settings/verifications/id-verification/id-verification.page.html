@@ -18,25 +18,25 @@
         
          <ion-item>
           <ion-label color="tertiary" position="stacked">ID Type</ion-label>
-           <ion-select formControlName="id_type" value="nin"  placeholder="Select ID Type">
-             <ion-select-option value="nin">National Identity Number</ion-select-option>
-             <ion-select-option value="passport">International Passport</ion-select-option>
-             <ion-select-option value="driving_license">Driving License</ion-select-option>
-             <ion-select-option value="voters_card">Voters Card</ion-select-option>
+           <ion-select formControlName="type" value="nin"  placeholder="Select ID Type">
+             <ion-select-option value="NIN">National Identity Number</ion-select-option>
+             <ion-select-option value="INTERNATIONAL_PASSPORT">International Passport</ion-select-option>
+             <ion-select-option value="DRIVER_LICENSE">Driving License</ion-select-option>
+             <ion-select-option value="VOTER_CARD">Voters Card</ion-select-option>
            </ion-select>
          </ion-item>
         <ion-item>
           <ion-label color="tertiary" position="stacked">ID Number</ion-label>
-          <ion-input formControlName="id_number" placeholder="ID Number" type="text"  ></ion-input>
+          <ion-input formControlName="number" placeholder="ID Number" type="text"  ></ion-input>
         </ion-item>
-        <ion-item (click)="uploadFrontPicture()">
+        <ion-item  (click)="uploadFrontPicture()">
           <ion-label color="tertiary" position="stacked">ID Front Picture</ion-label>
-          <ion-input formControlName="front_picture" placeholder="ID Front Picture"  [readonly]="true" ></ion-input>
+          <ion-input formControlName="front_picture" [value]="verification_form.value.front_picture" placeholder="ID Front Picture"  [readonly]="true" ></ion-input>
         </ion-item>
      
-        <ion-item (click)="uploadBackPicture()">
+        <ion-item  (click)="uploadBackPicture()">
           <ion-label color="tertiary" position="stacked">ID Back Picture</ion-label>
-          <ion-input [readonly]="true" formControlName="back_picture" placeholder="ID Back Picture"></ion-input>
+          <ion-input [readonly]="true" formControlName="back_picture" [value]="verification_form.value.back_picture" placeholder="ID Back Picture"></ion-input>
         </ion-item>
      
 
@@ -53,7 +53,7 @@
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
     <form class="form-default" [formGroup]="verification_form" (submit)="activate()">
-      <ion-button type="submit" expand="block" color="primary">
+      <ion-button type="submit" [disabled]="verification_form.invalid || !frontImage || !backImage" expand="block" color="primary">
         Send
       </ion-button>
     </form>

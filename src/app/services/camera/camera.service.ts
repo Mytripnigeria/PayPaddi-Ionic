@@ -38,14 +38,27 @@ export class CameraService {
 
   private async saveImage(photo: Photo) {
     const base64Data = await this.convertPhotoToBase64(photo);
+    console.log('base64 data', base64Data);
     const fileName = new Date().getTime() + '.jpg';
     const savedFile = await Filesystem.writeFile({
       directory: Directory.Data,
       path: `${IMAGE_DIR}/${fileName}`,
       data: base64Data,
     });
+
     // console.log(savedFile);
   }
+
+  private async saveImage2(base64: any) {
+    const fileName = new Date().getTime() + '.jpg';
+    const savedFile = await Filesystem.writeFile({
+      directory: Directory.Data,
+      path: `${IMAGE_DIR}/${fileName}`,
+      data: base64,
+    });
+    // console.log(savedFile);
+  }
+
   private async convertPhotoToBase64(photo: Photo) {
     if (this.plt.is('hybrid')) {
       const file = await Filesystem.readFile({
@@ -123,5 +136,10 @@ export class CameraService {
       directory: Directory.Data,
       path: file.path,
     });
+  }
+
+  async dowloadFile(blob) {
+    var url = window.URL.createObjectURL(blob);
+    window.open(url);
   }
 }

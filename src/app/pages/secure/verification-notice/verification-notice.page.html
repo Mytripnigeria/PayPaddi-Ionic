@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()"> Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-icon name="lock-closed-outline"></ion-icon>
+  <h3>Please Validate your account</h3>
+  <p *ngIf="type=='kyc'" > Email and BVN Verification is required to use this service, it takes a minute to get this done. </p>
+  <p *ngIf="type=='email'" > Email Verification is required to use this service, it takes a minute to get this done</p>
+  <ion-button (click)="verify()" expand="block"  shape="round">
+    Verify Now
+  </ion-button>
+  </ion-card>
+</ion-content>
