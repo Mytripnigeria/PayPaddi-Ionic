@@ -14,8 +14,10 @@ export class DataService {
   nextOfKin: INOK;
   accounts: [];
   beneficiaries: [];
+  params: false;
   cards: ICard[];
   transactions = [];
+  limits: any;
   banks: [];
   constructor(
     private userService: UserService,
@@ -29,6 +31,14 @@ export class DataService {
 
   getUserProfile() {
     return this.userProfile;
+  }
+
+  setParams(data) {
+    this.params = data;
+  }
+
+  getParams() {
+    return this.params;
   }
 
   setBanks(data) {
@@ -65,12 +75,21 @@ export class DataService {
   getUserNextofKin() {
     return this.nextOfKin;
   }
+
+  setTransferLimit(data) {
+    this.limits = data;
+  }
   async setTransactions(data) {
+    // console.log('settin', data);
     this.transactions = data;
   }
 
   getTransactions() {
     return this.transactions.reverse();
+  }
+
+  getTransferLimit() {
+    return this.limits;
   }
 
   async commitUser() {
@@ -99,6 +118,7 @@ export class DataService {
     const userNextofKin = await this.userService.getNextOfKin();
     const banks = await this.transferService.getAllBanks();
     const beneficiaries = await this.transferService.getBeneficiaries();
+    const limits = await this.transferService.getTransferLimit();
 
     const user = userData.result.data.data;
     const bankAccount = await this.transferService.getbankAccounts({
@@ -128,6 +148,9 @@ export class DataService {
     }
     if (bankAccount.result) {
       this.setBankAccount(bankAccount.result.data.data);
+    }
+    if (limits.result) {
+      this.setTransferLimit(limits.result.data.data);
     }
   }
 }

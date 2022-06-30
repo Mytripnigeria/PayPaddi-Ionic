@@ -1,8 +1,10 @@
 <ion-header class="ion-padding ion-no-border">
   <ion-toolbar mode="md">
     <ion-item class="profile" lines="none">
-      <ion-avatar>
-        <img src="../../../../assets/icon/Image 3.png" />
+    
+      <ion-avatar *ngIf="userData" >
+        <img *ngIf="userData.picture"    [src]="userData.picture" />
+        <img *ngIf="!userData.picture || userData.picture=='' " src="../../../../assets/icon/Image 3.png" />
       </ion-avatar>
       <ion-label *ngIf="userData" >
         <h4>Hi, {{userData.firstname}}</h4>
@@ -11,8 +13,9 @@
     
     </ion-item>
     
-    <div slot="end">
+    <div slot="end" (click)="gotoNotifications()">
       <img class="notifyicon"  src="../../../../assets/icon/Notification.png">
+      <ion-badge class="notification" color="primary" mode="ios" *ngIf="notifications" >{{notifications.length}}</ion-badge>
     </div>
    
   
@@ -33,7 +36,9 @@
 
 <ion-content >
  
-
+<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullFactor="0.8" pullMin="60" pullMax="120">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
  
 
     <!-- <ion-list-header>
@@ -199,7 +204,7 @@
                 <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Increase </ion-button>
               </ion-item>
               </ng-template>
-              <ng-template swiperSlide>
+              <ng-template swiperSlide *ngIf="!isProfileComplete" >
                 <ion-item detail="false"  class="verificationBanner" lines="none">
                   <ion-avatar slot="start" class="ion-avatar-default-icon">
                     <ion-icon name="mail-unread"></ion-icon>
@@ -209,7 +214,7 @@
                     <p>Completing your profile helps us in delivering <br>a more personalized service to you</p>
                   </ion-label>
               
-                  <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Complete </ion-button>
+                  <ion-button (click)="gotoProfile()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Complete </ion-button>
                 </ion-item>
                 </ng-template>
                 <ng-template swiperSlide *ngIf="!nextOfKin" >
@@ -231,7 +236,7 @@
 
     <ion-list-header class="pd-10">
       <ion-label color="white">Recent transactions</ion-label>
-      <ion-button *ngIf="content_loaded" routerLink="/payments">See All <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      <ion-button  *ngIf="content_loaded && transactions && transactions.length > 0"  routerLink="/payments">See All <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>
     </ion-list-header>
 
@@ -280,6 +285,9 @@
         <ion-badge *ngIf="transaction.type=='CREDIT'"  color="success" mode="ios" slot="end"> ₦{{transaction.amount}}</ion-badge>    
       </ion-item>
      
+    </ion-list>
+    <ion-list *ngIf="content_loaded && transactions.length < 1"  class="empty">
+     <h6>No Transactions Found</h6>
     </ion-list>
 
     <!-- Loading spinner -->

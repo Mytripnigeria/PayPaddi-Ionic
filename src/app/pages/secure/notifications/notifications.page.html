@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()"> Back</ion-button>
+    </ion-buttons>
+    <ion-title>notifications</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" >
+    <ion-item button detail="false" *ngFor="let notification of notifications" >
+      <!-- <ion-avatar slot="start" class="ion-avatar-default-icon">
+        <img [src]="notification.image" alt="">
+      </ion-avatar> -->
+     
+      <ion-label>
+        <h3 >{{notification.title}}</h3>
+           
+        <p>{{notification.body}}</p>
+      </ion-label> 
+      <ion-button (click)="gotoLink(notification.action_link)"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> {{notification.action_text}} </ion-button>
+    </ion-item>
+   
+  </ion-list>
+</ion-content>

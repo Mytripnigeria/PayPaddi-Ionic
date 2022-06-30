@@ -46,7 +46,7 @@ export class IdVerificationPage implements OnInit {
           response.result.data.message,
           2000
         );
-        this.modalController.dismiss({ id: true });
+        this.modalController.dismiss({ kyc2: true });
       } else {
         this.toastService.presentToast(
           'Error',

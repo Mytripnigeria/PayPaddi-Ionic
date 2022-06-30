@@ -54,4 +54,8 @@ export class AuthService {
     // Navigate to sign-in
     this.router.navigateByUrl('/signin');
   }
+
+  async resetPassword(email: string) {
+    return await this.req.axiosPost('password-reset', { email });
+  }
 }

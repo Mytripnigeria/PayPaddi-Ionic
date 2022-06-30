@@ -37,7 +37,13 @@ export class UserService {
   async getUserFees() {
     return await this.req.axiosGet('fees');
   }
+  async getNotifications() {
+    return await this.req.axiosGet('all/notifications');
+  }
   async getTransferRate(payload) {
     return await this.req.axiosPost('transfer-rates', payload);
+  }
+  async getStatement(payload) {
+    return await this.req.axiosPost('statements', payload);
   }
 }

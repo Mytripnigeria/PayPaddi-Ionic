@@ -6,7 +6,11 @@ import { DataService } from './../../../../services/data/data.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ActionSheetController, NavController } from '@ionic/angular';
+import {
+  ActionSheetController,
+  NavController,
+  ModalController,
+} from '@ionic/angular';
 import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
@@ -16,10 +20,12 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 })
 export class EditPage implements OnInit {
   edit_profile_form: FormGroup;
+  update = false;
   submit_attempt: boolean = false;
   userData: IUser = null;
   constructor(
     private formBuilder: FormBuilder,
+    private modalController: ModalController,
     private toastService: ToastService,
     private navController: NavController,
     private util: UtilityService,
@@ -37,6 +43,7 @@ export class EditPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.update = this.dataService.getParams();
     this.userData = this.dataService.getUserProfile();
     this.edit_profile_form = this.formBuilder.group({
       firstname: [this.userData.firstname, Validators.required],
@@ -44,6 +51,9 @@ export class EditPage implements OnInit {
       username: [this.userData.username, Validators.required],
       email: [this.userData.email, Validators.required],
       phone: [this.userData.phone, Validators.required],
+      middlename: [this.userData.middlename, Validators.required],
+      address: [this.userData.address, Validators.required],
+      gender: [this.userData.gender, Validators.required],
     });
   }
 
@@ -57,9 +67,10 @@ export class EditPage implements OnInit {
           text: 'Choose from gallery',
           icon: 'images',
           handler: async () => {
-            const images = await this.cameraService.selectImage();
-
-            this.uploadImage(images[0]);
+            const { image, base64 } = await this.cameraService.selectImage();
+            this.userData.picture = base64;
+            console.log(image[0]);
+            this.uploadImage(image[0]);
           },
         },
         {
@@ -77,6 +88,12 @@ export class EditPage implements OnInit {
       ],
     });
     await actionSheet.present();
+  }
+
+  back() {
+    if (this.update) {
+      this.modalController.dismiss();
+    }
   }
 
   // Submit form
@@ -102,7 +119,11 @@ export class EditPage implements OnInit {
           'Profile saved',
           2000
         );
-        this.navController.navigateBack(['/settings']);
+        if (this.update) {
+          this.modalController.dismiss({ updated: true });
+        } else {
+          this.navController.navigateBack(['/settings']);
+        }
       } else {
         this.toastService.presentToast(
           'Error',

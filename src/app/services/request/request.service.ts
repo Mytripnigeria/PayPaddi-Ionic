@@ -57,7 +57,6 @@ export class RequestService {
     try {
       const result = await axios.post(this.baseUrl + point, data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token.value}`,
         },
       });

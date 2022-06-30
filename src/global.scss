@@ -138,6 +138,34 @@ ion-card-title {
   border-radius: 16px 16px 0 0;
 
 }
+
+.transfer-modal > app-id-verification{
+  position: fixed;
+  height: 95vh;
+  top: 5vh;
+  background: var(--ion-color-secondary);
+  border-radius: 16px 16px 0 0;
+
+}
+
+.transfer-modal > app-verification{
+  position: fixed;
+  height: 95vh;
+  top: 5vh;
+  background: var(--ion-color-secondary);
+  border-radius: 16px 16px 0 0;
+
+}
+
+.transfer-modal > app-bvn-verification{
+  position: fixed;
+  height: 95vh;
+  top: 5vh;
+  background: var(--ion-color-secondary);
+  border-radius: 16px 16px 0 0;
+
+}
+
 .transfer-modal::part(content){
   background: #14131340;
 }

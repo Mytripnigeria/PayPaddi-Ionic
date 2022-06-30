@@ -76,11 +76,14 @@ export class CardsPage implements AfterContentChecked {
 
   async getAllCards() {
     this.cards = this.dataService.getCardsData();
-    this.cards.forEach((element, index) => {
-      this.cards[index].syncing = false;
-    });
 
-    this.card_active = this.cards[0].is_active;
+    if (this.cards.length > 0) {
+      this.cards.forEach((element, index) => {
+        this.cards[index].syncing = false;
+      });
+
+      this.card_active = this.cards[0].is_active;
+    }
   }
 
   slideChanged() {

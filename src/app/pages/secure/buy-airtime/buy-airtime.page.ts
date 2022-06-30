@@ -248,8 +248,7 @@ export class BuyAirtimePage implements OnInit {
     console.log(this.variation);
     const payload: IBuyData = {
       amount: this.amount,
-      billers_code: this.billersCode,
-      phone: this.dataService.userProfile.phone,
+      phone: this.billersCode,
       service_id: this.service.serviceID,
       variation_code: this.variation.variation_code,
     };

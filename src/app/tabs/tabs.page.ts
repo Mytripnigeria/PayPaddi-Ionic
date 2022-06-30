@@ -5,6 +5,7 @@ import {
   ActionSheetController,
   ModalController,
   IonRouterOutlet,
+  AlertController,
 } from '@ionic/angular';
 import { WalletTransferPage } from '../pages/secure/wallet-transfer/wallet-transfer.page';
 import { VerificationsPage } from '../pages/secure/settings/verifications/verifications.page';
@@ -19,6 +20,7 @@ export class TabsPage {
   constructor(
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
+    private alertController: AlertController,
     private routerOutlet: IonRouterOutlet,
     private dataService: DataService
   ) {}
@@ -61,13 +63,23 @@ export class TabsPage {
     await actionSheet.present();
   }
 
+  async schedules() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Coming Soon!!!',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
   async sendToWallet() {
     const userData = this.dataService.getUserProfile();
     if (userData.is_email_verify && userData.is_kyc1_verify) {
       // Open filter modal
       const modal = await this.modalController.create({
         component: WalletTransferPage,
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 
@@ -114,7 +126,7 @@ export class TabsPage {
     if (userData.is_email_verify && userData.is_kyc1_verify) {
       const modal = await this.modalController.create({
         component: BankTransferPage,
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 

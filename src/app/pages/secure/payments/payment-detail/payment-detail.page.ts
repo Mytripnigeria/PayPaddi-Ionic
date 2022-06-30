@@ -1,6 +1,7 @@
 import { ModalController, NavParams } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { EmailComposer } from 'capacitor-email-composer';
 import html2canvas from 'html2canvas';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 import { Directory, Filesystem } from '@capacitor/filesystem';
@@ -52,9 +53,21 @@ export class PaymentDetailPage implements OnInit {
       console.log(savedFile);
 
       this.fileOpener
-        .showOpenWithDialog(savedFile.uri, 'image/jpeg')
+        .showOpenWithDialog(savedFile.uri, 'image/png')
         .then(() => console.log('File is opened'))
         .catch((e) => console.log('Error opening file', e));
+    });
+  }
+
+  reportTransaction() {
+    EmailComposer.open({
+      subject: `Complaint on transaction ${
+        this.transaction.extra.ID || this.transaction.reference
+      }`,
+      body: `I have a complain about transaction ${
+        this.transaction.extra.ID || this.transaction.reference
+      },`,
+      to: ['support@paypaddi.com'],
     });
   }
 }

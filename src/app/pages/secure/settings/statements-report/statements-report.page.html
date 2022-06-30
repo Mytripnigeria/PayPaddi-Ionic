@@ -19,36 +19,27 @@
     </ion-list-header>
 
     <ion-list class="list-custom" lines="full">
-     
-        
-          <ion-item detail="false" id="open-modal" lines="none">
-            <!-- <ion-label>Date</ion-label> -->
-            <ion-input [readonly]="true" type="text" placeholder="Pick Start Date"></ion-input>
-          </ion-item>
-          <ion-modal trigger="open-modal" [swipeToClose]="true" [presentingElement]="routerOutlet.nativeEl">
-            <ng-template>
-              <ion-content>
-                <ion-datetime></ion-datetime>
-              </ion-content>
-            </ng-template>
-          </ion-modal>
-          
-          <ion-item detail="false"  id="open-modal2" lines="none">
-            <!-- <ion-label>Date</ion-label> -->
-            <ion-input [readonly]="true" type="text" placeholder="Pick End Date"></ion-input>
-          </ion-item>
-          <ion-modal trigger="open-modal2" [swipeToClose]="true" [presentingElement]="routerOutlet.nativeEl">
-            <ng-template>
-              <ion-content>
-                <ion-datetime></ion-datetime>
-              </ion-content>
-            </ng-template>
-          </ion-modal>
-      
-          <!-- <ion-item detail="false">
-            <ion-label>Date</ion-label>
-            <ion-datetime display-format="DD.MM.YYYY"></ion-datetime>
-          </ion-item> -->
+      <ion-item>
+        <ion-label>
+          <p>Pick start date</p>
+        </ion-label>
+        <ion-input readonly slot="end" type="text" placeholder="Date from" class="ion-text-right ion-no-padding-end"
+          (click)="toggleDateFrom()" [(ngModel)]="date_from"></ion-input>
+      </ion-item>
+      <ion-datetime class="animate__animated animate__fadeIn" *ngIf="date_from_active" color="primary" locale="en-EN"
+        size="cover" showDefaultButtons="false" presentation="date" (ionChange)="onDateFromSelect($event)">
+      </ion-datetime>
+
+      <ion-item>
+        <ion-label>
+          <p>Pick end date</p>
+        </ion-label>
+        <ion-input readonly slot="end" type="text" placeholder="Date to" class="ion-text-right ion-no-padding-end"
+          (click)="toggleDateTo()" [(ngModel)]="date_to"></ion-input>
+      </ion-item>
+      <ion-datetime class="animate__animated animate__fadeIn" *ngIf="date_to_active" color="primary" locale="en-EN"
+        size="cover" showDefaultButtons="false" presentation="date" (ionChange)="onDateToSelect($event)">
+      </ion-datetime>
     </ion-list>
 
   </div>
@@ -57,10 +48,9 @@
 
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
-    <form class="form-default" >
-      <ion-button type="submit" expand="block" color="primary">
+      <ion-button type="submit" expand="block" color="primary" (click)="getReport()">
         Get statement
       </ion-button>
-    </form>
+    
   </ion-toolbar>
 </ion-footer>

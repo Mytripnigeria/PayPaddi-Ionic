@@ -11,8 +11,9 @@
 
   <div class="hero hero-light-gradient" *ngIf="userData" >
     <ion-avatar>
-      <ion-icon class="avatar-icon-placeholder" name="person-circle" color="tertiary">
+      <ion-icon *ngIf="!userData.picture || userData.picture ==''"  class="avatar-icon-placeholder" name="person-circle" color="tertiary">
       </ion-icon>
+      <img *ngIf="userData.picture"  [src]="userData.picture" alt="">
     </ion-avatar>
     <p class="font-weight-500">{{userData.firstname}} {{userData.lastname}}</p>
     <ion-text color="medium">

@@ -35,7 +35,6 @@ export interface IBuyAirtime {
 
 export interface IBuyData {
   amount: string;
-  billers_code: string;
   phone: string;
   service_id: string;
   variation_code: string;

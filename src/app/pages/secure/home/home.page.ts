@@ -1,3 +1,4 @@
+import { EditPage } from './../profile/edit/edit.page';
 import { INOK } from './../../../models/nextOfKin';
 import { Router } from '@angular/router';
 import { ToastService } from './../../../services/toast/toast.service';
@@ -17,6 +18,7 @@ import { SwiperOptions } from 'swiper';
 import * as moment from 'moment';
 import { VerificationNoticePage } from '../verification-notice/verification-notice.page';
 import { UpdatePinPage } from '../settings/update-pin/update-pin.page';
+import { NotificationsPage } from '../notifications/notifications.page';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +30,9 @@ export class HomePage implements OnInit {
   userData: IUser;
   nextOfKin: INOK = null;
   userBalance: null;
+  isProfileComplete = false;
   transactions = [];
+  notifications;
   config: SwiperOptions = {
     slidesPerView: 1,
     spaceBetween: 50,
@@ -50,17 +54,60 @@ export class HomePage implements OnInit {
     // Fake timeout
   }
 
-  ionViewWillEnter() {
+  ionViewWillEnter(ev?) {
     console.log('came here oo');
     this.getUserWallet();
-    this.getAllTransactions();
+    this.getAllTransactions(ev);
+    this.profileComplete();
+    this.getAllNotifications();
     this.userData = this.dataService.getUserProfile();
     this.nextOfKin = this.dataService.getUserNextofKin();
-    console.log(this.userData);
+    console.log('Next of KIN', this.nextOfKin);
+  }
+
+  doRefresh(ev) {
+    this.ionViewWillEnter(ev);
   }
 
   formatTime(date) {
     return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+  }
+
+  profileComplete() {
+    const profile = this.dataService.getUserProfile();
+
+    const { firstname, lastname, middlename, address, gender, picture } =
+      profile;
+
+    if (
+      !firstname ||
+      !lastname ||
+      !middlename ||
+      !address ||
+      !gender ||
+      !picture
+    ) {
+      this.isProfileComplete = false;
+    } else {
+      this.isProfileComplete = true;
+    }
+  }
+
+  async gotoProfile() {
+    this.dataService.setParams(true);
+    const modal = await this.modalController.create({
+      component: EditPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    console.log(data);
+    this.dataService.setParams(false);
+    if (data && data.updated) {
+      this.profileComplete();
+    }
   }
 
   async updatePin() {
@@ -74,20 +121,42 @@ export class HomePage implements OnInit {
     await modal.present();
   }
 
+  async gotoNotifications() {
+    // Open filter modal
+    const modal = await this.modalController.create({
+      component: NotificationsPage,
+      swipeToClose: true,
+      componentProps: { notifications: this.notifications },
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+  }
+
   goToCards() {
     this.router.navigate(['/cards']);
   }
 
-  async getAllTransactions() {
-    this.content_loaded = false;
-    const response = await this.transactionService.getAllTransactions();
+  async getAllNotifications() {
+    const response = await this.userService.getNotifications();
+    if (response.result) {
+      if (!response.result.data.error) {
+        this.notifications = response.result.data.data;
+      }
+    }
+  }
 
+  async getAllTransactions(ev?) {
+    this.content_loaded = false;
+
+    const response = await this.transactionService.getAllTransactions();
+    if (ev) ev.target.complete();
     if (response.result) {
       if (!response.result.data.error) {
         const transactionHolder: [] = response.result.data.data;
-        this.dataService.setTransactions(transactionHolder);
-        this.transactions = transactionHolder.reverse().slice(0, 20);
-        console.log(this.transactions);
+        this.dataService.setTransactions(transactionHolder.reverse());
+        this.transactions = transactionHolder.slice(0, 20);
+        // console.log(this.transactions);
       } else {
         this.toastService.presentToast(
           'Error',
@@ -128,7 +197,7 @@ export class HomePage implements OnInit {
           type: 'airtime',
           identifier: 'airtime',
         },
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 
@@ -153,7 +222,7 @@ export class HomePage implements OnInit {
           type: 'data',
           identifier: 'data',
         },
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 
@@ -178,7 +247,7 @@ export class HomePage implements OnInit {
           type: 'power',
           identifier: 'electricity-bill',
         },
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 
@@ -203,7 +272,7 @@ export class HomePage implements OnInit {
           type: 'betting',
           identifier: 'betting',
         },
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 
@@ -228,7 +297,7 @@ export class HomePage implements OnInit {
           type: 'education',
           identifier: 'education',
         },
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 
@@ -253,7 +322,7 @@ export class HomePage implements OnInit {
           type: 'cable',
           identifier: 'tv-subscription',
         },
-        swipeToClose: true,
+        swipeToClose: false,
         presentingElement: this.routerOutlet.nativeEl,
       });
 

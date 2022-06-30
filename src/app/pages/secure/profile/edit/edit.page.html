@@ -1,6 +1,6 @@
 <ion-header collapse="fade" [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons slot="start" (click)="back()">
       <ion-back-button text="Settings" defaultHref="/settings">
       </ion-back-button>
     </ion-buttons>
@@ -44,12 +44,41 @@
           <small class="error-message-form">Firstname is required.</small>
         </ion-text>
         <ion-item>
+          <ion-label color="tertiary" position="stacked">Middlename</ion-label>
+          <ion-input  formControlName="middlename" placeholder="Middlename"></ion-input>
+        </ion-item>
+        <ion-text *ngIf="edit_profile_form.controls['middlename']['errors'] && edit_profile_form.controls['middlename']['errors']['required'] && edit_profile_form.controls['middlename']['touched']" color="danger">
+          <small class="error-message-form">Middlename is required.</small>
+        </ion-text>
+
+        <ion-item>
           <ion-label color="tertiary" position="stacked">Last name</ion-label>
           <ion-input formControlName="lastname" placeholder="Last name"></ion-input>
         </ion-item>
         <ion-text *ngIf="edit_profile_form.controls['lastname']['errors'] && edit_profile_form.controls['lastname']['errors']['required'] && edit_profile_form.controls['lastname']['touched']" color="danger">
           <small class="error-message-form">Lastname is required.</small>
         </ion-text>
+
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Username</ion-label>
+          <ion-input  [readonly]="true" formControlName="username" placeholder="Username"></ion-input>
+        </ion-item>
+        <ion-text *ngIf="edit_profile_form.controls['username']['errors'] && edit_profile_form.controls['username']['errors']['required'] && edit_profile_form.controls['username']['touched']" color="danger">
+          <small class="error-message-form">Username is required.</small>
+        </ion-text>
+      
+        <ion-item>
+          <ion-label color="tertiary" position="stacked">Gender</ion-label>
+            <ion-select  formControlName="gender" [value]="userData.gender" >
+              <ion-select-option value="Male">Male</ion-select-option>
+              <ion-select-option value="Female">Female</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-text *ngIf="edit_profile_form.controls['gender']['errors'] && edit_profile_form.controls['gender']['errors']['required'] && edit_profile_form.controls['gender']['touched']" color="danger">
+          <small class="error-message-form">Gender is required.</small>
+        </ion-text>
+
         <ion-item>
           <ion-label color="tertiary" position="stacked">Phone Number</ion-label>
           <ion-input [readonly]="true" formControlName="phone" placeholder="Phone Number"></ion-input>
@@ -59,14 +88,17 @@
           <ion-label color="tertiary" position="stacked">Email Address</ion-label>
           <ion-input [readonly]="true" formControlName="email" placeholder="Email Address"></ion-input>
         </ion-item>
-      
+   
+
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Username</ion-label>
-          <ion-input  formControlName="username" placeholder="Username"></ion-input>
+          <ion-label color="tertiary" position="stacked">Address</ion-label>
+          <ion-input  formControlName="address" placeholder="Address"></ion-input>
         </ion-item>
-        <ion-text *ngIf="edit_profile_form.controls['username']['errors'] && edit_profile_form.controls['username']['errors']['required'] && edit_profile_form.controls['username']['touched']" color="danger">
-          <small class="error-message-form">Username is required.</small>
+        <ion-text *ngIf="edit_profile_form.controls['address']['errors'] && edit_profile_form.controls['address']['errors']['required'] && edit_profile_form.controls['address']['touched']" color="danger">
+          <small class="error-message-form">Address is required.</small>
         </ion-text>
+
+    
       </ion-list>
 
     </form>

@@ -20,6 +20,7 @@ interface LocalFile {
 })
 export class CameraService {
   imageFile: LocalFile[] = [];
+  base64 = null;
   constructor(private plt: Platform, private userService: UserService) {}
 
   async selectImage() {
@@ -32,12 +33,14 @@ export class CameraService {
 
     if (image) {
       await this.saveImage(image);
-      return await this.loadImage();
+      const imageFile = await this.loadImage();
+      return { image: imageFile, base64: this.base64 };
     }
   }
 
   private async saveImage(photo: Photo) {
     const base64Data = await this.convertPhotoToBase64(photo);
+    this.base64 = base64Data;
     console.log('base64 data', base64Data);
     const fileName = new Date().getTime() + '.jpg';
     const savedFile = await Filesystem.writeFile({
@@ -128,6 +131,9 @@ export class CameraService {
     const blob = await response.blob();
     const formData = new FormData();
     formData.append('file', blob, file.name);
+    formData.forEach((img) => {
+      console.log(img);
+    });
     return await this.userService.updateProfilePicture(formData);
   }
 

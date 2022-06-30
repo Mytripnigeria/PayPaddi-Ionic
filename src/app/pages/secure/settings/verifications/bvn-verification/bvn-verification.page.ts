@@ -50,7 +50,7 @@ export class BvnVerificationPage implements OnInit {
           response.result.data.message,
           2000
         );
-        this.modalController.dismiss({ bvn: true });
+        this.modalController.dismiss({ kyc1: true });
       } else {
         this.toastService.presentToast(
           'Error',

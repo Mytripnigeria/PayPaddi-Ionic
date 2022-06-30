@@ -48,4 +48,8 @@ export class TransferService {
   async getbankAccounts(data) {
     return await this.req.axiosPost('wallet/create-virtual-account', data);
   }
+
+  async getTransferLimit() {
+    return await this.req.axiosGet('transaction-limit');
+  }
 }

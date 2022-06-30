@@ -48,7 +48,7 @@ export class PaymentsPage implements OnInit {
       'December',
     ];
     const transactionsHolder = this.dataService.getTransactions();
-
+    // console.log('got it', transactionsHolder.reverse());
     this.transactions = transactionsHolder.reduce((groups, transaction) => {
       const date = new Date(transaction.created_at);
       const segment = `${months[date.getMonth()]}, ${date.getFullYear()}`;

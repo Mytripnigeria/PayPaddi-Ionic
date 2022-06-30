@@ -69,6 +69,10 @@ const routes: Routes = [
     path: 'verification-notice',
     loadChildren: () => import('./verification-notice/verification-notice.module').then( m => m.VerificationNoticePageModule)
   },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
+  },
 ];
 
 @NgModule({

@@ -31,6 +31,7 @@ export class VerificationsPage implements OnInit {
     const modal = await this.modalController.create({
       component: VerificationPage,
       swipeToClose: true,
+      cssClass: 'transfer-modal',
     });
 
     await modal.present();
@@ -44,16 +45,28 @@ export class VerificationsPage implements OnInit {
     const modal = await this.modalController.create({
       component: BvnVerificationPage,
       swipeToClose: true,
+      cssClass: 'transfer-modal',
     });
 
     await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data && data.kyc1) {
+      this.userData.is_kyc1_verify = 1;
+      this.dataService.commitUser();
+    }
   }
   async verifyID() {
     const modal = await this.modalController.create({
       component: IdVerificationPage,
+      cssClass: 'transfer-modal',
       swipeToClose: true,
     });
 
     await modal.present();
+    const { data } = await modal.onDidDismiss();
+    if (data && data.kyc2) {
+      this.userData.is_kyc2_verify = 1;
+      this.dataService.commitUser();
+    }
   }
 }
