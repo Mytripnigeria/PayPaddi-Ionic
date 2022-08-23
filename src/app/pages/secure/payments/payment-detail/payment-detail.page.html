@@ -453,15 +453,15 @@
     </ion-list>
 
 
-<ion-list class="list-custom" lines="full" *ngIf="transaction.action=='VIRTUAL_CARD' || transaction.action =='FUND_VIRTUAL_CARD' || transaction.action =='WITHDRAW_VIRTUAL_CARD'"   id="capture">
+<ion-list class="list-custom" lines="full" *ngIf="transaction.action=='VIRTUAL_CARD' || transaction.action =='FUND_VIRTUAL_CARD' || transaction.action =='WITHDRAW_VIRTUAL_CARD' || transaction.action == 'REFERRAL_EARNING' || transaction.action == 'FLUTTERWAVE' || transaction.action == 'DEPOSIT'"   id="capture">
 
 <ion-item>
   <ion-label>
     <p>Status</p>
   </ion-label>
-  <ion-badge *ngIf="transaction.status=='completed'"  color="success" mode="ios" slot="end">- ₦{{transaction.status}}</ion-badge>
-  <ion-badge *ngIf="transaction.status=='failed'" color="danger" mode="ios" slot="end"> ₦{{transaction.status}}</ion-badge>
-  <ion-badge *ngIf="transaction.status=='pending'" color="warning" mode="ios" slot="end"> ₦{{transaction.status}}</ion-badge>
+  <ion-badge *ngIf="transaction.status=='COMPLETED'"  color="success" mode="ios" slot="end">{{transaction.status}}</ion-badge>
+  <ion-badge *ngIf="transaction.status=='FAILED'" color="danger" mode="ios" slot="end">{{transaction.status}}</ion-badge>
+  <ion-badge *ngIf="transaction.status=='PENDING'" color="warning" mode="ios" slot="end">{{transaction.status}}</ion-badge>
 </ion-item>
 
 <ion-item>

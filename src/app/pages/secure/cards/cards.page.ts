@@ -77,6 +77,11 @@ export class CardsPage implements AfterContentChecked {
   async getAllCards() {
     this.cards = this.dataService.getCardsData();
 
+    if (!this.cards)
+      return setTimeout(() => {
+        return this.getAllCards();
+      }, 5000);
+
     if (this.cards.length > 0) {
       this.cards.forEach((element, index) => {
         this.cards[index].syncing = false;

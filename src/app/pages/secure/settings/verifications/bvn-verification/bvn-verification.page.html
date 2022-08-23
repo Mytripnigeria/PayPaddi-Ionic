@@ -3,37 +3,43 @@
     <ion-buttons slot="start">
       <ion-button (click)="back()"> Back</ion-button>
     </ion-buttons>
-    <ion-title>
-      Verification
-    </ion-title>
+    <ion-title> Verification </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
   <div class="ion-padding">
-
-    <form class="form-default" [formGroup]="verification_form" >
-
+    <ion-list-header class="ion-list-header-small mb-20 ion-padding-bottom">
+      <ion-label>
+        Complete your BVN verification on PayPaddi to increase your daily and
+        monthly transaction limits. Please enter your 11 digit BVN, this is a
+        required standard to protect your identity on PayPaddi.</ion-label
+      >
+    </ion-list-header>
+    <form class="form-default" [formGroup]="verification_form">
       <ion-list class="item-card-list" lines="none">
         <ion-item>
           <ion-label color="tertiary" position="stacked">BVN</ion-label>
-          <ion-input formControlName="bvn" placeholder="Bank verification number" type="text" minlength="11" maxlength="11" inputmode="numeric" ></ion-input>
+          <ion-input
+            formControlName="bvn"
+            placeholder="Bank verification number"
+            type="text"
+            minlength="11"
+            maxlength="11"
+            inputmode="numeric"
+          ></ion-input>
         </ion-item>
-     
-
-       
-
       </ion-list>
-
     </form>
-
   </div>
-
-  
 </ion-content>
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
-    <form class="form-default" [formGroup]="verification_form" (submit)="activate()">
+    <form
+      class="form-default"
+      [formGroup]="verification_form"
+      (submit)="activate()"
+    >
       <ion-button type="submit" expand="block" color="primary">
         Send
       </ion-button>

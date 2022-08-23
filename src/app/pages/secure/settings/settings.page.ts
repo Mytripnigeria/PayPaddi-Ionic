@@ -63,6 +63,6 @@ export class SettingsPage {
   }
 
   async terms() {
-    await Browser.open({ url: 'https://google.com/' });
+    await Browser.open({ url: 'https://paypaddi.com/tos.html' });
   }
 }

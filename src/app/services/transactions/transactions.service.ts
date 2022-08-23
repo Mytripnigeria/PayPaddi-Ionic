@@ -13,4 +13,8 @@ export class TransactionsService {
   async getSingleTransactions() {
     return await this.req.axiosGet('transactions');
   }
+
+  async verifyPayment(reference, amount) {
+    return await this.req.axiosPost('verify-topup', { reference, amount });
+  }
 }

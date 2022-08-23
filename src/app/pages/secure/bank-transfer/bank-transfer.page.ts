@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { BankListPage } from './../bank-list/bank-list.page';
 import { PinVerifyPage } from './../pin-verify/pin-verify.page';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -7,6 +8,7 @@ import { TransferService } from './../../../services/transfer/transfer.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController, NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-bank-transfer',
@@ -14,7 +16,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bank-transfer.page.scss'],
 })
 export class BankTransferPage implements OnInit {
-  transfer_card_form: FormGroup;
   verified = false;
   verifying = false;
   bankCode = '';
@@ -24,6 +25,15 @@ export class BankTransferPage implements OnInit {
   addBeneficiary = false;
   numberIsComplete = false;
   banks;
+
+  narration;
+  bank_code;
+  account_number;
+  amountHolder = null;
+  totalAmount = null;
+  currentFee = null;
+  fees = null;
+  amount = null;
   constructor(
     private modalController: ModalController,
     private formBuilder: FormBuilder,
@@ -31,20 +41,48 @@ export class BankTransferPage implements OnInit {
     private toastService: ToastService,
     private navCtrl: NavController,
     private util: UtilityService,
-    private transferService: TransferService
+    private currencyPipe: CurrencyPipe,
+    private transferService: TransferService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    this.transfer_card_form = this.formBuilder.group({
-      amount: [0, Validators.required],
-      bank_code: [''],
-      account_number: ['', Validators.required],
-      account_name: [''],
-      narration: [''],
-    });
+    this.getFees();
 
     this.banks = this.dataService.getBanksData();
   }
+
+  async getFees() {
+    const response = await this.userService.getUserFees();
+    console.log(response);
+    if (response.result) {
+      this.fees = response.result.data;
+    } else {
+      // fees not fetch
+    }
+  }
+
+  amountChange(ev) {
+    if (ev == '') return (this.amountHolder = null);
+    ev = ev.replace(/,/g, '');
+    this.amount = this.currencyPipe.transform(ev, '', '', '0.0-0');
+    this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
+    console.log(this.amountHolder);
+    if (this.amountHolder <= 50000) {
+      this.currentFee = this.fees['transfer_less_than_limit'];
+      this.totalAmount = parseFloat(this.currentFee) + this.amountHolder;
+      console.log('<<<<', this.currentFee);
+      console.log('<<<<', this.totalAmount);
+    } else {
+      this.currentFee = this.fees['transfer_greater_than_limit'];
+      this.totalAmount = parseFloat(this.currentFee) + this.amountHolder;
+      console.log('>>>>', this.currentFee);
+      console.log('>>>', this.totalAmount);
+    }
+
+    // this.totalAmount = this.amountHolder +
+  }
+
   cancel() {
     this.modalController.dismiss();
   }
@@ -54,14 +92,14 @@ export class BankTransferPage implements OnInit {
     this.verifying = true;
     const response = await this.transferService.verifyBank({
       bank_code: this.bankCode,
-      account_number: this.transfer_card_form.value.account_number,
+      account_number: this.account_number,
     });
     this.verifying = false;
     if (response.result) {
       if (!response.result.data.error) {
         const userData = response.result.data.data;
         console.log(userData);
-        this.transfer_card_form.value.account_name = userData.account_name;
+        // this.account_name = userData.account_name;
         this.accountName = userData.account_name;
         this.verified = true;
       } else {
@@ -101,14 +139,14 @@ export class BankTransferPage implements OnInit {
       this.beneficiary = false;
       this.bankCode = data.bank_code;
       this.bankName = data.bank_name;
-      this.transfer_card_form.patchValue({ account_number: '' });
+      this.account_number = null;
     }
   }
 
   bankChange(ev) {
     console.log(ev.detail.value);
     this.bankCode = ev.detail.value;
-    this.transfer_card_form.patchValue({ account_number: '' });
+    this.account_number = null;
   }
 
   async selectBeneficiary() {
@@ -128,9 +166,7 @@ export class BankTransferPage implements OnInit {
       this.beneficiary = true;
       this.bankCode = data.payload.service_code;
       this.bankName = data.payload.service_name;
-      this.transfer_card_form.patchValue({
-        account_number: data.payload.service_number,
-      });
+      this.account_number = data.payload.service_number;
       this.accountName = data.payload.name;
       this.verified = true;
       this.numberIsComplete = true;
@@ -163,13 +199,16 @@ export class BankTransferPage implements OnInit {
   async transfer() {
     const loader = await this.util.loader('Sending');
     loader.present();
-    this.transfer_card_form.value.account_name = this.accountName;
-    this.transfer_card_form.value.bank_code = this.bankCode;
-    console.log(this.transfer_card_form.value);
 
-    const response = await this.transferService.sendToBank(
-      this.transfer_card_form.value
-    );
+    const payload = {
+      amount: parseFloat(this.amount.replace(/,/g, '')),
+      bank_code: this.bankCode,
+      account_number: this.account_number,
+      account_name: this.accountName,
+      narration: this.narration,
+    };
+
+    const response = await this.transferService.sendToBank(payload);
 
     if (response.result) {
       if (!response.result.data.error) {

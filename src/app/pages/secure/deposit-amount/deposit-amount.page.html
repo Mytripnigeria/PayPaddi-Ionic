@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()"> Cancel </ion-button>
+    </ion-buttons>
+    <ion-title>Amount to Deposit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list class="item-card-list" lines="none">
+    <ion-item class="animate__animated animate__fadeIn">
+      <ion-label color="tertiary" position="stacked">Amount(₦)</ion-label>
+      <ion-input [(ngModel)]="amount" type="tel"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      expand="block"
+      color="primary"
+      (click)="continue()"
+      [disabled]="!amount || amount < 1 "
+    >
+      <span>Purchase</span>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

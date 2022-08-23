@@ -116,18 +116,15 @@ export class DataService {
   async commitAllData() {
     const userData = await this.userService.getUserProfile();
     const userNextofKin = await this.userService.getNextOfKin();
-    const banks = await this.transferService.getAllBanks();
-    const beneficiaries = await this.transferService.getBeneficiaries();
+    // const banks = await this.transferService.getAllBanks();
+    // const beneficiaries = await this.transferService.getBeneficiaries();
     const limits = await this.transferService.getTransferLimit();
 
-    const user = userData.result.data.data;
-    const bankAccount = await this.transferService.getbankAccounts({
-      account_name: user.first_name + ' ' + user.last_name,
-      bvn: '',
-      name: user.first_name + ' ' + user.last_name,
-      email: user.email,
+    this.cardsService.getCards().then((cards) => {
+      if (cards.result && !cards.result.data.error) {
+        this.setCards(cards.result.data.data);
+      }
     });
-    const cards = await this.cardsService.getCards();
 
     console.log('userNextofKin', userNextofKin);
     if (userData.result && !userData.result.data.error) {
@@ -136,19 +133,13 @@ export class DataService {
     if (userNextofKin.result && !userNextofKin.result.data.error) {
       this.setUserNextofKin(userNextofKin.result.data.data);
     }
-    if (banks.result && !banks.result.data.error) {
-      this.setBanks(banks.result.data.data);
-    }
-    if (beneficiaries.result && !beneficiaries.result.data.error) {
-      this.setBeneficiaries(beneficiaries.result.data.data);
-    }
+    // if (banks.result && !banks.result.data.error) {
+    //   this.setBanks(banks.result.data.data);
+    // }
+    // if (beneficiaries.result && !beneficiaries.result.data.error) {
+    //   this.setBeneficiaries(beneficiaries.result.data.data);
+    // }
 
-    if (cards.result && !cards.result.data.error) {
-      this.setCards(cards.result.data.data);
-    }
-    if (bankAccount.result) {
-      this.setBankAccount(bankAccount.result.data.data);
-    }
     if (limits.result) {
       this.setTransferLimit(limits.result.data.data);
     }

@@ -1,6 +1,8 @@
+import { TransferService } from './../../../services/transfer/transfer.service';
 import { ModalController, NavParams } from '@ionic/angular';
 import { DataService } from './../../../services/data/data.service';
 import { Component, OnInit } from '@angular/core';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-bank-list',
@@ -21,7 +23,9 @@ export class BankListPage implements OnInit {
   constructor(
     private dataService: DataService,
     private modalController: ModalController,
-    private navParam: NavParams
+    private navParam: NavParams,
+    private transferService: TransferService,
+    private util: UtilityService
   ) {}
 
   ionViewWillEnter() {
@@ -35,18 +39,61 @@ export class BankListPage implements OnInit {
     console.log('the type', this.type);
 
     if (this.type == 'Bank') {
-      this.banks = this.dataService.getBanksData();
-      console.log(this.banks);
-      this.banksCopy = this.banks;
+      this.getBanks();
     } else if (this.type == 'Beneficiary') {
-      this.beneficiaries = this.dataService.getBeneficiariesData();
-      this.beneficiariesCopy = this.beneficiaries;
+      this.getBeneficiaries();
     } else if (this.type == 'variations') {
       this.variations = this.navParam.data.variations;
       this.variationsCopy = this.variations;
     } else {
       this.services = this.navParam.data.services;
       this.servicesCopy = this.services;
+    }
+  }
+
+  async getBanks() {
+    const loader = await this.util.loader('Fetching Banks');
+    loader.present();
+    const response = await this.transferService.getAllBanks();
+    loader.dismiss();
+    if (response.result) {
+      if (!response.result.data.error) {
+        this.banks = response.result.data.data;
+        this.banksCopy = this.banks;
+      } else {
+        // this.toastService.presentToast(
+        //   'Error',
+        //   'top',
+        //   'danger',
+        //   response.result.data.message,
+        //   2000
+        // );
+      }
+    } else {
+      //
+    }
+  }
+
+  async getBeneficiaries() {
+    const loader = await this.util.loader('Fetching Beneficiaries');
+    loader.present();
+    const response = await this.transferService.getBeneficiaries();
+    loader.dismiss();
+    if (response.result) {
+      if (!response.result.data.error) {
+        this.beneficiaries = response.result.data.data;
+        this.beneficiariesCopy = this.beneficiaries;
+      } else {
+        // this.toastService.presentToast(
+        //   'Error',
+        //   'top',
+        //   'danger',
+        //   response.result.data.message,
+        //   2000
+        // );
+      }
+    } else {
+      //
     }
   }
 

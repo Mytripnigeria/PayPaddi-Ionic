@@ -23,6 +23,7 @@ export class EditPage implements OnInit {
   update = false;
   submit_attempt: boolean = false;
   userData: IUser = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private modalController: ModalController,

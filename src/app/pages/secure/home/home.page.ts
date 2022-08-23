@@ -69,6 +69,21 @@ export class HomePage implements OnInit {
     this.ionViewWillEnter(ev);
   }
 
+  noVerification() {
+    if (
+      this.userData.is_email_verify &&
+      this.userData.pin &&
+      this.userData.is_kyc1_verify &&
+      this.userData.is_kyc2_verify &&
+      this.isProfileComplete &&
+      this.nextOfKin
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   formatTime(date) {
     return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
@@ -153,16 +168,21 @@ export class HomePage implements OnInit {
     if (ev) ev.target.complete();
     if (response.result) {
       if (!response.result.data.error) {
+        // console.log('from backend', response.result.data.data);
         const transactionHolder: [] = response.result.data.data;
-        this.dataService.setTransactions(transactionHolder.reverse());
+        // console.log('holder===>', transactionHolder);
+        this.dataService.setTransactions(transactionHolder);
         this.transactions = transactionHolder.slice(0, 20);
-        // console.log(this.transactions);
+        this.transactions = this.transactions.sort(
+          (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
+        );
+        // console.log('gotten', this.dataService.getTransactions());
       } else {
         this.toastService.presentToast(
           'Error',
           'top',
           'danger',
-          'Couln not retrieve transactions',
+          'Could not retrieve transactions',
           2000
         );
       }
@@ -171,7 +191,7 @@ export class HomePage implements OnInit {
         'Error',
         'top',
         'danger',
-        'Couln not retrieve transactions',
+        'Could not retrieve transactions',
         2000
       );
     }

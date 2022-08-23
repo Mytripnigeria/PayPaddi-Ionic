@@ -1,52 +1,69 @@
 <ion-header class="ion-padding ion-no-border">
   <ion-toolbar mode="md">
     <ion-item class="profile" lines="none">
-    
-      <ion-avatar *ngIf="userData" >
-        <img *ngIf="userData.picture"    [src]="userData.picture" />
-        <img *ngIf="!userData.picture || userData.picture=='' " src="../../../../assets/icon/Image 3.png" />
+      <ion-avatar *ngIf="userData">
+        <img *ngIf="userData.picture" [src]="userData.picture" />
+        <img
+          *ngIf="!userData.picture || userData.picture=='' "
+          src="../../../../assets/icon/Image 3.png"
+        />
       </ion-avatar>
-      <ion-label *ngIf="userData" >
+      <ion-label *ngIf="userData">
         <h4>Hi, {{userData.firstname}}</h4>
         <p>{{userData.username}}</p>
       </ion-label>
-    
     </ion-item>
-    
+
     <div slot="end" (click)="gotoNotifications()">
-      <img class="notifyicon"  src="../../../../assets/icon/Notification.png">
-      <ion-badge class="notification" color="primary" mode="ios" *ngIf="notifications" >{{notifications.length}}</ion-badge>
+      <img class="notifyicon" src="../../../../assets/icon/Notification.png" />
+      <ion-badge
+        class="notification"
+        color="primary"
+        mode="ios"
+        *ngIf="notifications"
+        >{{notifications.length}}</ion-badge
+      >
     </div>
-   
-  
   </ion-toolbar>
-  <ion-item button detail="false" lines="none"  class="balance">
+  <ion-item button detail="false" lines="none" class="balance">
     <ion-avatar slot="start" class="ion-avatar-default-icon">
       <ion-icon name="wallet"></ion-icon>
     </ion-avatar>
     <ion-label>
-      <h3 *ngIf="userBalance" >₦{{userBalance | currency}}</h3>
-      <h3 *ngIf="!userBalance"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+      <h3 *ngIf="userBalance">₦{{userBalance | currency}}</h3>
+      <h3 *ngIf="!userBalance">
+        <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+      </h3>
       <p>Available Balance</p>
     </ion-label>
 
-    <ion-button (click)="deposit()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Deposit </ion-button>
+    <ion-button
+      (click)="deposit()"
+      slot="end"
+      class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+    >
+      Deposit
+    </ion-button>
   </ion-item>
 </ion-header>
 
-<ion-content >
- 
-<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullFactor="0.8" pullMin="60" pullMax="120">
-  <ion-refresher-content></ion-refresher-content>
-</ion-refresher>
- 
+<ion-content>
+  <ion-refresher
+    slot="fixed"
+    (ionRefresh)="doRefresh($event)"
+    pullFactor="0.8"
+    pullMin="60"
+    pullMax="120"
+  >
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-    <!-- <ion-list-header>
+  <!-- <ion-list-header>
       <ion-label color="white">My accounts</ion-label>
     </ion-list-header> -->
 
-    <!-- Skeletons -->
-    <!-- <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="!content_loaded">
+  <!-- Skeletons -->
+  <!-- <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="!content_loaded">
       <ion-item lines="none" *ngFor="let i of [].constructor(3);">
         <ion-avatar slot="start">
           <ion-skeleton-text animated></ion-skeleton-text>
@@ -58,7 +75,7 @@
       </ion-item>
     </ion-list> -->
 
-    <!-- <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="content_loaded" lines="none">
+  <!-- <ion-list class="item-card-list animate__animated animate__fadeIn" *ngIf="content_loaded" lines="none">
       <ion-item button detail>
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-icon name="wallet"></ion-icon>
@@ -88,214 +105,407 @@
       </ion-item>
     </ion-list> -->
 
-    <ion-grid  class="menu pd-10 pt-10">
-      <ion-row >
-        <ion-col size="3" (click)="send()">
-          <div>
-            <span><img width="15px" src="../../../../assets/icon/Send.png" alt="" srcset=""></span>
+  <ion-grid class="menu pd-10 pt-10">
+    <ion-row>
+      <ion-col size="3" (click)="send()">
+        <div>
+          <span
+            ><img
+              width="15px"
+              src="../../../../assets/icon/Send.png"
+              alt=""
+              srcset=""
+          /></span>
           <h6>Send Money</h6>
-          </div>
-          
-        </ion-col>
-        <ion-col size="3" (click)="buyAirtime()">
-          <div>
-            <span><img width="15px" src="../../../../assets/icon/Calling.png" alt="" srcset=""></span>
-            <h6>Buy Airtime</h6>
-          </div>
-         
-        </ion-col>
-        <ion-col size="3" (click)="buyData()">
-          <div>
-            <span><img width="15px" src="../../../../assets/icon/Discovery.png" alt="" srcset=""></span>
+        </div>
+      </ion-col>
+      <ion-col size="3" (click)="buyAirtime()">
+        <div>
+          <span
+            ><img
+              width="15px"
+              src="../../../../assets/icon/Calling.png"
+              alt=""
+              srcset=""
+          /></span>
+          <h6>Buy Airtime</h6>
+        </div>
+      </ion-col>
+      <ion-col size="3" (click)="buyData()">
+        <div>
+          <span
+            ><img
+              width="15px"
+              src="../../../../assets/icon/Discovery.png"
+              alt=""
+              srcset=""
+          /></span>
           <h6>Buy Data</h6>
-          </div>
-          
-        </ion-col>
-        <ion-col size="3" (click)="buyCable()">
-          <div>
-            <span><img width="15px" src="../../../../assets/icon/Video.png" alt="" srcset=""></span>
-            <h6>Buy CableTv</h6>
-          </div>
-          
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="3" (click)="buyElectricity()">
-          <div>
-             <span><ion-icon name="bulb"></ion-icon></span>
+        </div>
+      </ion-col>
+      <ion-col size="3" (click)="buyCable()">
+        <div>
+          <span
+            ><img
+              width="15px"
+              src="../../../../assets/icon/Video.png"
+              alt=""
+              srcset=""
+          /></span>
+          <h6>Buy CableTv</h6>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="3" (click)="buyElectricity()">
+        <div>
+          <span><ion-icon name="bulb"></ion-icon></span>
           <h6>Buy Power</h6>
-          </div>
-         
-        </ion-col>
-        <ion-col size="3" (click)="buyBetting()">
-          <div>
-             <span><img width="15px" src="../../../../assets/icon/Send.png" alt="" srcset=""></span>
+        </div>
+      </ion-col>
+      <ion-col size="3" (click)="buyBetting()">
+        <div>
+          <span
+            ><img
+              width="15px"
+              src="../../../../assets/icon/Send.png"
+              alt=""
+              srcset=""
+          /></span>
           <h6>TopUp Betting</h6>
-          </div>
-         
-        </ion-col>
-        <ion-col size="3" (click)="buyEducation()">
-          <div>
-             <span><ion-icon name="school"></ion-icon></span>
+        </div>
+      </ion-col>
+      <ion-col size="3" (click)="buyEducation()">
+        <div>
+          <span><ion-icon name="school"></ion-icon></span>
           <h6>Buy Education</h6>
-          </div>
-         
-        </ion-col>
-        <ion-col size="3" (click)="goToCards()">
-          <div>
-             <span><ion-icon name="card"></ion-icon></span>
+        </div>
+      </ion-col>
+      <ion-col size="3" (click)="goToCards()">
+        <div>
+          <span><ion-icon name="card"></ion-icon></span>
           <h6>Virtual Cards</h6>
-          </div>
-         
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-    <swiper class="swiper-cards pd-13" #swiper [config]="config" [pagination]="true">
-      <ng-template swiperSlide *ngIf="!userData?.is_email_verify" >
-        <ion-item detail="false"  class="verificationBanner" lines="none">
+  <ng-container *ngIf="userData">
+    <swiper
+      class="swiper-cards pd-13"
+      *ngIf="!noVerification()"
+      #swiper
+      [config]="config"
+      [pagination]="true"
+    >
+      <ng-template swiperSlide *ngIf="!userData?.is_email_verify">
+        <ion-item detail="false" class="verificationBanner" lines="none">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-icon name="mail-unread"></ion-icon>
           </ion-avatar>
           <ion-label>
             <h3>Verify email address</h3>
-            <p>Verify your email to access <br> some  features</p>
+            <p>
+              Verify your email to access <br />
+              some features
+            </p>
           </ion-label>
-      
-          <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
+
+          <ion-button
+            (click)="verify()"
+            slot="end"
+            class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+          >
+            Verify
+          </ion-button>
         </ion-item>
-        </ng-template>
-        <ng-template swiperSlide *ngIf="userData?.pin=='1234'" >
-          <ion-item detail="false"  class="verificationBanner" lines="none">
-            <ion-avatar slot="start" class="ion-avatar-default-icon">
-              <ion-icon name="mail-unread"></ion-icon>
-            </ion-avatar>
-            <ion-label>
-              <h3>Update PIN</h3>
-              <p>Default PIN is 1234,change your PIN <br>for advanced security</p>
-            </ion-label>
-        
-            <ion-button (click)="updatePin()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Update </ion-button>
-          </ion-item>
-          </ng-template>
-          <ng-template swiperSlide *ngIf="!userData?.is_kyc1_verify" >
-            <ion-item detail="false"  class="verificationBanner" lines="none">
-              <ion-avatar slot="start" class="ion-avatar-default-icon">
-                <ion-icon name="mail-unread"></ion-icon>
-              </ion-avatar>
-              <ion-label>
-                <h3>Verify Bvn </h3>
-                <p>Verify your BVN to access More Features,<br> ie Bank Transfers</p>
-              </ion-label>
-          
-              <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Verify </ion-button>
-            </ion-item>
-            </ng-template>
-            <ng-template swiperSlide *ngIf="!userData?.is_kyc2_verify" >
-              <ion-item detail="false"  class="verificationBanner" lines="none">
-                <ion-avatar slot="start" class="ion-avatar-default-icon">
-                  <ion-icon name="mail-unread"></ion-icon>
-                </ion-avatar>
-                <ion-label>
-                  <h3>Increase Your Limit</h3>
-                  <p>Add a Valid ID to Increase your<br> transaction Limits</p>
-                </ion-label>
-            
-                <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Increase </ion-button>
-              </ion-item>
-              </ng-template>
-              <ng-template swiperSlide *ngIf="!isProfileComplete" >
-                <ion-item detail="false"  class="verificationBanner" lines="none">
-                  <ion-avatar slot="start" class="ion-avatar-default-icon">
-                    <ion-icon name="mail-unread"></ion-icon>
-                  </ion-avatar>
-                  <ion-label>
-                    <h3>Complete Your Profile</h3>
-                    <p>Completing your profile helps us in delivering <br>a more personalized service to you</p>
-                  </ion-label>
-              
-                  <ion-button (click)="gotoProfile()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Complete </ion-button>
-                </ion-item>
-                </ng-template>
-                <ng-template swiperSlide *ngIf="!nextOfKin" >
-                  <ion-item detail="false"  class="verificationBanner" lines="none">
-                    <ion-avatar slot="start" class="ion-avatar-default-icon">
-                      <ion-icon name="mail-unread"></ion-icon>
-                    </ion-avatar>
-                    <ion-label>
-                      <h3>Add Next of Kin</h3>
-                      <p>Add a Trusted or Someone Close to take <br>Charge of your finances in cases</p>
-                    </ion-label>
-                
-                    <ion-button (click)="verify()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Add </ion-button>
-                  </ion-item>
-                  </ng-template>
-        </swiper>
-
-    <!-- <hr class="divider"> -->
-
-    <ion-list-header class="pd-10">
-      <ion-label color="white">Recent transactions</ion-label>
-      <ion-button  *ngIf="content_loaded && transactions && transactions.length > 0"  routerLink="/payments">See All <ion-icon slot="end" name="arrow-forward"></ion-icon>
-      </ion-button>
-    </ion-list-header>
-
-    <!-- Skeletons -->
-    <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="!content_loaded">
-      <ion-item *ngFor="let i of [].constructor(10);">
-        <ion-label>
-          <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
-          <p><ion-skeleton-text animated style="width: 70%"></ion-skeleton-text></p>
-        </ion-label>
-        <ion-skeleton-text slot="end" animated style="width: 10%"></ion-skeleton-text>     
-      </ion-item>
-    </ion-list>
-
-    <ion-list class="list-custom animate__animated animate__fadeIn m-10" lines="full" *ngIf="content_loaded">
-      <ion-item button detail="false" (click)="viewTransaction(transaction)" *ngFor="let transaction of transactions" >
-        <ion-avatar *ngIf="transaction.extra && (transaction.extra.logo || transaction.extra.logo !=='')"  slot="start" class="ion-avatar-default-icon">
-          <img [src]="transaction.extra.logo" alt="">
-        </ion-avatar>
-        <ion-avatar *ngIf="transaction.extra && (!transaction.extra.logo || transaction.extra.logo =='')" slot="start" class="ion-avatar-default-icon">
-          <ion-icon *ngIf="transaction.action=='BETTING'" name="football-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='EDUCATION'"  name="school-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='ELECTRICITY'" name="bulb"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='AIRTIME'" name="phone-portrait-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='DATA'" name="phone-portrait-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='CABLE'" name="tv-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='LOCAL_FUND_TRANSFER'" name="wallet-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='LOCAL_BANK_TRANSFER'" name="swap-horizontal-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='WITHDRAW_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='FUND_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='VIRTUAL_CARD'" name="card-outline"></ion-icon>
-        </ion-avatar>
-        <ion-avatar *ngIf="!transaction.extra" slot="start" class="ion-avatar-default-icon">
-          <ion-icon *ngIf="transaction.action=='LOCAL_FUND_TRANSFER'" name="wallet-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='LOCAL_BANK_TRANSFER'" name="swap-horizontal-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='WITHDRAW_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='FUND_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-          <ion-icon *ngIf="transaction.action=='VIRTUAL_CARD'" name="card-outline"></ion-icon>
+      </ng-template>
+      <ng-template swiperSlide *ngIf="userData?.pin=='1234'">
+        <ion-item detail="false" class="verificationBanner" lines="none">
+          <ion-avatar slot="start" class="ion-avatar-default-icon">
+            <ion-icon name="mail-unread"></ion-icon>
           </ion-avatar>
-        <ion-label>
-          <h3 *ngIf="transaction.extra" >{{transaction.extra.name || transaction.extra.account_name}}</h3>
-              <h3 *ngIf="!transaction.extra" >{{transaction.action}}</h3>
-          <p>{{formatTime(transaction.created_at)}}</p>
-        </ion-label>
-        <ion-badge *ngIf="transaction.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{transaction.amount}}</ion-badge>
-        <ion-badge *ngIf="transaction.type=='CREDIT'"  color="success" mode="ios" slot="end"> ₦{{transaction.amount}}</ion-badge>    
-      </ion-item>
-     
-    </ion-list>
-    <ion-list *ngIf="content_loaded && transactions.length < 1"  class="empty">
-     <h6>No Transactions Found</h6>
-    </ion-list>
+          <ion-label>
+            <h3>Update PIN</h3>
+            <p>
+              Default PIN is 1234,change your PIN <br />for advanced security
+            </p>
+          </ion-label>
 
-    <!-- Loading spinner -->
+          <ion-button
+            (click)="updatePin()"
+            slot="end"
+            class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+          >
+            Update
+          </ion-button>
+        </ion-item>
+      </ng-template>
+      <ng-template swiperSlide *ngIf="!userData?.is_kyc1_verify">
+        <ion-item detail="false" class="verificationBanner" lines="none">
+          <ion-avatar slot="start" class="ion-avatar-default-icon">
+            <ion-icon name="mail-unread"></ion-icon>
+          </ion-avatar>
+          <ion-label>
+            <h3>Verify Bvn</h3>
+            <p>
+              Verify your BVN to access More Features,<br />
+              ie Bank Transfers
+            </p>
+          </ion-label>
+
+          <ion-button
+            (click)="verify()"
+            slot="end"
+            class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+          >
+            Verify
+          </ion-button>
+        </ion-item>
+      </ng-template>
+      <ng-template swiperSlide *ngIf="!userData?.is_kyc2_verify">
+        <ion-item detail="false" class="verificationBanner" lines="none">
+          <ion-avatar slot="start" class="ion-avatar-default-icon">
+            <ion-icon name="mail-unread"></ion-icon>
+          </ion-avatar>
+          <ion-label>
+            <h3>Increase Your Limit</h3>
+            <p>
+              Add a Valid ID to Increase your<br />
+              transaction Limits
+            </p>
+          </ion-label>
+
+          <ion-button
+            (click)="verify()"
+            slot="end"
+            class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+          >
+            Increase
+          </ion-button>
+        </ion-item>
+      </ng-template>
+      <ng-template swiperSlide *ngIf="!isProfileComplete">
+        <ion-item detail="false" class="verificationBanner" lines="none">
+          <ion-avatar slot="start" class="ion-avatar-default-icon">
+            <ion-icon name="mail-unread"></ion-icon>
+          </ion-avatar>
+          <ion-label>
+            <h3>Complete Your Profile</h3>
+            <p>
+              Completing your profile helps us in delivering <br />a more
+              personalized service to you
+            </p>
+          </ion-label>
+
+          <ion-button
+            (click)="gotoProfile()"
+            slot="end"
+            class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+          >
+            Complete
+          </ion-button>
+        </ion-item>
+      </ng-template>
+      <ng-template swiperSlide *ngIf="!nextOfKin">
+        <ion-item detail="false" class="verificationBanner" lines="none">
+          <ion-avatar slot="start" class="ion-avatar-default-icon">
+            <ion-icon name="mail-unread"></ion-icon>
+          </ion-avatar>
+          <ion-label>
+            <h3>Add Next of Kin</h3>
+            <p>
+              Add a Trusted or Someone Close to take <br />Charge of your
+              finances in cases
+            </p>
+          </ion-label>
+
+          <ion-button
+            (click)="verify()"
+            slot="end"
+            class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+          >
+            Add
+          </ion-button>
+        </ion-item>
+      </ng-template>
+    </swiper>
+  </ng-container>
+
+  <!-- <hr class="divider"> -->
+
+  <ion-list-header class="pd-10">
+    <ion-label color="white">Recent transactions</ion-label>
+    <ion-button
+      *ngIf="content_loaded && transactions && transactions.length > 0"
+      routerLink="/payments"
+      >See All <ion-icon slot="end" name="arrow-forward"></ion-icon>
+    </ion-button>
+  </ion-list-header>
+
+  <!-- Skeletons -->
+  <ion-list
+    class="list-custom animate__animated animate__fadeIn m-10"
+    lines="full"
+    *ngIf="!content_loaded"
+  >
+    <ion-item *ngFor="let i of [].constructor(10);">
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+      <ion-skeleton-text
+        slot="end"
+        animated
+        style="width: 10%"
+      ></ion-skeleton-text>
+    </ion-item>
+  </ion-list>
+
+  <ion-list
+    class="list-custom animate__animated animate__fadeIn m-10"
+    lines="full"
+    *ngIf="content_loaded"
+  >
+    <ion-item
+      button
+      detail="false"
+      (click)="viewTransaction(transaction)"
+      *ngFor="let transaction of transactions"
+    >
+      <ion-avatar
+        *ngIf="transaction.extra &&  transaction.extra.logo !=='' &&  transaction.extra.logo !==null"
+        slot="start"
+        class="ion-avatar-default-icon"
+      >
+        <img [src]="transaction.extra.logo" alt="" />
+      </ion-avatar>
+      <ion-avatar
+        *ngIf="transaction.extra && ( transaction.extra.logo == '' || transaction.extra.logo == null)"
+        slot="start"
+        class="ion-avatar-default-icon"
+      >
+        <ion-icon
+          *ngIf="transaction.action=='BETTING'"
+          name="football-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='EDUCATION'"
+          name="school-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='ELECTRICITY'"
+          name="bulb"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='AIRTIME'"
+          name="phone-portrait-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='DATA'"
+          name="phone-portrait-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='CABLE'"
+          name="tv-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='LOCAL_FUND_TRANSFER'"
+          name="wallet-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='LOCAL_BANK_TRANSFER'"
+          name="swap-horizontal-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='WITHDRAW_VIRTUAL_CARD'"
+          name="card-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='FUND_VIRTUAL_CARD'"
+          name="card-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='VIRTUAL_CARD'"
+          name="card-outline"
+        ></ion-icon>
+      </ion-avatar>
+      <ion-avatar
+        *ngIf="!transaction.extra"
+        slot="start"
+        class="ion-avatar-default-icon"
+      >
+        <ion-icon
+          *ngIf="transaction.action=='LOCAL_FUND_TRANSFER'"
+          name="wallet-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='LOCAL_BANK_TRANSFER'"
+          name="swap-horizontal-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='WITHDRAW_VIRTUAL_CARD'"
+          name="card-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='FUND_VIRTUAL_CARD'"
+          name="card-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='VIRTUAL_CARD'"
+          name="card-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='DEPOSIT'"
+          name="wallet-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='FLUTTERWAVE'"
+          name="wallet-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="transaction.action=='REFERRAL_EARNING'"
+          name="wallet-outline"
+        ></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h3 *ngIf="transaction.extra">
+          {{transaction.extra.name || transaction.extra.account_name}}
+        </h3>
+        <h3 *ngIf="!transaction.extra">{{transaction.action}}</h3>
+        <p>{{formatTime(transaction.created_at)}}</p>
+      </ion-label>
+      <ion-badge
+        *ngIf="transaction.type=='DEBIT'"
+        color="danger"
+        mode="ios"
+        slot="end"
+        >- ₦{{transaction.amount | currency}}</ion-badge
+      >
+      <ion-badge
+        *ngIf="transaction.type=='CREDIT'"
+        color="success"
+        mode="ios"
+        slot="end"
+      >
+        ₦{{transaction.amount | currency}}</ion-badge
+      >
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="content_loaded && transactions.length < 1" class="empty">
+    <h6>No Transactions Found</h6>
+  </ion-list>
+
+  <!-- Loading spinner -->
   <!-- <ion-row class="spinner-container ion-justify-content-center ion-align-items-center">
     <ion-spinner name="crescent" color="medium"></ion-spinner>
   </ion-row> -->
 
-    <!-- <ion-button routerLink="/styleguide">
+  <!-- <ion-button routerLink="/styleguide">
      Style guide
     </ion-button>
 
@@ -323,7 +533,4 @@
     <ion-text color="medium">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea suscipit exercitationem deserunt tempora ratione, natus mollitia praesentium doloribus iure veritatis. Deserunt delectus impedit vitae suscipit illo laborum hic rerum recusandae.</p>
     </ion-text> -->
-
-  
-
 </ion-content>

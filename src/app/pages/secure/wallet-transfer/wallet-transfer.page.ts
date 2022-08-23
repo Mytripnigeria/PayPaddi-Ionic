@@ -1,3 +1,5 @@
+import { UserService } from './../../../services/user/user.service';
+import { CurrencyPipe } from '@angular/common';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { TransferService } from './../../../services/transfer/transfer.service';
@@ -16,22 +18,36 @@ export class WalletTransferPage implements OnInit {
   verified = false;
   verifying = false;
   accountName = null;
+  amountHolder = null;
+  totalAmount = null;
+  currentFee = null;
+  fees = null;
+  amount = null;
+  username = null;
   constructor(
     private modalController: ModalController,
     private formBuilder: FormBuilder,
     private toastService: ToastService,
     private transferService: TransferService,
-    private util: UtilityService
+    private util: UtilityService,
+    private currencyPipe: CurrencyPipe,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    this.transfer_card_form = this.formBuilder.group({
-      amount: [0, Validators.required],
-      username: ['', Validators.required],
-    });
+    this.getFees();
   }
   cancel() {
     this.modalController.dismiss();
+  }
+  async getFees() {
+    const response = await this.userService.getUserFees();
+    console.log(response);
+    if (response.result) {
+      this.fees = response.result.data;
+    } else {
+      // fees not fetch
+    }
   }
 
   async confirmTransfer() {
@@ -55,9 +71,7 @@ export class WalletTransferPage implements OnInit {
   async verify() {
     this.verifying = true;
 
-    const response = await this.transferService.verifyUser(
-      this.transfer_card_form.value.username
-    );
+    const response = await this.transferService.verifyUser(this.username);
     this.verifying = false;
     if (response.result) {
       if (!response.result.data.error) {
@@ -85,14 +99,22 @@ export class WalletTransferPage implements OnInit {
     }
   }
 
+  amountChange(ev) {
+    if (ev == '') return (this.amountHolder = null);
+    ev = ev.replace(/,/g, '');
+    this.amount = this.currencyPipe.transform(ev, '', '', '0.0-0');
+    this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
+
+    // this.totalAmount = this.amountHolder +
+  }
+
   async transfer() {
     const loader = await this.util.loader('Sending');
     loader.present();
-    console.log(this.transfer_card_form.value);
     const payload = {
-      amount: this.transfer_card_form.value.amount,
+      amount: parseFloat(this.amount.replace(/,/g, '')),
       balance: 'current_balance',
-      username: this.transfer_card_form.value.username,
+      username: this.username,
     };
     const response = await this.transferService.sendToWallet(payload);
     loader.dismiss();

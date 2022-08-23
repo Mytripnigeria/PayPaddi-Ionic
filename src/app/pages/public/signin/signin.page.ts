@@ -76,9 +76,7 @@ export class SigninPage implements OnInit {
         // this.toastService.presentToast('Welcome!', 'top', 'success', '', 4000);
         this.util.storeItem('accessToken', response.data.access_token);
         await this.dataService.commitAllData();
-
-        // console.log(userData.result.data.data);
-
+        loader.dismiss();
         await this.router.navigate(['/home']);
       } else {
         this.toastService.presentToast(

@@ -73,6 +73,10 @@ const routes: Routes = [
     path: 'notifications',
     loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
   },
+  {
+    path: 'deposit-amount',
+    loadChildren: () => import('./deposit-amount/deposit-amount.module').then( m => m.DepositAmountPageModule)
+  },
 ];
 
 @NgModule({

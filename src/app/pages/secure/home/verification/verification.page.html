@@ -3,38 +3,51 @@
     <ion-buttons slot="start">
       <ion-button (click)="back()"> Back</ion-button>
     </ion-buttons>
-    <ion-title>
-      Verification
-    </ion-title>
+    <ion-title> Verification </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
   <div class="ion-padding">
-    <p>Enter the verification code sent to your email address</p>
-    <form class="form-default" [formGroup]="verification_form" >
-
+    <ion-list-header class="ion-list-header-small mb-20 ion-padding-bottom">
+      <ion-label>
+        Complete your email verification on PayPaddi to gain full access to our
+        services, enter the code sent to your email and click on
+        verify.</ion-label
+      >
+    </ion-list-header>
+    <form class="form-default" [formGroup]="verification_form">
       <ion-list class="item-card-list" lines="none">
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Verification Code</ion-label>
-          <ion-input formControlName="code" placeholder="0000" type="text" minlength="6" maxlength="6" inputmode="numeric" ></ion-input>
+          <ion-label color="tertiary" position="stacked"
+            >Verification Code</ion-label
+          >
+          <ion-input
+            formControlName="code"
+            placeholder="0000"
+            type="text"
+            minlength="6"
+            maxlength="6"
+            inputmode="numeric"
+          ></ion-input>
         </ion-item>
-     
-
-       
-
       </ion-list>
-
     </form>
-
   </div>
-
-  
 </ion-content>
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
-    <form class="form-default" [formGroup]="verification_form" (submit)="activate()">
-      <ion-button type="submit" [disabled]="verification_form.invalid" expand="block" color="primary">
+    <form
+      class="form-default"
+      [formGroup]="verification_form"
+      (submit)="activate()"
+    >
+      <ion-button
+        type="submit"
+        [disabled]="verification_form.invalid"
+        expand="block"
+        color="primary"
+      >
         Activate
       </ion-button>
     </form>

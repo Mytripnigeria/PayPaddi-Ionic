@@ -1,62 +1,100 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()">
-        Cancel
-      </ion-button>
+      <ion-button (click)="cancel()"> Cancel </ion-button>
     </ion-buttons>
-    <ion-title >
-      Wallet Transfer
-    </ion-title>
-    
+    <ion-title> Wallet Transfer </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <div class="ion-padding">
-
-    <form class="form-default" [formGroup]="transfer_card_form" (submit)="confirmTransfer()">
-
+    <ion-list-header class="ion-list-header-small mb-20 ion-padding-bottom">
+      <ion-label
+        >Send Money instantly to other PayPaddi Wallets with just a Username,
+        these kind of transfers are free and in most cases arrives in less than
+        2 seconds, proceed below.</ion-label
+      >
+    </ion-list-header>
+    <div class="form-default">
       <ion-list class="item-card-list" lines="none">
-        
         <ion-item>
           <ion-label color="tertiary" position="stacked">Amount</ion-label>
-          <ion-input formControlName="amount"  placeholder="Amount" type="number" ></ion-input>
+          <ion-input
+            [(ngModel)]="amount"
+            [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="amountChange($event)"
+            placeholder="Amount"
+            type="tel"
+          ></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Recepient Username</ion-label>
-          <ion-input formControlName="username"  placeholder="Recepient Username" type="text" ></ion-input>
-          <ion-button (click)="verify()" [disabled]="verifying"  slot="end" class="verify ios button button-small button-solid ion-activatable ion-focusable hydrated"> verify </ion-button>
+          <ion-label color="tertiary" position="stacked"
+            >Recepient Username</ion-label
+          >
+          <ion-input
+            [(ngModel)]="username"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Recepient Username"
+            type="text"
+          ></ion-input>
+          <ion-button
+            (click)="verify()"
+            [disabled]="verifying"
+            slot="end"
+            class="verify ios button button-small button-solid ion-activatable ion-focusable hydrated"
+          >
+            verify
+          </ion-button>
         </ion-item>
-        <ion-item *ngIf="!verified && verifying"   class="animate__animated animate__fadeIn " >
+        <ion-item
+          *ngIf="!verified && verifying"
+          class="animate__animated animate__fadeIn"
+        >
           <ion-label>
-            <p> <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text> </p>
-            <h2 style=" padding-bottom: 20px;"><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></h2>
-            </ion-label>
-         
+            <p>
+              <ion-skeleton-text
+                animated
+                style="width: 50%"
+              ></ion-skeleton-text>
+            </p>
+            <h2 style="padding-bottom: 20px">
+              <ion-skeleton-text
+                animated
+                style="width: 80%"
+              ></ion-skeleton-text>
+            </h2>
+          </ion-label>
         </ion-item>
-        <ion-item *ngIf="verified" class="animate__animated animate__fadeIn " >
+        <ion-item *ngIf="verified" class="animate__animated animate__fadeIn">
           <ion-label color="tertiary" position="stacked">Fullname</ion-label>
-          <ion-input readonly="true" [ngModel]="accountName" [ngModelOptions]="{standalone: true}"  type="text" ></ion-input>
+          <ion-input
+            readonly="true"
+            [ngModel]="accountName"
+            [ngModelOptions]="{standalone: true}"
+            type="text"
+          ></ion-input>
         </ion-item>
-        
-       
 
+        <ul class="animate__animated animate__fadeIn" *ngIf="amountHolder">
+          <li>Fee - ₦ {{0| currency}}</li>
+          <li>Total - ₦{{amountHolder || 0 | currency}}</li>
+        </ul>
       </ion-list>
-
-    </form>
-
+    </div>
   </div>
-
 </ion-content>
 
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar color="secondary">
-    <form class="form-default" [formGroup]="transfer_card_form" (submit)="confirmTransfer()">
-      <ion-button type="submit" expand="block" color="primary" [disabled]="!accountName">
-         <span >Transfer</span>
-      </ion-button>
-    </form>
+    <ion-button
+      (click)="confirmTransfer()"
+      type="submit"
+      expand="block"
+      color="primary"
+      [disabled]="!accountName"
+    >
+      <span>Transfer</span>
+    </ion-button>
   </ion-toolbar>
 </ion-footer>

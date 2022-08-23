@@ -1,3 +1,4 @@
+import { DataService } from 'src/app/services/data/data.service';
 import { UtilityService } from './../../../services/utility/utility.service';
 import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
@@ -24,7 +25,7 @@ export class SignupPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private loadingController: LoadingController,
+    private dataService: DataService,
     private formBuilder: FormBuilder,
     private toastService: ToastService,
     private router: Router,
@@ -147,7 +148,9 @@ export class SignupPage implements OnInit {
       const response = await this.auth.signUp(this.signup_form.value);
       console.log(response);
       if (response.result.status == 200 && !response.result.data.error) {
+        await this.dataService.commitAllData();
         this.toastService.presentToast('Welcome!', 'top', 'success', '', 4000);
+        loader.dismiss();
         await this.router.navigate(['/home']);
       } else {
         this.toastService.presentToast(

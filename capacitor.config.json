@@ -3,5 +3,12 @@
 	"appName": "PayPaddi",
 	"webDir": "www",
 	"bundledWebRuntime": false,
+	"plugins": {
+		"CodePush": {
+		  "IOS_DEPLOY_KEY": "cmTcUHEs7zq_kLRNXxhq9jU2udKKunrD_bi1G",
+		  "ANDROID_DEPLOY_KEY": "701EscbKIho6HLn5kgsgWixWp7ReKjNVqNlAL",
+		  "SERVER_URL": "https://codepush.appcenter.ms/"
+		}
+	  },
 	"ios": { "scheme": "PayPaddi" }
 }

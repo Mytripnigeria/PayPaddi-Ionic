@@ -22,7 +22,8 @@ export class PaymentsPage implements OnInit {
 
   ngOnInit() {
     // Fake timeout
-    this.transactions = this.rearrangeTransactions();
+    this.rearrangeTransactions();
+
     setTimeout(() => {
       this.content_loaded = true;
     }, 2000);
@@ -47,9 +48,13 @@ export class PaymentsPage implements OnInit {
       'November',
       'December',
     ];
-    const transactionsHolder = this.dataService.getTransactions();
-    // console.log('got it', transactionsHolder.reverse());
-    this.transactions = transactionsHolder.reduce((groups, transaction) => {
+    let transactionsHolder = this.dataService.getTransactions();
+    transactionsHolder = transactionsHolder.sort(
+      (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
+    );
+
+    console.log('got it', transactionsHolder);
+    const trans = transactionsHolder.reduce((groups, transaction) => {
       const date = new Date(transaction.created_at);
       const segment = `${months[date.getMonth()]}, ${date.getFullYear()}`;
       if (!groups[segment]) {
@@ -60,14 +65,15 @@ export class PaymentsPage implements OnInit {
       groups[segment].push(transaction);
       return groups;
     }, {});
-    const groupArrays = Object.keys(this.transactions).map((segment) => {
+    const groupArrays = Object.keys(trans).map((segment) => {
       return {
         segment,
-        transactions: this.transactions[segment],
+        transactions: trans[segment],
       };
     });
-    console.log(groupArrays);
-    return groupArrays;
+
+    this.transactions = groupArrays;
+    console.log('Transactoion ===.>', this.transactions);
   }
 
   // Filter

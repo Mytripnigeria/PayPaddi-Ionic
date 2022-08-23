@@ -3,90 +3,242 @@
     <ion-buttons slot="start">
       <ion-button (click)="back()"> Back</ion-button>
     </ion-buttons>
-    <ion-title>
-      Deposit
-    </ion-title>
+    <ion-title> Deposit </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <div class="ion-padding">
-
-    <ion-list-header class="ion-list-header-small">
-      <ion-label>Bank 1</ion-label>
+    <ion-list-header class="ion-list-header-small mb-20">
+      <ion-label
+        >Make Deposits to your PayPaddi Wallet by Making a transfer to any of
+        the dedicated bank account details below, the money adds into your
+        Wallet instantly.</ion-label
+      >
     </ion-list-header>
 
-    <ion-list class="list-custom" lines="full">
-      <ion-item>
-        <ion-label>
-          <p>Bank Name</p>
-        </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="accounts.bank_name"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <p>Account Name</p>
-        </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="accounts.account_name"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <p>Account Number</p>
-        </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="accounts.account_number"></ion-input>
-      </ion-item>
-     
-    </ion-list>
+    <swiper class="swiper-cards" #swiper [config]="config" [pagination]="true">
+      <ng-template swiperSlide *ngIf="accounts && accounts.account_number">
+        <ion-list-header class="ion-list-header-small">
+          <ion-label class="ion-text-start">Bank 1</ion-label>
+        </ion-list-header>
 
-    <hr class="hr-medium">
+        <ion-list class="list-custom" lines="full">
+          <ion-item>
+            <ion-label>
+              <p>Bank Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.bank_name"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_name"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Number</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_number"
+            ></ion-input>
+            <ion-icon
+              slot="end"
+              name="copy-outline"
+              (click)="copyNumber(accounts.account_number)"
+            ></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+      <ng-template swiperSlide *ngIf="accounts && accounts.account_number1">
+        <ion-list-header class="ion-list-header-small">
+          <ion-label class="ion-text-start">Bank 2</ion-label>
+        </ion-list-header>
 
-    <ion-list-header class="ion-list-header-small">
-      <ion-label>Bank 2</ion-label>
-    </ion-list-header>
+        <ion-list class="list-custom" lines="full">
+          <ion-item>
+            <ion-label>
+              <p>Bank Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.bank_name1"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_name1"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Number</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_number1"
+            ></ion-input>
+            <ion-icon
+              slot="end"
+              name="copy-outline"
+              (click)="copyNumber(accounts.account_number1)"
+            ></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ng-template>
 
-    <ion-list class="list-custom" lines="full">
-      <ion-item>
-        <ion-label>
-          <p>Bank Name</p>
-        </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="accounts.bank_name1"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <p>Account Name</p>
-        </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="accounts.account_name1"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <p>Account Number</p>
-        </ion-label>
-        <ion-input readonly slot="end" class="font-size-small ion-text-right ion-no-padding-end" [value]="accounts.account_number1"></ion-input>
-      </ion-item>
-     
-    </ion-list>
+      <ng-template swiperSlide *ngIf="accounts && accounts.account_number2">
+        <ion-list-header class="ion-list-header-small">
+          <ion-label class="ion-text-start">Bank 3</ion-label>
+        </ion-list-header>
 
-    <hr class="hr-medium">
+        <ion-list class="list-custom" lines="full">
+          <ion-item>
+            <ion-label>
+              <p>Bank Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.bank_name2"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_name2"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Number</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_number2"
+            ></ion-input>
+            <ion-icon
+              slot="end"
+              name="copy-outline"
+              (click)="copyNumber(accounts.account_number2)"
+            ></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ng-template>
 
+      <ng-template swiperSlide *ngIf="accounts && accounts.account_number3">
+        <ion-list-header class="ion-list-header-small">
+          <ion-label class="ion-text-start">Bank 4</ion-label>
+        </ion-list-header>
 
+        <ion-list class="list-custom" lines="full">
+          <ion-item>
+            <ion-label>
+              <p>Bank Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.bank_name3"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Name</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_name3"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <p>Account Number</p>
+            </ion-label>
+            <ion-input
+              *ngIf="accounts"
+              readonly
+              slot="end"
+              class="font-size-small ion-text-right ion-no-padding-end"
+              [value]="accounts.account_number3"
+            ></ion-input>
+            <ion-icon
+              slot="end"
+              name="copy-outline"
+              (click)="copyNumber(accounts.account_number3)"
+            ></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+    </swiper>
+
+    <!-- <hr class="hr-medium"> -->
+
+    <hr class="hr-medium" />
 
     <ion-list-header class="ion-list-header-small">
       <ion-label>Alternatives</ion-label>
     </ion-list-header>
 
     <ion-list class="list-custom" lines="full">
-      <ion-item detail="true">
+      <ion-item detail="true" (click)="collectAmount('card')">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-icon color="primary" name="card"></ion-icon>
         </ion-avatar>
         <ion-label>
           <h3>Deposit by card</h3>
-          <p class="font-size-smallest">Fund your wallet using your debit card</p>
+          <p class="font-size-smallest">
+            Fund your wallet using your debit card
+          </p>
         </ion-label>
-       
       </ion-item>
-      <ion-item button>
+      <ion-item button (click)="collectAmount('ussd')">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-icon color="primary" name="keypad-outline"></ion-icon>
         </ion-avatar>
@@ -95,8 +247,16 @@
           <p class="font-size-smallest">Fund your wallet using USSD.</p>
         </ion-label>
       </ion-item>
+
+      <!-- <ion-item button (click)="payWithBank()">
+        <ion-avatar slot="start" class="ion-avatar-default-icon">
+          <ion-icon color="primary" name="keypad-outline"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>Deposit by Bank</h3>
+          <p class="font-size-smallest">Fund your wallet using Bank.</p>
+        </ion-label>
+      </ion-item> -->
     </ion-list>
-
   </div>
-
 </ion-content>

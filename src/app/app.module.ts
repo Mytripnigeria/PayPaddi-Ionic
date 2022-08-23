@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 // ReactiveForms
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { FlutterwaveModule } from 'flutterwave-angular-v3';
 // NgCharts
 import { NgChartsModule } from 'ng2-charts';
 import { CurrencyPipe } from '@angular/common';
@@ -19,9 +19,10 @@ import { CurrencyPipe } from '@angular/common';
   entryComponents: [],
   imports: [
     BrowserModule,
-    IonicModule.forRoot({ mode: 'ios' }),
+    IonicModule.forRoot({ mode: 'ios', swipeBackEnabled: false }),
     ReactiveFormsModule,
     AppRoutingModule,
+    FlutterwaveModule,
     NgChartsModule,
   ],
   providers: [

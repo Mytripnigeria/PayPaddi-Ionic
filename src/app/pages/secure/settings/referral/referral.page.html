@@ -15,7 +15,7 @@
   <div class="ion-padding">
 
     <ion-list-header class="ion-list-header-small mb-20">
-      <ion-label>Share your referral code to your friends and family to earn #500 when they are signed up and verified.</ion-label>
+      <ion-label>Share your referral code to your friends and family to earn ₦{{fees}} when they are signed up and verified.</ion-label>
     </ion-list-header >
 
     <ion-list class="list-custom" lines="full">
@@ -24,7 +24,7 @@
           <ion-item detail="false"  lines="none">
             <ion-label>
               <p>Referral Earnings</p>
-              <h3>#0.00</h3>
+              <h3 *ngIf="referalEarnings" >₦{{referalEarnings | currency}}</h3>
             </ion-label>
             <ion-label>
               <p>Referral Downlines</p>

@@ -1,18 +1,16 @@
 <ion-header collapse="fade" [translucent]="true">
   <ion-toolbar>
-   <ion-buttons slot="start">
-     <ion-back-button text="Back"></ion-back-button>
-   </ion-buttons>
-    <ion-title>
-      Payments
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-title> Payments </ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="insight()">
         <ion-icon slot="icon-only" name="pie-chart"></ion-icon>
       </ion-button>
-      <ion-button (click)="filter()">
+      <!-- <ion-button (click)="filter()">
         <ion-icon slot="icon-only" name="filter"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -22,86 +20,193 @@
     <ion-toolbar>
       <ion-title size="large">Payments</ion-title>
     </ion-toolbar>
-    <ion-toolbar>
-      <ion-searchbar showCancelButton="focus" placeholder="Company, category, expense ..."></ion-searchbar>
-    </ion-toolbar>
+    <!-- <ion-toolbar>
+      <ion-searchbar
+        showCancelButton="focus"
+        placeholder="Company, category, expense ..."
+      ></ion-searchbar>
+    </ion-toolbar> -->
   </ion-header>
 
   <div class="ion-padding">
-
     <!-- Skeletons -->
     <ng-container *ngIf="!content_loaded">
-
       <ion-list-header class="ion-list-header-small">
-        <ion-label><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></ion-label>
+        <ion-label
+          ><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text
+        ></ion-label>
         <ion-note color="tertiary" class="ion-note-small">
           <ion-skeleton-text animated style="width: 40px"></ion-skeleton-text>
         </ion-note>
       </ion-list-header>
-      <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
+      <ion-list
+        class="list-custom animate__animated animate__fadeIn"
+        lines="full"
+      >
         <ion-item button detail="false" *ngFor="let i of [].constructor(12);">
           <ion-avatar slot="start" class="ion-avatar-default-icon">
             <ion-skeleton-text animated></ion-skeleton-text>
           </ion-avatar>
           <ion-label>
-            <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
-            <p><ion-skeleton-text animated style="width: 75%"></ion-skeleton-text></p>
+            <h3>
+              <ion-skeleton-text
+                animated
+                style="width: 50%"
+              ></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text
+                animated
+                style="width: 75%"
+              ></ion-skeleton-text>
+            </p>
           </ion-label>
-          <ion-skeleton-text slot="end" animated style="width: 15%"></ion-skeleton-text>
+          <ion-skeleton-text
+            slot="end"
+            animated
+            style="width: 15%"
+          ></ion-skeleton-text>
         </ion-item>
       </ion-list>
-
     </ng-container>
 
-    <ng-container *ngIf="content_loaded" >
-
-      <ng-container *ngFor="let transaction of transactions" >
-        <ion-list-header class="ion-list-header-small"  >
+    <ng-container *ngIf="content_loaded">
+      <ng-container *ngFor="let transaction of transactions">
+        <ion-list-header class="ion-list-header-small">
           <ion-label>{{transaction.segment}}</ion-label>
           <!-- <ion-note color="tertiary" class="ion-note-small">$8412,48</ion-note> -->
         </ion-list-header>
-        <ion-list class="list-custom animate__animated animate__fadeIn" lines="full">
-          <ion-item button detail="false" (click)="viewDetail(item)" *ngFor="let item of transaction.transactions"  >
-            <ion-avatar *ngIf="item.extra && (item.extra.logo || item.extra.logo !=='')"  slot="start" class="ion-avatar-default-icon">
-              <img [src]="item.extra.logo" alt="">
+        <ion-list
+          class="list-custom animate__animated animate__fadeIn"
+          lines="full"
+        >
+          <ion-item
+            button
+            detail="false"
+            (click)="viewDetail(item)"
+            *ngFor="let item of transaction.transactions"
+          >
+            <ion-avatar
+              *ngIf="item.extra && item.extra.logo !=='' && item.extra.logo !== null"
+              slot="start"
+              class="ion-avatar-default-icon"
+            >
+              <img [src]="item.extra.logo" alt="" />
             </ion-avatar>
-            <ion-avatar *ngIf="item.extra && (!item.extra.logo || item.extra.logo == '')" slot="start" class="ion-avatar-default-icon">
-              <ion-icon *ngIf="item.action=='BETTING'" name="football-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='EDUCATION'"  name="school-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='ELECTRICITY'" name="bulb"></ion-icon>
-              <ion-icon *ngIf="item.action=='AIRTIME'" name="phone-portrait-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='DATA'" name="phone-portrait-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='CABLE'" name="tv-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='LOCAL_FUND_TRANSFER'" name="wallet-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='LOCAL_BANK_TRANSFER'" name="swap-horizontal-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='WITHDRAW_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='FUND_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='VIRTUAL_CARD'" name="card-outline"></ion-icon>
+            <ion-avatar
+              *ngIf="item.extra && (!item.extra.logo || item.extra.logo == '')"
+              slot="start"
+              class="ion-avatar-default-icon"
+            >
+              <ion-icon
+                *ngIf="item.action=='BETTING'"
+                name="football-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='EDUCATION'"
+                name="school-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='ELECTRICITY'"
+                name="bulb"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='AIRTIME'"
+                name="phone-portrait-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='DATA'"
+                name="phone-portrait-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='CABLE'"
+                name="tv-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='LOCAL_FUND_TRANSFER'"
+                name="wallet-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='LOCAL_BANK_TRANSFER'"
+                name="swap-horizontal-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='WITHDRAW_VIRTUAL_CARD'"
+                name="card-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='FUND_VIRTUAL_CARD'"
+                name="card-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='VIRTUAL_CARD'"
+                name="card-outline"
+              ></ion-icon>
             </ion-avatar>
-            <ion-avatar *ngIf="!item.extra" slot="start" class="ion-avatar-default-icon">
-              <ion-icon *ngIf="item.action=='LOCAL_FUND_TRANSFER'" name="wallet-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='LOCAL_BANK_TRANSFER'" name="swap-horizontal-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='WITHDRAW_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='FUND_VIRTUAL_CARD'" name="card-outline"></ion-icon>
-              <ion-icon *ngIf="item.action=='VIRTUAL_CARD'" name="card-outline"></ion-icon>
-              </ion-avatar>
+            <ion-avatar
+              *ngIf="!item.extra"
+              slot="start"
+              class="ion-avatar-default-icon"
+            >
+              <ion-icon
+                *ngIf="item.action=='LOCAL_FUND_TRANSFER'"
+                name="wallet-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='LOCAL_BANK_TRANSFER'"
+                name="swap-horizontal-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='WITHDRAW_VIRTUAL_CARD'"
+                name="card-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='FUND_VIRTUAL_CARD'"
+                name="card-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='VIRTUAL_CARD'"
+                name="card-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='DEPOSIT'"
+                name="wallet-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='FLUTTERWAVE'"
+                name="wallet-outline"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="item.action=='REFERRAL_EARNING'"
+                name="wallet-outline"
+              ></ion-icon>
+            </ion-avatar>
             <ion-label>
-              <h3 *ngIf="item.extra" >{{item.extra.name || item.extra.account_name}}</h3>
-              <h3 *ngIf="!item.extra" >{{item.action}}</h3>
-          <p>{{formatTime(item.created_at)}}</p>
+              <h3 *ngIf="item.extra">
+                {{item.extra.name || item.extra.account_name}}
+              </h3>
+              <h3 *ngIf="!item.extra">{{item.action}}</h3>
+              <p>{{formatTime(item.created_at)}}</p>
             </ion-label>
-           
-            <ion-badge *ngIf="item.type=='DEBIT'"  color="danger" mode="ios" slot="end">- ₦{{item.amount}}</ion-badge>
-            <ion-badge *ngIf="item.type=='CREDIT'"  color="success" mode="ios" slot="end"> ₦{{item.amount}}</ion-badge>
+
+            <ion-badge
+              *ngIf="item.type=='DEBIT'"
+              color="danger"
+              mode="ios"
+              slot="end"
+              >- ₦{{item.amount | currency}}</ion-badge
+            >
+            <ion-badge
+              *ngIf="item.type=='CREDIT'"
+              color="success"
+              mode="ios"
+              slot="end"
+            >
+              ₦{{item.amount | currency}}</ion-badge
+            >
           </ion-item>
-          </ion-list>
+        </ion-list>
       </ng-container>
-     
-       
     </ng-container>
-
   </div>
-
 </ion-content>
-
-

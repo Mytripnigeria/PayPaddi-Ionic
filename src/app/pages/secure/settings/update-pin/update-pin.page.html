@@ -1,46 +1,48 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()">
-        Cancel
-      </ion-button>
+      <ion-button (click)="cancel()"> Cancel </ion-button>
     </ion-buttons>
-    <ion-title >
-      Update PIN
-    </ion-title>
-    
+    <ion-title> Update PIN </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <div class="ion-padding">
+    <ion-list-header class="ion-list-header-small mb-20 ion-padding-bottom">
+      <ion-label
+        >Default PIN is 1234, change your pin for advanced security as this PIN
+        is required in completing any transaction on PayPaddi.</ion-label
+      >
+    </ion-list-header>
 
-    <form class="form-default"  [formGroup]="update_pin_form" (submit)="save()">
-
+    <form class="form-default" [formGroup]="update_pin_form" (submit)="save()">
       <ion-list class="item-card-list" lines="none">
-        
         <ion-item>
-          <ion-label color="tertiary" position="stacked" >PIN</ion-label>
-          <ion-input formControlName="pin" maxlength="4" minlength="4" placeholder="0000" type="tel" ></ion-input>
+          <ion-label color="tertiary" position="stacked">PIN</ion-label>
+          <ion-input
+            formControlName="pin"
+            maxlength="4"
+            minlength="4"
+            placeholder="0000"
+            type="tel"
+          ></ion-input>
         </ion-item>
-        
-       
-
       </ion-list>
-
     </form>
-
   </div>
-
 </ion-content>
 
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
     <form class="form-default" [formGroup]="update_pin_form" (submit)="save()">
-      <ion-button type="submit" [disabled]="update_pin_form.invalid" expand="block" color="primary">
-         <span >Update</span>
-         
+      <ion-button
+        type="submit"
+        [disabled]="update_pin_form.invalid"
+        expand="block"
+        color="primary"
+      >
+        <span>Update</span>
       </ion-button>
     </form>
   </ion-toolbar>

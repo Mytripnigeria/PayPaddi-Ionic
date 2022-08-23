@@ -1,3 +1,5 @@
+import { UserService } from './../../../services/user/user.service';
+import { CurrencyPipe } from '@angular/common';
 import { DataService } from './../../../services/data/data.service';
 import {
   IBuyData,
@@ -29,8 +31,10 @@ export class BuyAirtimePage implements OnInit {
   verifying = false;
   variation = null;
   identifier = null;
+  fees = null;
   service = null;
   amount = null;
+  amountHolder = null;
   billersCode = null;
   verificationData = null;
   variations = [];
@@ -41,13 +45,34 @@ export class BuyAirtimePage implements OnInit {
     private modalController: ModalController,
     private toastService: ToastService,
     private util: UtilityService,
-    private dataService: DataService
+    private dataService: DataService,
+    private currencyPipe: CurrencyPipe,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
     this.type = this.navParam.data.type;
     this.identifier = this.navParam.data.identifier;
     this.getServices();
+    this.getFees();
+  }
+
+  getTotalAmount() {
+    if (this.type == 'power') {
+      return (
+        parseFloat(this.amountHolder) + parseFloat(this.fees['electricity'])
+      );
+    } else {
+      return parseFloat(this.amountHolder) + parseFloat(this.fees[this.type]);
+    }
+  }
+
+  getCurrentFee() {
+    if (this.type == 'power') {
+      return this.fees['electricity'];
+    } else {
+      return this.fees[this.type];
+    }
   }
 
   async getServices() {
@@ -93,6 +118,15 @@ export class BuyAirtimePage implements OnInit {
       );
     }
   }
+  async getFees() {
+    const response = await this.userService.getUserFees();
+    console.log(response);
+    if (response.result) {
+      this.fees = response.result.data;
+    } else {
+      // fees not fetch
+    }
+  }
 
   async getVariations(serviceID, loading = true) {
     const loader = await this.util.loader('Getting Packages');
@@ -109,6 +143,14 @@ export class BuyAirtimePage implements OnInit {
           console.log('variationss', this.variations, this.type);
           this.variation = this.variations[0];
           this.amount = this.variations[0].variation_amount;
+          this.amount = this.currencyPipe.transform(
+            this.amount,
+            '',
+            '',
+            '0.0-0'
+          );
+          // this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
+          this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
           // if (this.type == 'power') {
           //   this.verifyElectricity();
           // }
@@ -173,10 +215,15 @@ export class BuyAirtimePage implements OnInit {
 
     await modal.present();
     const { data } = await modal.onDidDismiss();
-    console.log(data);
+    // console.log(data);
     if (data && data.variation) {
       this.variation = data.variation;
       this.amount = data.variation.variation_amount;
+      this.amount = this.currencyPipe.transform(this.amount, '', '', '0.0-0');
+      // this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
+      this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
+
+      console.log('deb==>', this.amount);
       // this.verifyElectricity();
     }
   }
@@ -200,13 +247,23 @@ export class BuyAirtimePage implements OnInit {
     }
   }
 
+  amountChange(ev) {
+    console.log('the ev===>', ev);
+    if (ev == '') return (this.amountHolder = null);
+    ev = ev.replace(/,/g, '');
+    this.amount = this.currencyPipe.transform(ev, '', '', '0.0-0');
+    this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
+    console.log(parseFloat(this.amountHolder));
+    // this.totalAmount = this.amountHolder +
+  }
+
   async buyAirtime() {
     const loader = await this.util.loader('purchasing');
     loader.present();
     console.log(this.service);
     console.log(this.variation);
     const payload: IBuyAirtime = {
-      amount: this.amount,
+      amount: `${parseFloat(this.amount.replace(/,/g, ''))}`,
       phone: this.billersCode,
       service_id: this.service.serviceID,
     };
@@ -247,7 +304,7 @@ export class BuyAirtimePage implements OnInit {
     console.log(this.service);
     console.log(this.variation);
     const payload: IBuyData = {
-      amount: this.amount,
+      amount: `${parseFloat(this.amount.replace(/,/g, ''))}`,
       phone: this.billersCode,
       service_id: this.service.serviceID,
       variation_code: this.variation.variation_code,
@@ -330,7 +387,7 @@ export class BuyAirtimePage implements OnInit {
       billers_code: this.billersCode,
       service_id: this.service.serviceID,
       type: this.variation.variation_code,
-      amount: this.amount,
+      amount: `${parseFloat(this.amount.replace(/,/g, ''))}`,
       phone: this.dataService.userProfile.phone,
     };
 
@@ -347,7 +404,7 @@ export class BuyAirtimePage implements OnInit {
           'Error',
           'top',
           'danger',
-          'Unable to complete transaction',
+          response.result.data.data,
           4000
         );
       }
@@ -384,7 +441,7 @@ export class BuyAirtimePage implements OnInit {
           'Error',
           'top',
           'danger',
-          'Unable to complete transaction',
+          response.result.data.data,
           4000
         );
       }
@@ -421,7 +478,7 @@ export class BuyAirtimePage implements OnInit {
           'Error',
           'top',
           'danger',
-          'Unable to complete transaction',
+          response.result.data.data,
           4000
         );
       }
@@ -443,7 +500,7 @@ export class BuyAirtimePage implements OnInit {
     const payload: IBuyEducation = {
       service_id: this.service.serviceID,
       variation_code: this.variation.variation_code,
-      amount: this.amount,
+      amount: `${parseFloat(this.amount.replace(/,/g, ''))}`,
       phone: this.dataService.userProfile.phone,
       billers_code: this.billersCode,
     };
@@ -487,7 +544,7 @@ export class BuyAirtimePage implements OnInit {
       billers_code: this.billersCode,
       service_id: this.service.serviceID,
       type: this.variation.variation_code,
-      amount: `${this.amount}`,
+      amount: `${parseFloat(this.amount.replace(/,/g, ''))}`,
       phone: this.dataService.userProfile.phone,
     };
     const response = await this.bill.buyElectricity(payload);
@@ -531,7 +588,7 @@ export class BuyAirtimePage implements OnInit {
       billers_code: this.billersCode,
       service_id: this.service.serviceID,
       variation_code: this.variation.variation_code,
-      amount: this.amount,
+      amount: `${parseFloat(this.amount.replace(/,/g, ''))}`,
       phone: this.dataService.userProfile.phone,
     };
 
@@ -574,7 +631,7 @@ export class BuyAirtimePage implements OnInit {
     const payload: IBuyBetting = {
       biller: this.service,
       better_id: this.billersCode,
-      amount: this.amount,
+      amount: parseFloat(this.amount.replace(/,/g, '')),
     };
 
     const response = await this.bill.buyBetting(payload);

@@ -28,6 +28,9 @@ export class UserService {
   async getReferralCode() {
     return await this.req.axiosGet('referral_code');
   }
+  async getReferralEarnings() {
+    return await this.req.axiosGet('referral-earnings');
+  }
   async getReferrals() {
     return await this.req.axiosGet('referrals');
   }

@@ -3,57 +3,91 @@
     <ion-buttons slot="start">
       <ion-button (click)="back()"> Back</ion-button>
     </ion-buttons>
-    <ion-title>
-      Verification
-    </ion-title>
+    <ion-title> Verification </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
   <div class="ion-padding">
-
-    <form class="form-default" [formGroup]="verification_form" >
-
+    <ion-list-header class="ion-list-header-small mb-20 ion-padding-bottom">
+      <ion-label>
+        Complete your ID verification on PayPaddi to increase your daily and
+        monthly transaction limits. Upload the front and back of any supported
+        and valid means of identification that you own, this is a required
+        standard to protect your identity on PayPaddi.</ion-label
+      >
+    </ion-list-header>
+    <form class="form-default" [formGroup]="verification_form">
       <ion-list class="item-card-list" lines="none">
-        
-         <ion-item>
+        <ion-item>
           <ion-label color="tertiary" position="stacked">ID Type</ion-label>
-           <ion-select formControlName="type" value="nin"  placeholder="Select ID Type">
-             <ion-select-option value="NIN">National Identity Number</ion-select-option>
-             <ion-select-option value="INTERNATIONAL_PASSPORT">International Passport</ion-select-option>
-             <ion-select-option value="DRIVER_LICENSE">Driving License</ion-select-option>
-             <ion-select-option value="VOTER_CARD">Voters Card</ion-select-option>
-           </ion-select>
-         </ion-item>
+          <ion-select
+            formControlName="type"
+            value="nin"
+            placeholder="Select ID Type"
+          >
+            <ion-select-option value="NIN"
+              >National Identity Number</ion-select-option
+            >
+            <ion-select-option value="INTERNATIONAL_PASSPORT"
+              >International Passport</ion-select-option
+            >
+            <ion-select-option value="DRIVER_LICENSE"
+              >Driving License</ion-select-option
+            >
+            <ion-select-option value="VOTER_CARD"
+              >Voters Card</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
         <ion-item>
           <ion-label color="tertiary" position="stacked">ID Number</ion-label>
-          <ion-input formControlName="number" placeholder="ID Number" type="text"  ></ion-input>
+          <ion-input
+            formControlName="number"
+            placeholder="ID Number"
+            type="text"
+          ></ion-input>
         </ion-item>
-        <ion-item  (click)="uploadFrontPicture()">
-          <ion-label color="tertiary" position="stacked">ID Front Picture</ion-label>
-          <ion-input formControlName="front_picture" [value]="verification_form.value.front_picture" placeholder="ID Front Picture"  [readonly]="true" ></ion-input>
+        <ion-item (click)="uploadFrontPicture()">
+          <ion-label color="tertiary" position="stacked"
+            >ID Front Picture</ion-label
+          >
+          <ion-input
+            formControlName="front_picture"
+            [value]="verification_form.value.front_picture"
+            placeholder="ID Front Picture"
+            [readonly]="true"
+          ></ion-input>
         </ion-item>
-     
-        <ion-item  (click)="uploadBackPicture()">
-          <ion-label color="tertiary" position="stacked">ID Back Picture</ion-label>
-          <ion-input [readonly]="true" formControlName="back_picture" [value]="verification_form.value.back_picture" placeholder="ID Back Picture"></ion-input>
-        </ion-item>
-     
 
-       
-
+        <ion-item (click)="uploadBackPicture()">
+          <ion-label color="tertiary" position="stacked"
+            >ID Back Picture</ion-label
+          >
+          <ion-input
+            [readonly]="true"
+            formControlName="back_picture"
+            [value]="verification_form.value.back_picture"
+            placeholder="ID Back Picture"
+          ></ion-input>
+        </ion-item>
       </ion-list>
-
     </form>
-
   </div>
-
-  
 </ion-content>
 <ion-footer class="modal-footer" collapse="fade">
   <ion-toolbar>
-    <form class="form-default" [formGroup]="verification_form" (submit)="activate()">
-      <ion-button type="submit" [disabled]="verification_form.invalid || !frontImage || !backImage" expand="block" color="primary">
+    <form
+      class="form-default"
+      [formGroup]="verification_form"
+      (submit)="activate()"
+    >
+      <ion-button
+        type="submit"
+        [disabled]="verification_form.invalid || !frontImage || !backImage"
+        expand="block"
+        color="primary"
+      >
         Send
       </ion-button>
     </form>
