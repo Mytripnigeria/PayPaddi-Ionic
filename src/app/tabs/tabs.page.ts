@@ -1,3 +1,5 @@
+import { EventsService } from './../services/events.service';
+import { HomePage } from './../pages/secure/home/home.page';
 import { DataService } from './../services/data/data.service';
 import { BankTransferPage } from './../pages/secure/bank-transfer/bank-transfer.page';
 import { Component } from '@angular/core';
@@ -22,7 +24,8 @@ export class TabsPage {
     private modalController: ModalController,
     private alertController: AlertController,
     private routerOutlet: IonRouterOutlet,
-    private dataService: DataService
+    private dataService: DataService,
+    private eventService: EventsService
   ) {}
 
   // Select action
@@ -32,14 +35,14 @@ export class TabsPage {
       cssClass: 'custom-action-sheet',
       buttons: [
         {
-          text: 'Send to wallet',
+          text: 'PayPaddi Wallet',
           icon: 'wallet',
           handler: () => {
             this.sendToWallet();
           },
         },
         {
-          text: 'Send to local bank',
+          text: 'Bank Account',
           icon: 'storefront',
           handler: () => {
             // Put in logic ...
@@ -47,10 +50,11 @@ export class TabsPage {
           },
         },
         {
-          text: 'Crossborder transfer',
+          text: 'CrossBorder',
           icon: 'earth',
           handler: () => {
             // Put in logic ...
+            this.schedules();
           },
         },
         {
@@ -89,6 +93,9 @@ export class TabsPage {
       let { data } = await modal.onWillDismiss();
       if (data && data.reload) {
         // await this.home.getUserWallet();
+        this.eventService.notify({
+          reloadDashboard: true,
+        });
       }
     } else {
       this.verifyNotice('kyc');
@@ -136,6 +143,9 @@ export class TabsPage {
       let { data } = await modal.onWillDismiss();
       if (data && data.reload) {
         // await this.home.getUserWallet();
+        this.eventService.notify({
+          reloadDashboard: true,
+        });
       }
     } else {
       this.verifyNotice('kyc');

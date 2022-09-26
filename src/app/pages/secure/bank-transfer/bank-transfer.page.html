@@ -17,18 +17,29 @@
     </ion-list-header>
     <div class="form-default">
       <ion-list class="item-card-list" lines="none">
-        <ion-item>
-          <ion-label color="tertiary" position="stacked">Amount</ion-label>
-          <ion-input
-            [(ngModel)]="amount"
-            [ngModelOptions]="{standalone: true}"
-            (ngModelChange)="amountChange($event)"
-            placeholder="Amount"
-            type="tel"
-          ></ion-input>
-        </ion-item>
+        <div *ngIf="limits">
+          <ion-item class="amount">
+            <ion-label color="tertiary" position="stacked">Amount</ion-label>
+            <ion-input
+              [(ngModel)]="amount"
+              [ngModelOptions]="{standalone: true}"
+              (ngModelChange)="amountChange($event)"
+              pattern="^[1-9][0-9]*$"
+              (keypress)="keyPressNumbers($event)"
+              placeholder="Amount"
+              type="tel"
+            ></ion-input>
+          </ion-item>
+          <small
+            ><span>min - 20 </span>
+            <span [style.color]="amountHolder > getMax()?'red':'white' "
+              >max - {{getMax() | currency}}</span
+            >
+          </small>
+        </div>
+
         <ion-item
-          *ngIf="amountHolder > 10"
+          *ngIf="amountHolder > 20 && amountHolder <= getMax() "
           class="animate__animated animate__fadeIn"
         >
           <ion-label color="tertiary" position="stacked">select bank</ion-label>

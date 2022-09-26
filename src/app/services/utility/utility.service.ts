@@ -1,12 +1,17 @@
+import { ToastService } from './../toast/toast.service';
 import { Injectable } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { Storage } from '@capacitor/storage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilityService {
-  constructor(public loadingController: LoadingController) {}
+  constructor(
+    public loadingController: LoadingController,
+    private navCtrl: NavController,
+    private toastService: ToastService
+  ) {}
 
   async loader(action) {
     const loading = await this.loadingController.create({
@@ -21,6 +26,23 @@ export class UtilityService {
     await Storage.configure({
       group: 'PayPaddiData',
     });
+  }
+
+  async signout() {
+    await Storage.remove({
+      key: 'accessToken',
+    });
+    this.toastService
+      .presentToast(
+        'Session Expired',
+        'top',
+        'danger',
+        'Please login again',
+        2000
+      )
+      .then(() => {
+        this.navCtrl.navigateBack('/signin');
+      });
   }
 
   async storeData(storageName, storageData) {

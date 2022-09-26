@@ -1,7 +1,7 @@
 import { TransactionsService } from './../../../../services/transactions/transactions.service';
 import { DepositAmountPage } from './../../deposit-amount/deposit-amount.page';
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { SwiperOptions } from 'swiper';
 import {
@@ -40,6 +40,7 @@ export class DepositPage implements OnInit {
     private dataService: DataService,
     private util: UtilityService,
     private flutterwave: Flutterwave,
+    private alertController: AlertController,
     private toastService: ToastService,
     private transferService: TransferService,
     private modalController: ModalController,
@@ -93,6 +94,16 @@ export class DepositPage implements OnInit {
     this.getBankAccounts();
   }
 
+  async alert() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Coming Soon!!!',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
   payWithCard(amount) {
     this.paymentData.payment_options = 'card';
     this.paymentData.amount = Number(amount);
@@ -130,6 +141,7 @@ export class DepositPage implements OnInit {
   }
 
   async collectAmount(type) {
+    if (type) return this.alert();
     const modal = await this.modalController.create({
       component: DepositAmountPage,
       swipeToClose: true,

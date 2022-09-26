@@ -146,29 +146,67 @@ export class SignupPage implements OnInit {
       const loader = await this.util.loader('Signing up');
       loader.present();
       const response = await this.auth.signUp(this.signup_form.value);
-      console.log(response);
-      if (response.result.status == 200 && !response.result.data.error) {
-        await this.dataService.commitAllData();
-        this.toastService.presentToast('Welcome!', 'top', 'success', '', 4000);
+      console.log({ response: response.result });
+      if (!response.result) {
         loader.dismiss();
-        await this.router.navigate(['/home']);
-      } else {
-        this.toastService.presentToast(
-          JSON.parse(response.result.data.message).email,
+        return this.toastService.presentToast(
+          'Registration Error',
           'top',
           'danger',
           '',
           4000
         );
       }
-
-      loader.dismiss();
+      if (
+        response.result &&
+        response.result.status == 200 &&
+        !response.result.data.error
+      ) {
+        this.util.storeItem(
+          'accessToken',
+          response.result.data.data.access_token
+        );
+        await this.dataService.commitAllData();
+        this.toastService.presentToast('Welcome!', 'top', 'success', '', 4000);
+        loader.dismiss();
+        await this.router.navigate(['/home']);
+      } else {
+        loader.dismiss();
+        const errorMsg = JSON.parse(response.result.data.data);
+        console.log({ errorMsg });
+        if (errorMsg.email) {
+          this.toastService.presentToast(
+            errorMsg.email,
+            'top',
+            'danger',
+            '',
+            4000
+          );
+        } else if (errorMsg.username) {
+          this.toastService.presentToast(
+            errorMsg.username,
+            'top',
+            'danger',
+            '',
+            4000
+          );
+        } else {
+          this.toastService.presentToast(
+            'Registration Error',
+            'top',
+            'danger',
+            '',
+            4000
+          );
+        }
+      }
 
       // Success messages + routing
 
       // setTimeout(() => {
       //   loader.dismiss();
       // }, 2000);
+      loader.dismiss();
     }
   }
 }

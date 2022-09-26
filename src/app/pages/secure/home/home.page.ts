@@ -1,3 +1,4 @@
+import { EventsService } from './../../../services/events.service';
 import { EditPage } from './../profile/edit/edit.page';
 import { INOK } from './../../../models/nextOfKin';
 import { Router } from '@angular/router';
@@ -19,6 +20,7 @@ import * as moment from 'moment';
 import { VerificationNoticePage } from '../verification-notice/verification-notice.page';
 import { UpdatePinPage } from '../settings/update-pin/update-pin.page';
 import { NotificationsPage } from '../notifications/notifications.page';
+import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
   selector: 'app-home',
@@ -46,12 +48,20 @@ export class HomePage implements OnInit {
     private modalController: ModalController,
     private dataService: DataService,
     private userService: UserService,
+    private clipBoard: ClipboardService,
     private transactionService: TransactionsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private eventService: EventsService
   ) {}
 
   ngOnInit() {
     // Fake timeout
+    this.eventService.getNotice().subscribe((res) => {
+      if (res.reloadDashboard) {
+        this.getUserWallet();
+        this.getAllTransactions();
+      }
+    });
   }
 
   ionViewWillEnter(ev?) {
@@ -106,6 +116,11 @@ export class HomePage implements OnInit {
     } else {
       this.isProfileComplete = true;
     }
+  }
+
+  copy(text) {
+    this.clipBoard.copy(text);
+    this.toastService.presentToast('Copied!', 'top', 'success', '', 2000);
   }
 
   async gotoProfile() {
@@ -169,13 +184,16 @@ export class HomePage implements OnInit {
     if (response.result) {
       if (!response.result.data.error) {
         // console.log('from backend', response.result.data.data);
-        const transactionHolder: [] = response.result.data.data;
+        let transactionHolder: [] = response.result.data.data;
         // console.log('holder===>', transactionHolder);
-        this.dataService.setTransactions(transactionHolder);
-        this.transactions = transactionHolder.slice(0, 20);
-        this.transactions = this.transactions.sort(
-          (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
+        transactionHolder = transactionHolder.sort(
+          (a: any, b: any) =>
+            Date.parse(b.created_at) - Date.parse(a.created_at)
         );
+        this.dataService.setTransactions(transactionHolder);
+
+        this.transactions = transactionHolder.slice(0, 20);
+
         // console.log('gotten', this.dataService.getTransactions());
       } else {
         this.toastService.presentToast(

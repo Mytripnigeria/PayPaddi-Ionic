@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   baseUrl: 'https://paypaddi.xyz/api/',
   FlutterPublicKey: 'FLWPUBK-e758d5385cd2dc71e9678d88692bd2de-X',
-  codepushAndroidKey: '9T9uUbEp0kzUpk1yZnnLeYSpr7r2BnQAqw9-K',
-  codePushIosKey: '8Y2Dhvu9XyKk8PNJeabpaSGKVqRjTCqlLKHOL',
+  codepushAndroidKey: 'cBohhAVjg2TDJu0xxomzocjfh6jUk3NbB5L1P',
+  codePushIosKey: 'iRnnZ7OMajE-h6viXlpUYADuRq5wF0j8ZDTt0',
 };
 
 /*

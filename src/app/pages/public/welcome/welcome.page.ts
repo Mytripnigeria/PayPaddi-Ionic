@@ -1,4 +1,11 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { UtilityService } from 'src/app/services/utility/utility.service';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { SwiperOptions, Pagination } from 'swiper';
 SwiperCore.use([Pagination]);
@@ -12,7 +19,6 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
 })
 export class WelcomePage implements AfterContentChecked {
-
   language: string = '';
   last_slide: boolean = false;
 
@@ -23,16 +29,16 @@ export class WelcomePage implements AfterContentChecked {
     slidesPerView: 1,
     spaceBetween: 50,
     pagination: { clickable: false },
-    allowTouchMove: false // set true to allow swiping
-  }
+    allowTouchMove: false, // set true to allow swiping
+  };
 
   constructor(
     private router: Router,
+    private util: UtilityService,
     private ref: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngAfterContentChecked(): void {
-
     if (this.swiper) {
       this.swiper.updateSwiper({});
     }
@@ -55,9 +61,11 @@ export class WelcomePage implements AfterContentChecked {
 
   // Go to main content
   async getStarted() {
+    await this.util.storeItem('onBoarded', 'xvcghfgftdfhgfhgjjgdfghj');
+    this.router.navigateByUrl('/signin');
+    const st = await this.util.getItem('onBoarded');
+    console.log('this is the onboard==>', st);
 
     // Navigate to /home
-    this.router.navigateByUrl('/signin');
   }
-
 }

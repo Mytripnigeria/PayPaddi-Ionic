@@ -247,6 +247,19 @@ export class BuyAirtimePage implements OnInit {
     }
   }
 
+  keyPressNumbers(event) {
+    console.log(event.which);
+    console.log(event.keyCode);
+    const charCode = event.which ? event.which : event.keyCode;
+
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   amountChange(ev) {
     console.log('the ev===>', ev);
     if (ev == '') return (this.amountHolder = null);

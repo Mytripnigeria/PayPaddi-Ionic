@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content>
-  <div class="ion-padding ion-full-height ion-flex ion-flex-center mt-30">
+  <div class="ion-padding">
     <div class="logo-container">
       <h1 class="logo-placeholder">PayPaddi</h1>
       <p>Create a free account.</p>
@@ -24,7 +24,10 @@
             placeholder="Your first name"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="signup_form.controls['firstname']['errors'] && signup_form.controls['firstname']['errors']['required'] && signup_form.controls['firstname']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['firstname']['errors'] && signup_form.controls['firstname']['errors']['required'] && signup_form.controls['firstname']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Firstname is required.</small>
         </ion-text>
 
@@ -37,7 +40,10 @@
             placeholder="Your last name"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="signup_form.controls['lastname']['errors'] && signup_form.controls['lastname']['errors']['required'] && signup_form.controls['lastname']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['lastname']['errors'] && signup_form.controls['lastname']['errors']['required'] && signup_form.controls['lastname']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Lastname is required.</small>
         </ion-text>
 
@@ -50,10 +56,16 @@
             placeholder="Your email address"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="signup_form.controls['email']['errors'] && signup_form.controls['email']['errors']['required'] && signup_form.controls['email']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['email']['errors'] && signup_form.controls['email']['errors']['required'] && signup_form.controls['email']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Email is required.</small>
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['email']['errors'] && signup_form.controls['email']['errors']['email'] && signup_form.controls['email']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['email']['errors'] && signup_form.controls['email']['errors']['email'] && signup_form.controls['email']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Invalid Email.</small>
         </ion-text>
 
@@ -66,22 +78,41 @@
             placeholder="Your username"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="signup_form.controls['username']['errors'] && signup_form.controls['username']['errors']['required'] && signup_form.controls['username']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['username']['errors'] && signup_form.controls['username']['errors']['required'] && signup_form.controls['username']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Username is required.</small>
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['username']['errors'] && signup_form.controls['username']['errors']['minlength'] && signup_form.controls['username']['touched']" color="danger">
-          <small class="error-message-form">Username cannot be less than 4 characters.</small>
+        <ion-text
+          *ngIf="signup_form.controls['username']['errors'] && signup_form.controls['username']['errors']['minlength'] && signup_form.controls['username']['touched']"
+          color="danger"
+        >
+          <small class="error-message-form"
+            >Username cannot be less than 4 characters.</small
+          >
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['username']['dirty'] && containsSpecialChars(signup_form.value.username)" color="danger">
-          <small class="error-message-form">Username cannot contain special characters.</small>
+        <ion-text
+          *ngIf="signup_form.controls['username']['dirty'] && containsSpecialChars(signup_form.value.username)"
+          color="danger"
+        >
+          <small class="error-message-form"
+            >Username cannot contain special characters.</small
+          >
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['username']['dirty'] && hasWhiteSpace(signup_form.value.username)" color="danger">
-          <small class="error-message-form">Username cannot contain white space.</small>
+        <ion-text
+          *ngIf="signup_form.controls['username']['dirty'] && hasWhiteSpace(signup_form.value.username)"
+          color="danger"
+        >
+          <small class="error-message-form"
+            >Username cannot contain white space.</small
+          >
         </ion-text>
-       
 
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Phone number</ion-label>
+          <ion-label color="tertiary" position="stacked"
+            >Phone number</ion-label
+          >
           <ion-input
             formControlName="phone"
             type="tel"
@@ -89,13 +120,22 @@
             placeholder="Your phone number"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="signup_form.controls['phone']['errors'] && signup_form.controls['phone']['errors']['required'] && signup_form.controls['phone']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['phone']['errors'] && signup_form.controls['phone']['errors']['required'] && signup_form.controls['phone']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">phone number is required.</small>
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['phone']['errors'] && signup_form.controls['phone']['errors']['minlength'] && signup_form.controls['phone']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['phone']['errors'] && signup_form.controls['phone']['errors']['minlength'] && signup_form.controls['phone']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Phone number is invalid .</small>
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['phone']['errors'] && signup_form.controls['phone']['errors']['maxlength'] && signup_form.controls['phone']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['phone']['errors'] && signup_form.controls['phone']['errors']['maxlength'] && signup_form.controls['phone']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Phone number is invalid .</small>
         </ion-text>
 
@@ -107,16 +147,24 @@
             placeholder="Your password"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="signup_form.controls['password']['errors'] && signup_form.controls['password']['errors']['required'] && signup_form.controls['password']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['password']['errors'] && signup_form.controls['password']['errors']['required'] && signup_form.controls['password']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Password is required.</small>
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['password']['errors'] && signup_form.controls['password']['errors']['minlength'] && signup_form.controls['password']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['password']['errors'] && signup_form.controls['password']['errors']['minlength'] && signup_form.controls['password']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Password is too short .</small>
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['password']['dirty'] && !passwordStrength(signup_form.value.password)" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['password']['dirty'] && !passwordStrength(signup_form.value.password)"
+          color="danger"
+        >
           <small class="error-message-form">Password is too weak.</small>
         </ion-text>
-        
 
         <ion-item class="ion-margin-top-small">
           <ion-label color="tertiary" position="stacked"
@@ -128,15 +176,23 @@
             placeholder="Password repeat"
           ></ion-input>
         </ion-item>
-        <ion-text *ngIf="signup_form.controls['password_confirmation']['errors'] && signup_form.controls['password_confirmation']['errors']['required'] && signup_form.controls['password_confirmation']['touched']" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['password_confirmation']['errors'] && signup_form.controls['password_confirmation']['errors']['required'] && signup_form.controls['password_confirmation']['touched']"
+          color="danger"
+        >
           <small class="error-message-form">Confirm password please.</small>
         </ion-text>
-        <ion-text *ngIf="signup_form.controls['password_confirmation']['dirty'] && !passwordMatch(signup_form.value.password_confirmation)" color="danger">
+        <ion-text
+          *ngIf="signup_form.controls['password_confirmation']['dirty'] && !passwordMatch(signup_form.value.password_confirmation)"
+          color="danger"
+        >
           <small class="error-message-form">Password does not match.</small>
         </ion-text>
 
         <ion-item>
-          <ion-label color="tertiary" position="stacked">Referral code</ion-label>
+          <ion-label color="tertiary" position="stacked"
+            >Referral code</ion-label
+          >
           <ion-input
             formControlName="referral_code"
             type="text"

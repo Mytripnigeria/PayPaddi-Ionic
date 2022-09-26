@@ -1,19 +1,20 @@
-<ion-header >
+<ion-header>
   <ion-toolbar>
-    
-    <ion-title>
-      Settings
-    </ion-title>
+    <ion-title> Settings </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-
-  <div class="hero hero-light-gradient" *ngIf="userData" >
+<ion-content>
+  <div class="hero hero-light-gradient" *ngIf="userData">
     <ion-avatar>
-      <ion-icon *ngIf="!userData.picture || userData.picture ==''"  class="avatar-icon-placeholder" name="person-circle" color="tertiary">
+      <ion-icon
+        *ngIf="!userData.picture || userData.picture ==''"
+        class="avatar-icon-placeholder"
+        name="person-circle"
+        color="tertiary"
+      >
       </ion-icon>
-      <img *ngIf="userData.picture"  [src]="userData.picture" alt="">
+      <img *ngIf="userData.picture" [src]="userData.picture" alt="" />
     </ion-avatar>
     <p class="font-weight-500">{{userData.firstname}} {{userData.lastname}}</p>
     <ion-text color="medium">
@@ -22,7 +23,6 @@
   </div>
 
   <div class="ion-padding">
-
     <ion-list-header class="ion-list-header-small">
       <ion-label>Personal</ion-label>
     </ion-list-header>
@@ -53,7 +53,11 @@
         </ion-label>
       </ion-item>
       <ion-item button routerLink="statements-report">
-        <ion-icon slot="start" color="medium" name="newspaper-outline"></ion-icon>
+        <ion-icon
+          slot="start"
+          color="medium"
+          name="newspaper-outline"
+        ></ion-icon>
         <ion-label>
           <h3>Statements and Reports</h3>
         </ion-label>
@@ -65,15 +69,18 @@
         </ion-label>
       </ion-item>
       <ion-item button (click)="verification()">
-        <ion-icon slot="start" color="medium" name="shield-half-outline"></ion-icon>
+        <ion-icon
+          slot="start"
+          color="medium"
+          name="shield-half-outline"
+        ></ion-icon>
         <ion-label>
           <h3>Identity verification</h3>
         </ion-label>
       </ion-item>
     </ion-list>
 
-    <hr class="hr-medium">
-
+    <hr class="hr-medium" />
 
     <ion-list-header class="ion-list-header-small">
       <ion-label>Security / Legal</ion-label>
@@ -87,13 +94,24 @@
         </ion-label>
       </ion-item>
       <ion-item detail="false">
-        <ion-icon slot="start" *ngIf="platform.is('ios')" color="medium" name="scan"></ion-icon>
-        <ion-icon slot="start" *ngIf="platform.is('android')" color="medium" name="finger-print-outline"></ion-icon>
+        <ion-icon
+          slot="start"
+          *ngIf="platform.is('ios')"
+          color="medium"
+          name="scan"
+        ></ion-icon>
+        <ion-icon
+          slot="start"
+          *ngIf="platform.is('android')"
+          color="medium"
+          name="finger-print-outline"
+        ></ion-icon>
         <ion-label>
-          <h3 *ngIf="platform.is('android')" >FingerPrint </h3>
-          <h3 *ngIf="platform.is('ios')">Face ID </h3>
+          <h3 *ngIf="platform.is('android')">FingerPrint</h3>
+          <h3 *ngIf="platform.is('ios')">Face ID</h3>
         </ion-label>
-        <ion-toggle slot="end"></ion-toggle>
+        <span style="color: red; font-size: 12px">Coming soon</span>
+        <ion-toggle disabled="true" slot="end"></ion-toggle>
       </ion-item>
       <ion-item button (click)="terms()">
         <ion-icon slot="start" color="medium" name="book-outline"></ion-icon>
@@ -103,17 +121,15 @@
       </ion-item>
     </ion-list>
 
-    <hr class="hr-medium">
+    <hr class="hr-medium" />
 
     <ion-list class="list-custom" lines="full" (click)="signOut()">
-      <ion-item button detail=false>
+      <ion-item button detail="false">
         <ion-icon slot="start" color="danger" name="log-out"></ion-icon>
         <ion-label color="danger">
           <h3>Sign out</h3>
         </ion-label>
       </ion-item>
     </ion-list>
-
   </div>
-
 </ion-content>

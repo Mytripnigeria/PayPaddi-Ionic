@@ -10,7 +10,14 @@
       </ion-avatar>
       <ion-label *ngIf="userData">
         <h4>Hi, {{userData.firstname}}</h4>
-        <p>{{userData.username}}</p>
+        <p style="display: flex; align-items: center">
+          @{{userData.username}}
+          <ion-icon
+            (click)="copy(userData.username)"
+            class="copyIcon"
+            name="copy-outline"
+          ></ion-icon>
+        </p>
       </ion-label>
     </ion-item>
 

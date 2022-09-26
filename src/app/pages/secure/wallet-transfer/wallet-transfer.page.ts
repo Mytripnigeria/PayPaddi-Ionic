@@ -108,6 +108,17 @@ export class WalletTransferPage implements OnInit {
     // this.totalAmount = this.amountHolder +
   }
 
+  keyPressNumbers(event) {
+    const charCode = event.which ? event.which : event.keyCode;
+
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   async transfer() {
     const loader = await this.util.loader('Sending');
     loader.present();
@@ -116,7 +127,7 @@ export class WalletTransferPage implements OnInit {
       balance: 'current_balance',
       username: this.username,
     };
-    const response = await this.transferService.sendToWallet(payload);
+    const response: any = await this.transferService.sendToWallet(payload);
     loader.dismiss();
 
     if (response.result) {

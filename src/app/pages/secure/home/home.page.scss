@@ -16,6 +16,11 @@ ion-header{
     background: #141a1f;
 }
 
+.copyIcon{
+    font-size: 14px;
+    margin-left: 5px;
+}
+
 ion-header > ion-item.balance{
     margin-top: 15px;
     --padding-end:8px;
@@ -141,5 +146,5 @@ ion-list.empty{
 }
 
 ion-refresher{
-    background: #141a1f;
+    background: transparent;
 }

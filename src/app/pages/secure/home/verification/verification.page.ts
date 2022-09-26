@@ -32,6 +32,9 @@ export class VerificationPage implements OnInit {
   }
 
   async sendEmailVerification() {
+    // const loader = await this.util.loader('Sending...');
+    // loader.present();
+
     const response = await this.verify.sendEmailVerificaion();
   }
 

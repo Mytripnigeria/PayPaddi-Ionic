@@ -25,10 +25,11 @@ export class BankTransferPage implements OnInit {
   addBeneficiary = false;
   numberIsComplete = false;
   banks;
-
+  limits;
   narration;
   bank_code;
   account_number;
+  blocked = false;
   amountHolder = null;
   totalAmount = null;
   currentFee = null;
@@ -48,8 +49,22 @@ export class BankTransferPage implements OnInit {
 
   ngOnInit() {
     this.getFees();
+    this.getLimit();
 
     this.banks = this.dataService.getBanksData();
+  }
+
+  async getLimit() {
+    const loader = await this.util.loader('');
+    loader.present();
+    const response = await this.transferService.getTransferLimit();
+    loader.dismiss();
+    if (response.result) {
+      if (!response.result.data.error) {
+        this.limits = response.result.data.data;
+      } else {
+      }
+    }
   }
 
   async getFees() {
@@ -65,19 +80,16 @@ export class BankTransferPage implements OnInit {
   amountChange(ev) {
     if (ev == '') return (this.amountHolder = null);
     ev = ev.replace(/,/g, '');
+    this.checkLimit();
     this.amount = this.currencyPipe.transform(ev, '', '', '0.0-0');
     this.amountHolder = parseFloat(this.amount.replace(/,/g, ''));
-    console.log(this.amountHolder);
+
     if (this.amountHolder <= 50000) {
       this.currentFee = this.fees['transfer_less_than_limit'];
       this.totalAmount = parseFloat(this.currentFee) + this.amountHolder;
-      console.log('<<<<', this.currentFee);
-      console.log('<<<<', this.totalAmount);
     } else {
       this.currentFee = this.fees['transfer_greater_than_limit'];
       this.totalAmount = parseFloat(this.currentFee) + this.amountHolder;
-      console.log('>>>>', this.currentFee);
-      console.log('>>>', this.totalAmount);
     }
 
     // this.totalAmount = this.amountHolder +
@@ -85,6 +97,55 @@ export class BankTransferPage implements OnInit {
 
   cancel() {
     this.modalController.dismiss();
+  }
+
+  getMax() {
+    const max =
+      parseFloat(this.limits.remain_daily) < parseFloat(this.limits.max_per)
+        ? parseFloat(this.limits.remain_daily)
+        : parseFloat(this.limits.max_per);
+    return max;
+  }
+
+  checkLimit() {
+    if (this.amount) {
+      const amount = parseFloat(this.amount.replace(/,/g, ''));
+
+      const max =
+        parseFloat(this.limits.remain_daily) < parseFloat(this.limits.max_per)
+          ? parseFloat(this.limits.remain_daily)
+          : parseFloat(this.limits.max_per);
+      console.log(max);
+      console.log(amount);
+      if (amount >= max) this.blocked = true;
+    }
+  }
+
+  keyPressNumbers(event) {
+    console.log(this.amount);
+    setTimeout(() => {
+      if (this.amount) {
+        const amount = parseFloat(this.amount.replace(/,/g, ''));
+
+        const max =
+          parseFloat(this.limits.remain_daily) < parseFloat(this.limits.max_per)
+            ? parseFloat(this.limits.remain_daily)
+            : parseFloat(this.limits.max_per);
+
+        if (amount >= max) return false;
+      }
+
+      const charCode = event.which ? event.which : event.keyCode;
+
+      if (charCode < 48 || charCode > 57) {
+        event.preventDefault();
+
+        return false;
+      } else {
+        console.log(this.amountHolder);
+        return true;
+      }
+    }, 1000);
   }
 
   async verify() {

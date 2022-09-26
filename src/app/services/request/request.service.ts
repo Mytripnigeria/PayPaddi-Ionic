@@ -1,6 +1,5 @@
 import { UtilityService } from './../utility/utility.service';
 import { Injectable } from '@angular/core';
-import { Storage } from '@capacitor/storage';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
 @Injectable({
@@ -34,6 +33,7 @@ export class RequestService {
       );
       return { result, error: null };
     } catch (error) {
+      if (error.response.status == 401) this.util.signout();
       return { result: null, error };
     }
   }
@@ -45,8 +45,10 @@ export class RequestService {
         this.baseUrl + point,
         this.reqConfig(token)
       );
+
       return { result, error: null };
     } catch (error) {
+      if (error.response.status == 401) this.util.signout();
       return { result: null, error };
     }
   }

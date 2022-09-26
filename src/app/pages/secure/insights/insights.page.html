@@ -3,9 +3,7 @@
     <ion-button slot="start" (click)="back()" fill="clear" shape="round">
       Cancel
     </ion-button>
-    <ion-title>
-      Insights
-    </ion-title>
+    <ion-title> Insights </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,11 +15,10 @@
   </ion-header>
 
   <div class="ion-padding">
+    <!-- <ion-card class="ion-card-chart ion-no-margin animate__animated animate__fadeIn"> -->
 
-    <ion-card class="ion-card-chart ion-no-margin animate__animated animate__fadeIn">
-
-      <!-- Skeletons -->
-      <ng-container *ngIf="!content_loaded">
+    <!-- Skeletons -->
+    <!-- <ng-container *ngIf="!content_loaded">
         <ion-card-header>
           <div>
             <ion-card-title>
@@ -38,10 +35,10 @@
 
         <ion-skeleton-text animated style="width: calc(100% - 40px); margin: 16px auto 16px auto; min-height: 140px;">
         </ion-skeleton-text>
-      </ng-container>
+      </ng-container> -->
 
-      <!-- Chart -->
-      <ng-container *ngIf="content_loaded">
+    <!-- Chart -->
+    <!-- <ng-container *ngIf="content_loaded">
         <ion-card-header>
           <div>
             <ion-card-title>$481.00</ion-card-title>
@@ -55,18 +52,22 @@
         <canvas baseChart [data]="bar_chart_data" [options]="bar_chart_option" [type]="bar_chart_type"
           class="ion-padding">
         </canvas>
-      </ng-container>
+      </ng-container> -->
 
-    </ion-card>
+    <!-- </ion-card> -->
 
-    <hr class="hr-medium">
+    <!-- <hr class="hr-medium"> -->
 
-    <ion-list-header>
+    <!-- <ion-list-header>
       <ion-label color="white">Spending categories</ion-label>
-    </ion-list-header>
+    </ion-list-header> -->
 
     <!-- Skeletons -->
-    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="!categories">
+    <ion-list
+      class="list-custom animate__animated animate__fadeIn"
+      lines="full"
+      *ngIf="!categories"
+    >
       <ion-item button detail="false" *ngFor="let i of [].constructor(4);">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-skeleton-text animated></ion-skeleton-text>
@@ -79,24 +80,35 @@
             <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
           </p>
         </ion-label>
-        <ion-skeleton-text slot="end" animated style="width: 10%"></ion-skeleton-text>
+        <ion-skeleton-text
+          slot="end"
+          animated
+          style="width: 10%"
+        ></ion-skeleton-text>
       </ion-item>
     </ion-list>
 
-    <ion-list class="list-custom animate__animated animate__fadeIn" lines="full" *ngIf="categories">
-      <ion-item button detail="false" *ngFor="let transaction of categories" >
+    <ion-list
+      class="list-custom animate__animated animate__fadeIn"
+      lines="full"
+      *ngIf="categories"
+    >
+      <ion-item button detail="false" *ngFor="let transaction of categories">
         <ion-avatar slot="start" class="ion-avatar-default-icon">
           <ion-icon color="primary" name="layers-outline"></ion-icon>
         </ion-avatar>
         <ion-label>
           <h3>{{transaction.category}}</h3>
-          <p class="font-size-smallest">{{transaction.transactions.length}} transaction</p>
+          <p class="font-size-smallest">
+            {{transaction.transactions.length}} transaction
+          </p>
         </ion-label>
-        <ion-note color="primary" class="ion-note-small font-weight-500 ion-padding-end-small">₦{{sumTransaction(transaction.transactions) | currency}}</ion-note>
+        <ion-note
+          color="primary"
+          class="ion-note-small font-weight-500 ion-padding-end-small"
+          >₦{{sumTransaction(transaction.transactions) | currency}}</ion-note
+        >
       </ion-item>
-     
     </ion-list>
-
   </div>
-
 </ion-content>

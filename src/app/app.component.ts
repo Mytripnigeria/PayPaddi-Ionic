@@ -5,7 +5,12 @@ import { Component } from '@angular/core';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
-import { Platform, LoadingController, AlertController } from '@ionic/angular';
+import {
+  Platform,
+  LoadingController,
+  AlertController,
+  NavController,
+} from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 import { codePush, InstallMode } from 'capacitor-codepush';
 import {
@@ -19,13 +24,15 @@ import {
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  done = false;
   constructor(
     private platform: Platform,
     private util: UtilityService,
     private dataService: DataService,
     private router: Router,
     private alertCtrl: AlertController,
-    private loading: LoadingController
+    private loading: LoadingController,
+    private navCtrl: NavController
   ) {
     this.initializeApp();
   }
@@ -37,10 +44,11 @@ export class AppComponent {
       // If we're on a mobile platform (iOS / Android), not web
       if (Capacitor.getPlatform() !== 'web') {
         this.checkUpdate();
-        // Set StatusBar style (dark / light)
-        // await StatusBar.setStyle({ style: Style.Dark });
         await StatusBar.setStyle({ style: Style.Dark });
-        await StatusBar.setBackgroundColor({ color: '#141A1F' });
+
+        if (Capacitor.getPlatform() == 'android') {
+          await StatusBar.setBackgroundColor({ color: '#141A1F' });
+        }
       }
 
       await this.util.configureLocaStorage();
@@ -50,11 +58,30 @@ export class AppComponent {
       // ...
 
       // Fake timeout since we do not load any data
+
+      this.backButtonEvent();
+      console.log('came to check=====>');
+      const onBoarded = await this.util.getItem('onBoarded');
+      const accessToken = await this.util.getItem('accessToken');
+
+      console.log({ onBoarded: onBoarded.value });
+      console.log({ accessToken: accessToken.value });
+      if (onBoarded.value) {
+        if (accessToken.value) {
+          await this.dataService.commitAllData();
+          this.done = true;
+          this.navCtrl.navigateRoot('/home');
+        } else {
+          this.done = true;
+          this.navCtrl.navigateRoot('/signin');
+        }
+      } else {
+        this.done = true;
+      }
       setTimeout(async () => {
         // Hide SplashScreen
         await SplashScreen.hide();
       }, 2000);
-      this.backButtonEvent();
     });
   }
 
@@ -159,9 +186,9 @@ export class AppComponent {
         const result: ILocalPackage = await remotePackage.download();
         if (result) {
           result.install({
-            installMode: InstallMode.ON_NEXT_RESTART,
+            installMode: InstallMode.IMMEDIATE,
             minimumBackgroundDuration: 0,
-            mandatoryInstallMode: InstallMode.ON_NEXT_RESTART,
+            mandatoryInstallMode: InstallMode.IMMEDIATE,
           });
         }
         console.log('Result of download', result);
@@ -171,13 +198,14 @@ export class AppComponent {
     }
   }
 
-  onPackageDownloaded(localPackage: ILocalPackage) {
+  async onPackageDownloaded(localPackage: ILocalPackage) {
+    // await this.updateDownloadModal();
     console.log('Download succeeded.===========>', localPackage.description);
     localPackage
       .install({
-        installMode: InstallMode.ON_NEXT_RESTART,
+        installMode: InstallMode.IMMEDIATE,
         minimumBackgroundDuration: 0,
-        mandatoryInstallMode: InstallMode.ON_NEXT_RESTART,
+        mandatoryInstallMode: InstallMode.IMMEDIATE,
       })
       .then(this.onInstallSuccess, this.error);
   }
@@ -192,5 +220,24 @@ export class AppComponent {
 
   error(error) {
     console.log('Error===>', error);
+  }
+
+  async updateDownloadModal() {
+    const alert = await this.alertCtrl.create({
+      // header: 'Confirm!',
+      message: 'An update is available and will be installed.',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'ok',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            return true;
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

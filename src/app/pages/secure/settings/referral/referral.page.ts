@@ -50,11 +50,13 @@ export class ReferralPage implements OnInit {
     if (!response.error) {
       if (!response.result.data.error) {
         const allRef = response.result.data.data;
+        console.log({ allRef });
         let initialValue = 0;
         for (let index = 0; index < allRef.length; index++) {
           initialValue = initialValue + Number(allRef[index].amount);
         }
         this.referalEarnings = initialValue;
+        console.log('earningss==>', this.referalEarnings);
       }
     }
   }

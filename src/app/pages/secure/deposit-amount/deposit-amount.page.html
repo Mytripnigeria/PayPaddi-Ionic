@@ -11,7 +11,13 @@
   <ion-list class="item-card-list" lines="none">
     <ion-item class="animate__animated animate__fadeIn">
       <ion-label color="tertiary" position="stacked">Amount(₦)</ion-label>
-      <ion-input [(ngModel)]="amount" type="tel"></ion-input>
+      <ion-input
+        pattern="^[1-9][0-9]*$"
+        (keypress)="keyPressNumbers($event)"
+        [(ngModel)]="amount"
+        (ngModelChange)="amountChange($event)"
+        type="tel"
+      ></ion-input>
     </ion-item>
   </ion-list>
 </ion-content>

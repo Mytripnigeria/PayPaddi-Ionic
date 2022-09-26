@@ -48,6 +48,8 @@
           [(ngModel)]="amount"
           [readonly]="type=='education'?true:false"
           type="tel"
+          pattern="^[1-9][0-9]*$"
+          (keypress)="keyPressNumbers($event)"
           (ngModelChange)="amountChange($event)"
         ></ion-input>
       </ion-item>

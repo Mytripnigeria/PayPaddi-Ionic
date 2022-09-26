@@ -1,3 +1,5 @@
+import { ToastService } from 'src/app/services/toast/toast.service';
+import { ClipboardService } from 'ngx-clipboard';
 import { ModalController, NavParams } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
@@ -17,12 +19,20 @@ export class PaymentDetailPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private navParams: NavParams,
-    private fileOpener: FileOpener
+    private fileOpener: FileOpener,
+    private clipBoard: ClipboardService,
+    private toateService: ToastService
   ) {}
 
   ngOnInit() {
     this.transaction = this.navParams.data.transaction;
     console.log(this.transaction);
+  }
+
+  copy(text) {
+    console.log(text);
+    this.clipBoard.copy(text);
+    this.toateService.presentToast('Copied!', 'top', 'success', '', 2000);
   }
 
   back() {

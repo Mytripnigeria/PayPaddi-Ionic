@@ -59,6 +59,17 @@ export class FundCardPage implements OnInit {
     }
   }
 
+  keyPressNumbers(event) {
+    const charCode = event.which ? event.which : event.keyCode;
+
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   async getTransferRate() {
     const payload = {
       amount: Number(this.fund_card_form.value.amount),

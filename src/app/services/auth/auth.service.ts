@@ -1,14 +1,19 @@
+import { UtilityService } from 'src/app/services/utility/utility.service';
 import { ILogin } from './../../models/login';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IRegister } from 'src/app/models/register';
 import { RequestService } from '../request/request.service';
-
+import { Storage } from '@capacitor/storage';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private router: Router, private req: RequestService) {}
+  constructor(
+    private router: Router,
+    private util: UtilityService,
+    private req: RequestService
+  ) {}
 
   // Get user session
   async getSession() {
@@ -52,6 +57,10 @@ export class AuthService {
     // ...
 
     // Navigate to sign-in
+    await Storage.remove({
+      key: 'accessToken',
+    });
+
     this.router.navigateByUrl('/signin');
   }
 

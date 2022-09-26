@@ -4,49 +4,51 @@
       <ion-back-button text="Settings" defaultHref="/settings">
       </ion-back-button>
     </ion-buttons>
-    <ion-title>
-      Referrals
-    </ion-title>
+    <ion-title> Referrals </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <div class="ion-padding">
-
     <ion-list-header class="ion-list-header-small mb-20">
-      <ion-label>Share your referral code to your friends and family to earn ₦{{fees}} when they are signed up and verified.</ion-label>
-    </ion-list-header >
+      <ion-label
+        >Share your referral code to your friends and family to earn ₦{{fees}}
+        when they are signed up and verified.</ion-label
+      >
+    </ion-list-header>
 
     <ion-list class="list-custom" lines="full">
-     
-        
-          <ion-item detail="false"  lines="none">
-            <ion-label>
-              <p>Referral Earnings</p>
-              <h3 *ngIf="referalEarnings" >₦{{referalEarnings | currency}}</h3>
-            </ion-label>
-            <ion-label>
-              <p>Referral Downlines</p>
-              <h3 *ngIf="referals" >{{referals.length}}</h3>
-              <h3 *ngIf="!referals"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
-            </ion-label>
-          </ion-item>
-          
-          
-          <ion-item detail="false"   lines="none">
-            <ion-icon slot="start" name="megaphone-outline"></ion-icon>
-           <ion-label>
-             <p>Referral Code</p>
-             <h3 *ngIf="!referalCode" ><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
-             <h3 *ngIf="referalCode" >{{referalCode}}</h3>
-           </ion-label>
-           <ion-button (click)="copy()"  slot="end" class="ios button button-small button-solid ion-activatable ion-focusable hydrated"> Copy </ion-button>
-          </ion-item>
+      <ion-item detail="false" lines="none">
+        <ion-label>
+          <p>Referral Earnings</p>
+          <h3>₦{{referalEarnings | currency}}</h3>
+        </ion-label>
+        <ion-label>
+          <p>Referral Downlines</p>
+          <h3 *ngIf="referals">{{referals.length}}</h3>
+          <h3 *ngIf="!referals">
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+        </ion-label>
+      </ion-item>
 
+      <ion-item detail="false" lines="none">
+        <ion-icon slot="start" name="megaphone-outline"></ion-icon>
+        <ion-label>
+          <p>Referral Code</p>
+          <h3 *ngIf="!referalCode">
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <h3 *ngIf="referalCode">{{referalCode}}</h3>
+        </ion-label>
+        <ion-button
+          (click)="copy()"
+          slot="end"
+          class="ios button button-small button-solid ion-activatable ion-focusable hydrated"
+        >
+          Copy
+        </ion-button>
+      </ion-item>
     </ion-list>
-
   </div>
-
 </ion-content>
-
