@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IRegister } from 'src/app/models/register';
 import { RequestService } from '../request/request.service';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 @Injectable({
   providedIn: 'root',
 })
@@ -57,7 +57,7 @@ export class AuthService {
     // ...
 
     // Navigate to sign-in
-    await Storage.remove({
+    await Preferences.remove({
       key: 'accessToken',
     });
 

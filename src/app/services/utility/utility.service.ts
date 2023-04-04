@@ -1,7 +1,7 @@
 import { ToastService } from './../toast/toast.service';
 import { Injectable } from '@angular/core';
 import { LoadingController, NavController } from '@ionic/angular';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root',
@@ -23,13 +23,13 @@ export class UtilityService {
   }
 
   async configureLocaStorage() {
-    await Storage.configure({
+    await Preferences.configure({
       group: 'PayPaddiData',
     });
   }
 
   async signout() {
-    await Storage.remove({
+    await Preferences.remove({
       key: 'accessToken',
     });
     this.toastService
@@ -46,28 +46,28 @@ export class UtilityService {
   }
 
   async storeData(storageName, storageData) {
-    await Storage.set({
+    await Preferences.set({
       key: storageName,
       value: JSON.stringify(storageData),
     });
   }
 
   async getStorageData(storageName) {
-    const value: any = await Storage.get({
+    const value: any = await Preferences.get({
       key: storageName,
     });
     return JSON.parse(value);
   }
 
   async storeItem(storageName, storageData) {
-    await Storage.set({
+    await Preferences.set({
       key: storageName,
       value: storageData,
     });
   }
 
   async getItem(storageName) {
-    const value: any = await Storage.get({
+    const value: any = await Preferences.get({
       key: storageName,
     });
     return value;

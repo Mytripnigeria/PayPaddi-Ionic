@@ -97,7 +97,7 @@ export class CameraService {
     }).then(
       async (result) => {
         // console.log('Result', result);
-        return await this.loadImageData(result.files);
+        // return await this.loadImageData(result.files);
       },
       async (err) => {
         // console.log('error here', err);
