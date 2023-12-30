@@ -106,24 +106,24 @@ ion-card-title {
 
 
 .transfer-modal > app-pin-verify{
-  position: fixed;
-  height: 73vh;
-  top: 27vh;
+  position: fixed !important;
+  height: 95vh !important;
+  top: 5vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
 
 }
 .transfer-modal > app-verification-notice{
-  position: fixed;
-  height: 50vh;
+  position: fixed !important;
+  height: 50vh !important;
   top: 50vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
 
 }
 .transfer-modal > app-bank-list{
-  position: fixed;
-  height: 95vh;
+  position: fixed !important;
+  height: 95vh !important;
   top: 5vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
@@ -131,8 +131,8 @@ ion-card-title {
 }
 
 .transfer-modal > app-verifications{
-  position: fixed;
-  height: 95vh;
+  position: fixed !important;
+  height: 95vh !important;
   top: 5vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
@@ -140,8 +140,8 @@ ion-card-title {
 }
 
 .transfer-modal > app-id-verification{
-  position: fixed;
-  height: 95vh;
+  position: fixed !important;
+  height: 95vh !important;
   top: 5vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
@@ -149,8 +149,8 @@ ion-card-title {
 }
 
 .transfer-modal > app-verification{
-  position: fixed;
-  height: 95vh;
+  position: fixed !important;
+  height: 95vh !important;
   top: 5vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
@@ -158,8 +158,8 @@ ion-card-title {
 }
 
 .transfer-modal > app-bvn-verification{
-  position: fixed;
-  height: 95vh;
+  position: fixed !important;
+  height: 95vh !important;
   top: 5vh;
   background: var(--ion-color-secondary);
   border-radius: 16px 16px 0 0;
